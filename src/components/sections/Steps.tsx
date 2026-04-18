@@ -1,0 +1,269 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { AnimatePresence, motion } from "motion/react";
+import { UserRound, Search, Wallet, TrendingUp, Check } from "lucide-react";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+const steps = [
+  {
+    n: "01",
+    icon: UserRound,
+    kicker: "Onboarding",
+    title: "Creá tu cuenta",
+    body: "Verificación en minutos. KYC digital, firma biométrica y listo para operar.",
+  },
+  {
+    n: "02",
+    icon: Search,
+    kicker: "Descubrimiento",
+    title: "Elegí un proyecto",
+    body: "Oportunidades curadas: inmobiliario, agro, infraestructura. Toda la due diligence, pública.",
+  },
+  {
+    n: "03",
+    icon: Wallet,
+    kicker: "Inversión",
+    title: "Invertí desde bajo monto",
+    body: "Comprá tokens fraccionales. Desde USD 100, sin comisiones ocultas.",
+  },
+  {
+    n: "04",
+    icon: TrendingUp,
+    kicker: "Rendimiento",
+    title: "Seguí en tiempo real",
+    body: "Dashboard en vivo. Flujos, liquidez secundaria y reportes trimestrales.",
+  },
+];
+
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+export function Steps() {
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+  const stageRef = useRef<HTMLDivElement | null>(null);
+  const fillRef = useRef<HTMLDivElement | null>(null);
+  const [active, setActive] = useState(0);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced || !wrapRef.current || !stageRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const st = ScrollTrigger.create({
+        trigger: wrapRef.current!,
+        start: "top top",
+        end: "bottom bottom",
+        pin: stageRef.current!,
+        pinSpacing: false,
+        scrub: 0.5,
+        onUpdate: (self) => {
+          const p = self.progress;
+          setProgress(p);
+          const idx = Math.min(steps.length - 1, Math.floor(p * steps.length));
+          setActive(idx);
+          if (fillRef.current) {
+            fillRef.current.style.transform = `scaleX(${p})`;
+          }
+        },
+      });
+      return () => st.kill();
+    }, wrapRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  const StepIcon = steps[active].icon;
+  const isLast = active === steps.length - 1 && progress > 0.92;
+  // progreso local dentro del paso activo (0→1)
+  const localP = Math.min(1, Math.max(0, progress * steps.length - active));
+  // rotación sutil del icono: -12deg → +12deg según avance intra-paso
+  const iconRotate = -12 + localP * 24;
+
+  return (
+    <section
+      id="pasos"
+      ref={wrapRef}
+      className="relative w-full"
+      style={{ height: `${steps.length * 100}vh` }}
+    >
+      <div
+        ref={stageRef}
+        className="relative flex h-screen w-full flex-col items-center justify-center overflow-hidden px-6"
+      >
+        {/* Gradiente de fondo dinámico que cambia con el paso */}
+        <motion.div
+          aria-hidden
+          className="absolute inset-0 -z-10"
+          animate={{
+            background: [
+              "radial-gradient(ellipse at 20% 30%, color-mix(in oklab, var(--burnt-rose) 45%, transparent) 0%, transparent 55%)",
+              "radial-gradient(ellipse at 80% 30%, color-mix(in oklab, var(--bronze) 30%, transparent) 0%, transparent 55%)",
+              "radial-gradient(ellipse at 50% 70%, color-mix(in oklab, var(--burnt-rose) 50%, transparent) 0%, transparent 55%)",
+              "radial-gradient(ellipse at 50% 50%, color-mix(in oklab, var(--bronze) 55%, transparent) 0%, transparent 60%)",
+            ][active],
+          }}
+          transition={{ duration: 1.2, ease: EASE }}
+        />
+
+        {/* Halo radiante final */}
+        <AnimatePresence>
+          {isLast && (
+            <motion.div
+              key="halo"
+              aria-hidden
+              initial={{ opacity: 0, scale: 0.4 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.6 }}
+              transition={{ duration: 1.2, ease: EASE }}
+              className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[140vmin] w-[140vmin] -translate-x-1/2 -translate-y-1/2 rounded-full"
+              style={{
+                background:
+                  "radial-gradient(circle, color-mix(in oklab, var(--bronze) 55%, transparent) 0%, color-mix(in oklab, var(--bronze) 10%, transparent) 30%, transparent 60%)",
+                animation: "pulse-glow 2.4s ease-in-out infinite",
+              }}
+            />
+          )}
+        </AnimatePresence>
+
+        <div className="mx-auto w-full max-w-7xl">
+          {/* Header */}
+          <div className="mb-14 flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="mb-4 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--pale-oak)]/60">
+                <span className="inline-block h-px w-10 bg-[var(--bronze)]" />
+                Cómo funciona
+              </p>
+              <h2 className="font-display text-[clamp(2rem,4.5vw,4rem)] font-light leading-[0.95] tracking-[-0.02em] text-[var(--pale-oak)]">
+                Cuatro pasos. <span className="italic text-[var(--bronze)]">Cero fricción.</span>
+              </h2>
+            </div>
+            <p className="max-w-sm text-sm text-[var(--pale-oak)]/60">
+              Scrolleá para recorrer el proceso. Cada paso se activa a medida que avanzás.
+            </p>
+          </div>
+
+          {/* Stage principal */}
+          <div className="relative grid grid-cols-12 items-center gap-8">
+            {/* Columna izquierda: número gigante */}
+            <div className="col-span-12 md:col-span-5">
+              <div className="relative h-[240px] md:h-[380px]">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={active}
+                    initial={{ opacity: 0, y: 60, filter: "blur(12px)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, y: -40, filter: "blur(12px)" }}
+                    transition={{ duration: 0.9, ease: EASE }}
+                    className="absolute inset-0 flex items-center"
+                  >
+                    <span
+                      className="font-display font-light leading-none tracking-[-0.06em] text-transparent"
+                      style={{
+                        fontSize: "clamp(10rem, 24vw, 22rem)",
+                        WebkitTextStroke: "1.5px color-mix(in oklab, var(--bronze) 70%, transparent)",
+                      }}
+                    >
+                      {steps[active].n}
+                    </span>
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Icono flotante con draw-in + rotación intra-paso */}
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={`icon-${active}`}
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1, rotate: iconRotate }}
+                    exit={{ opacity: 0, scale: 0.5 }}
+                    transition={{
+                      opacity: { duration: 0.6, ease: EASE },
+                      scale: { duration: 0.8, ease: EASE },
+                      rotate: { duration: 0.15, ease: "linear" },
+                    }}
+                    className="icon-draw absolute bottom-6 right-6 flex h-20 w-20 items-center justify-center rounded-full border border-[var(--bronze)]/60 bg-[var(--surface)]/60 text-[var(--bronze)] backdrop-blur-md md:bottom-10 md:right-10 md:h-28 md:w-28"
+                  >
+                    {isLast ? <Check className="h-10 w-10 md:h-12 md:w-12" /> : <StepIcon className="h-8 w-8 md:h-10 md:w-10" />}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
+
+            {/* Columna derecha: copy */}
+            <div className="col-span-12 md:col-span-7">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`text-${active}`}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.7, ease: EASE, delay: 0.1 }}
+                  className="flex flex-col gap-6"
+                >
+                  <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--bronze)]">
+                    {steps[active].kicker}
+                  </p>
+                  <h3 className="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-light leading-[0.95] tracking-[-0.02em] text-[var(--pale-oak)]">
+                    {steps[active].title}
+                  </h3>
+                  <p className="max-w-lg text-lg leading-relaxed text-[var(--pale-oak)]/75">
+                    {steps[active].body}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+
+          {/* Tracker inferior con línea progresiva */}
+          <div className="mt-16 flex items-center gap-6">
+            <div className="flex-1">
+              <div className="relative h-px w-full bg-[var(--pale-oak)]/15">
+                <div
+                  ref={fillRef}
+                  className="absolute inset-0 h-px origin-left bg-gradient-to-r from-[var(--burnt-rose)] via-[var(--bronze)] to-[var(--pale-oak)]"
+                  style={{ transform: "scaleX(0)" }}
+                />
+                {/* Pips */}
+                <div className="absolute inset-0 flex items-center justify-between">
+                  {steps.map((s, i) => (
+                    <motion.div
+                      key={s.n}
+                      animate={{
+                        scale: i <= active ? 1.15 : 0.9,
+                        backgroundColor:
+                          i < active
+                            ? "var(--bronze)"
+                            : i === active
+                              ? "var(--pale-oak)"
+                              : "var(--dusty-taupe)",
+                        boxShadow:
+                          i === active
+                            ? "0 0 0 6px color-mix(in oklab, var(--bronze) 25%, transparent)"
+                            : "0 0 0 0px transparent",
+                      }}
+                      transition={{ duration: 0.5, ease: EASE }}
+                      className="h-2 w-2 rounded-full"
+                    />
+                  ))}
+                </div>
+              </div>
+              <div className="mt-3 flex justify-between font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--pale-oak)]/45">
+                {steps.map((s) => (
+                  <span key={s.n}>{s.n}</span>
+                ))}
+              </div>
+            </div>
+            <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--pale-oak)]/60">
+              {String(active + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
