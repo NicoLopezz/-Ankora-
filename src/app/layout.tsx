@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter_Tight, Geist_Mono, Geist } from "next/font/google";
+import { Fraunces, Inter_Tight, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SmoothScroll } from "@/components/effects/SmoothScroll";
 import { CustomCursor } from "@/components/effects/CustomCursor";
@@ -7,9 +7,6 @@ import { NoiseOverlay } from "@/components/effects/NoiseOverlay";
 import { ScrollProgress } from "@/components/effects/ScrollProgress";
 import { StickyCTA } from "@/components/ui/StickyCTA";
 import { Nav } from "@/components/layout/Nav";
-import { cn } from "@/lib/utils";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -41,7 +38,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={cn("antialiased", fraunces.variable, interTight.variable, geistMono.variable, "font-sans", geist.variable)}
+      className={`${fraunces.variable} ${interTight.variable} ${geistMono.variable} antialiased`}
     >
       <body className="relative min-h-screen bg-[var(--background)] text-[var(--foreground)]">
         <SmoothScroll>

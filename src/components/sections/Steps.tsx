@@ -4,37 +4,75 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AnimatePresence, motion } from "motion/react";
-import { UserRound, Search, Wallet, TrendingUp, Check } from "lucide-react";
+import { UserIcon, type UserIconHandle } from "@/components/ui/user";
+import { CursorClickIcon, type CursorClickIconHandle } from "@/components/ui/cursor-click";
+import { DollarSignIcon, type DollarSignIconHandle } from "@/components/ui/dollar-sign";
+import { TrendingUpIcon, type TrendingUpIconHandle } from "@/components/ui/trending-up";
+import { CheckIcon, type CheckIconHandle } from "@/components/ui/check";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+type IconHandle =
+  | UserIconHandle
+  | CursorClickIconHandle
+  | DollarSignIconHandle
+  | TrendingUpIconHandle
+  | CheckIconHandle;
+
+/** Wrapper que dispara startAnimation al montar (y re-dispara cada N ms si querés loop sutil). */
+function AutoIcon({
+  Icon,
+  size = 56,
+  loopMs,
+}: {
+  Icon: React.ForwardRefExoticComponent<
+    { size?: number } & React.RefAttributes<IconHandle>
+  >;
+  size?: number;
+  loopMs?: number;
+}) {
+  const ref = useRef<IconHandle | null>(null);
+
+  useEffect(() => {
+    const t0 = setTimeout(() => ref.current?.startAnimation(), 80);
+    if (!loopMs) return () => clearTimeout(t0);
+    const iv = setInterval(() => ref.current?.startAnimation(), loopMs);
+    return () => {
+      clearTimeout(t0);
+      clearInterval(iv);
+    };
+  }, [loopMs]);
+
+  return <Icon ref={ref} size={size} />;
+}
+
 const steps = [
   {
     n: "01",
-    icon: UserRound,
+    Icon: UserIcon,
     kicker: "Onboarding",
     title: "Creá tu cuenta",
     body: "Verificación en minutos. KYC digital, firma biométrica y listo para operar.",
   },
   {
     n: "02",
-    icon: Search,
+    Icon: CursorClickIcon,
     kicker: "Descubrimiento",
     title: "Elegí un proyecto",
     body: "Oportunidades curadas: inmobiliario, agro, infraestructura. Toda la due diligence, pública.",
   },
   {
     n: "03",
-    icon: Wallet,
+    Icon: DollarSignIcon,
     kicker: "Inversión",
     title: "Invertí desde bajo monto",
     body: "Comprá tokens fraccionales. Desde USD 100, sin comisiones ocultas.",
   },
   {
     n: "04",
-    icon: TrendingUp,
+    Icon: TrendingUpIcon,
     kicker: "Rendimiento",
     title: "Seguí en tiempo real",
     body: "Dashboard en vivo. Flujos, liquidez secundaria y reportes trimestrales.",
@@ -62,6 +100,17 @@ export function Steps() {
         pin: stageRef.current!,
         pinSpacing: false,
         scrub: 0.5,
+        snap: {
+          snapTo: (value) => {
+            const seg = 1 / steps.length;
+            return Math.min(1, Math.round(value / seg) * seg);
+          },
+          duration: 0.5,
+          delay: 0.05,
+          ease: "power2.inOut",
+          inertia: false,
+          directional: false,
+        },
         onUpdate: (self) => {
           const p = self.progress;
           setProgress(p);
@@ -78,12 +127,8 @@ export function Steps() {
     return () => ctx.revert();
   }, []);
 
-  const StepIcon = steps[active].icon;
+  const ActiveIcon = steps[active].Icon;
   const isLast = active === steps.length - 1 && progress > 0.92;
-  // progreso local dentro del paso activo (0→1)
-  const localP = Math.min(1, Math.max(0, progress * steps.length - active));
-  // rotación sutil del icono: -12deg → +12deg según avance intra-paso
-  const iconRotate = -12 + localP * 24;
 
   return (
     <section
@@ -96,7 +141,6 @@ export function Steps() {
         ref={stageRef}
         className="relative flex h-screen w-full flex-col items-center justify-center overflow-hidden px-6"
       >
-        {/* Gradiente de fondo dinámico que cambia con el paso */}
         <motion.div
           aria-hidden
           className="absolute inset-0 -z-10"
@@ -111,7 +155,6 @@ export function Steps() {
           transition={{ duration: 1.2, ease: EASE }}
         />
 
-        {/* Halo radiante final */}
         <AnimatePresence>
           {isLast && (
             <motion.div
@@ -132,7 +175,6 @@ export function Steps() {
         </AnimatePresence>
 
         <div className="mx-auto w-full max-w-7xl">
-          {/* Header */}
           <div className="mb-14 flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
             <div>
               <p className="mb-4 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--pale-oak)]/60">
@@ -148,9 +190,7 @@ export function Steps() {
             </p>
           </div>
 
-          {/* Stage principal */}
           <div className="relative grid grid-cols-12 items-center gap-8">
-            {/* Columna izquierda: número gigante */}
             <div className="col-span-12 md:col-span-5">
               <div className="relative h-[240px] md:h-[380px]">
                 <AnimatePresence mode="wait">
@@ -174,27 +214,29 @@ export function Steps() {
                   </motion.div>
                 </AnimatePresence>
 
-                {/* Icono flotante con draw-in + rotación intra-paso */}
+                {/* Icono animado — cambia y se dispara en cada paso */}
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={`icon-${active}`}
                     initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1, rotate: iconRotate }}
+                    animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.5 }}
                     transition={{
-                      opacity: { duration: 0.6, ease: EASE },
-                      scale: { duration: 0.8, ease: EASE },
-                      rotate: { duration: 0.15, ease: "linear" },
+                      opacity: { duration: 0.5, ease: EASE },
+                      scale: { duration: 0.7, ease: EASE },
                     }}
-                    className="icon-draw absolute bottom-6 right-6 flex h-20 w-20 items-center justify-center rounded-full border border-[var(--bronze)]/60 bg-[var(--surface)]/60 text-[var(--bronze)] backdrop-blur-md md:bottom-10 md:right-10 md:h-28 md:w-28"
+                    className="absolute bottom-6 right-6 flex h-20 w-20 items-center justify-center rounded-full border border-[var(--bronze)]/60 bg-[var(--surface)]/60 text-[var(--bronze)] backdrop-blur-md md:bottom-10 md:right-10 md:h-28 md:w-28"
                   >
-                    {isLast ? <Check className="h-10 w-10 md:h-12 md:w-12" /> : <StepIcon className="h-8 w-8 md:h-10 md:w-10" />}
+                    {isLast ? (
+                      <AutoIcon Icon={CheckIcon as never} size={44} />
+                    ) : (
+                      <AutoIcon Icon={ActiveIcon as never} size={44} loopMs={3200} />
+                    )}
                   </motion.div>
                 </AnimatePresence>
               </div>
             </div>
 
-            {/* Columna derecha: copy */}
             <div className="col-span-12 md:col-span-7">
               <AnimatePresence mode="wait">
                 <motion.div
@@ -219,7 +261,6 @@ export function Steps() {
             </div>
           </div>
 
-          {/* Tracker inferior con línea progresiva */}
           <div className="mt-16 flex items-center gap-6">
             <div className="flex-1">
               <div className="relative h-px w-full bg-[var(--pale-oak)]/15">
@@ -228,7 +269,6 @@ export function Steps() {
                   className="absolute inset-0 h-px origin-left bg-gradient-to-r from-[var(--burnt-rose)] via-[var(--bronze)] to-[var(--pale-oak)]"
                   style={{ transform: "scaleX(0)" }}
                 />
-                {/* Pips */}
                 <div className="absolute inset-0 flex items-center justify-between">
                   {steps.map((s, i) => (
                     <motion.div

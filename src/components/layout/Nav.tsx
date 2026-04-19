@@ -13,10 +13,12 @@ const items = [
 export function Nav() {
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useMotionValueEvent(scrollY, "change", (y) => {
     const prev = scrollY.getPrevious() ?? 0;
     const delta = y - prev;
+    setScrolled(y > 80);
     if (y < 80) {
       setHidden(false);
       return;
@@ -32,7 +34,22 @@ export function Nav() {
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       className="fixed inset-x-0 top-4 z-[80] flex justify-center px-4"
     >
-      <nav className="glass-card flex w-full max-w-5xl items-center justify-between gap-4 px-5 py-3">
+      <nav
+        className="flex w-full max-w-5xl items-center justify-between gap-4 rounded-[var(--radius-lg)] border px-5 py-3 transition-[background-color,border-color,box-shadow] duration-500 ease-out"
+        style={{
+          backgroundColor: scrolled
+            ? "color-mix(in oklab, var(--night-bordeaux) 88%, transparent)"
+            : "color-mix(in oklab, var(--pale-oak) 6%, transparent)",
+          borderColor: scrolled
+            ? "color-mix(in oklab, var(--pale-oak) 18%, transparent)"
+            : "color-mix(in oklab, var(--pale-oak) 12%, transparent)",
+          backdropFilter: "blur(20px) saturate(140%)",
+          WebkitBackdropFilter: "blur(20px) saturate(140%)",
+          boxShadow: scrolled
+            ? "0 20px 40px -20px color-mix(in oklab, var(--night-bordeaux) 80%, transparent)"
+            : "none",
+        }}
+      >
         <a href="#top" className="flex items-center gap-2" data-cursor="hover">
           <span className="font-display text-xl tracking-tight text-[var(--pale-oak)]">
             Ark<span className="text-[var(--bronze)]">ara</span>
