@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 
@@ -12,19 +12,30 @@ const items = [
 
 export function Nav() {
   const { scrollY } = useScroll();
-  const [hidden, setHidden] = useState(false);
+  const [hidden, setHidden] = useState(true);
   const [scrolled, setScrolled] = useState(false);
+  const lastYRef = useRef(0);
 
   useMotionValueEvent(scrollY, "change", (y) => {
-    const prev = scrollY.getPrevious() ?? 0;
-    const delta = y - prev;
     setScrolled(y > 80);
-    if (y < 80) {
+
+    const introEnd =
+      typeof window !== "undefined" ? window.innerHeight * 1.55 : 0;
+    const last = lastYRef.current;
+    const dy = y - last;
+
+    // Durante el intro del hero, siempre oculto
+    if (y < introEnd) {
+      setHidden(true);
+    } else if (dy > 4) {
+      // scrolling down → hide
+      setHidden(true);
+    } else if (dy < -4) {
+      // scrolling up → show
       setHidden(false);
-      return;
     }
-    if (delta > 6) setHidden(true);
-    else if (delta < -6) setHidden(false);
+
+    lastYRef.current = y;
   });
 
   return (

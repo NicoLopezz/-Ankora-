@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter_Tight, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SmoothScroll } from "@/components/effects/SmoothScroll";
@@ -6,6 +6,7 @@ import { CustomCursor } from "@/components/effects/CustomCursor";
 import { NoiseOverlay } from "@/components/effects/NoiseOverlay";
 import { ScrollProgress } from "@/components/effects/ScrollProgress";
 import { StickyCTA } from "@/components/ui/StickyCTA";
+import { HeroSeal } from "@/components/ui/HeroSeal";
 import { Nav } from "@/components/layout/Nav";
 
 const fraunces = Fraunces({
@@ -32,6 +33,11 @@ export const metadata: Metadata = {
     "Invertí en proyectos reales en cuatro pasos. Inmobiliario, agro e infraestructura tokenizados.",
 };
 
+export const viewport: Viewport = {
+  themeColor: "#5e0b15",
+  colorScheme: "dark",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -49,6 +55,7 @@ export default function RootLayout({
         </SmoothScroll>
         <NoiseOverlay />
         <CustomCursor />
+        <HeroSeal />
       </body>
     </html>
   );

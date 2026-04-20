@@ -9,6 +9,9 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+let lenisInstance: Lenis | null = null;
+export const getLenis = () => lenisInstance;
+
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
 
@@ -24,6 +27,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       wheelMultiplier: 1,
     });
     lenisRef.current = lenis;
+    lenisInstance = lenis;
 
     // Puente: cada scroll de Lenis → ScrollTrigger.update.
     // Sin esto, ScrollTrigger no "ve" el movimiento suavizado y snap se desincroniza.
@@ -39,6 +43,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       lenis.off("scroll", ScrollTrigger.update);
       lenis.destroy();
       lenisRef.current = null;
+      lenisInstance = null;
     };
   }, []);
 

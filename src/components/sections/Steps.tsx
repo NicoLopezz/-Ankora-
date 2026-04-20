@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AnimatePresence, motion } from "motion/react";
+import { getLenis } from "@/components/effects/SmoothScroll";
 import { UserIcon, type UserIconHandle } from "@/components/ui/user";
 import { CursorClickIcon, type CursorClickIconHandle } from "@/components/ui/cursor-click";
 import { DollarSignIcon, type DollarSignIconHandle } from "@/components/ui/dollar-sign";
@@ -92,39 +93,175 @@ export function Steps() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced || !wrapRef.current || !stageRef.current) return;
 
+    const total = steps.length;
+    let idx = 0;
+    let animating = false;
+    let inside = false;
+    let touchStartY = 0;
+    let touchAccum = 0;
+    let lastWheelT = 0;
+    let acceptedGesture = false; // true = ya consumí un step, exigir silencio antes del próximo
+    const QUIET_MS = 220; // silencio necesario para considerar "nuevo gesto"
+
+    const progressProxy = { p: 0 };
+    let progressTween: gsap.core.Tween | null = null;
+
+    const setP = (p: number) => {
+      progressProxy.p = p;
+      setProgress(p);
+      if (fillRef.current) fillRef.current.style.transform = `scaleX(${p})`;
+    };
+
+    const applyIdx = (i: number) => {
+      idx = i;
+      const p = total > 1 ? i / (total - 1) : 0;
+      setActive(i);
+      progressTween?.kill();
+      setP(p);
+    };
+
+    const tweenTo = (targetP: number, duration: number) => {
+      progressTween?.kill();
+      progressTween = gsap.to(progressProxy, {
+        p: targetP,
+        duration,
+        ease: "power2.inOut",
+        onUpdate: () => setP(progressProxy.p),
+      });
+    };
+
+    const sectionTopY = () => {
+      const rect = wrapRef.current!.getBoundingClientRect();
+      return window.scrollY + rect.top;
+    };
+
+    const goTo = (next: number) => {
+      if (animating) return false;
+      if (next < 0 || next > total - 1) return false;
+      animating = true;
+      const duration = 0.9;
+      const targetP = total > 1 ? next / (total - 1) : 0;
+      idx = next;
+      setActive(next);
+      tweenTo(targetP, duration);
+      const y = sectionTopY() + next * window.innerHeight;
+      const lenis = getLenis();
+      const done = () => {
+        animating = false;
+      };
+      if (lenis) {
+        lenis.scrollTo(y, {
+          duration,
+          easing: (t: number) => {
+            // power2.inOut equivalente
+            return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+          },
+          lock: true,
+          onComplete: done,
+        });
+      } else {
+        window.scrollTo({ top: y, behavior: "smooth" });
+        window.setTimeout(done, duration * 1000);
+      }
+      return true;
+    };
+
+    const tryStep = (dir: number) => {
+      const next = idx + dir;
+      if (next < 0 || next > total - 1) return false; // dejar que el scroll natural salga de la sección
+      goTo(next);
+      return true;
+    };
+
+    const onWheel = (e: WheelEvent) => {
+      if (!inside) return;
+      const now = performance.now();
+      const dir = e.deltaY > 0 ? 1 : e.deltaY < 0 ? -1 : 0;
+      if (!dir) return;
+      // Si estamos en un extremo y el usuario scrollea hacia fuera, dejamos pasar
+      if ((idx === 0 && dir < 0) || (idx === total - 1 && dir > 0)) return;
+      e.preventDefault();
+      e.stopPropagation();
+
+      const quiet = now - lastWheelT > QUIET_MS;
+      lastWheelT = now;
+
+      if (animating) return;
+      // Si ya consumí un step, requiero un período de silencio (inercia trackpad termina) antes del próximo
+      if (acceptedGesture && !quiet) return;
+
+      acceptedGesture = true;
+      tryStep(dir);
+    };
+
+    const onTouchStart = (e: TouchEvent) => {
+      if (!inside) return;
+      touchStartY = e.touches[0].clientY;
+      touchAccum = 0;
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (!inside) return;
+      const y = e.touches[0].clientY;
+      const delta = touchStartY - y;
+      touchAccum = delta;
+      const dir = delta > 0 ? 1 : -1;
+      if ((idx === 0 && dir < 0) || (idx === total - 1 && dir > 0)) return;
+      e.preventDefault();
+      if (animating) return;
+      if (Math.abs(delta) < 45) return;
+      touchStartY = y;
+      tryStep(dir);
+    };
+
+    const onKey = (e: KeyboardEvent) => {
+      if (!inside || animating) return;
+      if (e.key === "ArrowDown" || e.key === "PageDown") {
+        if (tryStep(1)) e.preventDefault();
+      } else if (e.key === "ArrowUp" || e.key === "PageUp") {
+        if (tryStep(-1)) e.preventDefault();
+      }
+    };
+
+    window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("keydown", onKey);
+
     const ctx = gsap.context(() => {
-      const st = ScrollTrigger.create({
+      ScrollTrigger.create({
         trigger: wrapRef.current!,
         start: "top top",
         end: "bottom bottom",
         pin: stageRef.current!,
         pinSpacing: false,
-        scrub: 0.5,
-        snap: {
-          snapTo: (value) => {
-            const seg = 1 / steps.length;
-            return Math.min(1, Math.round(value / seg) * seg);
-          },
-          duration: 0.5,
-          delay: 0.05,
-          ease: "power2.inOut",
-          inertia: false,
-          directional: false,
+        onEnter: () => {
+          inside = true;
+          applyIdx(0);
         },
-        onUpdate: (self) => {
-          const p = self.progress;
-          setProgress(p);
-          const idx = Math.min(steps.length - 1, Math.floor(p * steps.length));
-          setActive(idx);
-          if (fillRef.current) {
-            fillRef.current.style.transform = `scaleX(${p})`;
-          }
+        onEnterBack: () => {
+          inside = true;
+          applyIdx(total - 1);
+        },
+        onLeave: () => {
+          inside = false;
+          acceptedGesture = false;
+          lastWheelT = 0;
+        },
+        onLeaveBack: () => {
+          inside = false;
+          acceptedGesture = false;
+          lastWheelT = 0;
         },
       });
-      return () => st.kill();
     }, wrapRef);
 
-    return () => ctx.revert();
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("keydown", onKey);
+      ctx.revert();
+    };
   }, []);
 
   const ActiveIcon = steps[active].Icon;
