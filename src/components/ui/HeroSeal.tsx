@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { GlobeCanvas } from "@/components/ui/GlobeCanvas";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -207,17 +208,24 @@ export function HeroSeal() {
           </svg>
         </div>
 
-        <svg viewBox={`0 0 ${size} ${size}`} className="absolute inset-0 h-full w-full">
+        {/* Aro interno como borde del globo */}
+        <svg viewBox={`0 0 ${size} ${size}`} className="pointer-events-none absolute inset-0 h-full w-full">
           <circle
             cx={cx}
             cy={cy}
             r={r - 14}
             fill="none"
-            className="stroke-[var(--bronze)]/30"
-            strokeWidth="3"
+            className="stroke-[var(--bronze)]/25"
+            strokeWidth="2"
           />
-          <circle cx={cx} cy={cy} r="8" className="fill-[var(--bronze)]" />
         </svg>
+
+        {/* Globo dentro del seal — no rota con el texto (está fuera del spinnerRef) */}
+        <GlobeCanvas
+          pointCount={1400}
+          density={0.82}
+          className="absolute left-1/2 top-1/2 aspect-square w-[72%] -translate-x-1/2 -translate-y-1/2"
+        />
       </div>
     </div>
   );
