@@ -34,13 +34,16 @@ export function CustomCursor() {
     const onDown = () => ring.classList.add("is-active");
     const onUp = () => ring.classList.remove("is-active");
 
+    let lastHoverEl: Element | null = null;
+    let isHover = false;
     const onOver = (e: MouseEvent) => {
       const t = e.target as HTMLElement | null;
-      if (t?.closest("a, button, [data-cursor='hover']")) {
-        ring.classList.add("is-hover");
-      } else {
-        ring.classList.remove("is-hover");
-      }
+      if (t === lastHoverEl) return; // mismo target, skip query
+      lastHoverEl = t;
+      const nextHover = !!t?.closest("a, button, [data-cursor='hover']");
+      if (nextHover === isHover) return; // estado no cambió
+      isHover = nextHover;
+      ring.classList.toggle("is-hover", nextHover);
     };
 
     const tick = () => {

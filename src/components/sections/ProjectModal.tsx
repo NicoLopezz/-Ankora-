@@ -47,6 +47,7 @@ export function ProjectModal({ project, onClose }: Props) {
     };
   }, [onClose]);
 
+
   return (
     <motion.div
       key="modal"
@@ -60,12 +61,15 @@ export function ProjectModal({ project, onClose }: Props) {
         aria-label="Cerrar"
         onClick={onClose}
         variants={{
-          hidden: { opacity: 0, backdropFilter: "blur(0px)" },
-          show: { opacity: 1, backdropFilter: "blur(18px)" },
+          hidden: { opacity: 0 },
+          show: { opacity: 1 },
         }}
         transition={{ duration: 0.5, ease: EASE }}
         className="absolute inset-0 bg-black/55 cursor-zoom-out"
-        style={{ WebkitBackdropFilter: "blur(18px)" }}
+        style={{
+          backdropFilter: "blur(18px)",
+          WebkitBackdropFilter: "blur(18px)",
+        }}
       />
 
       {/* Modal shell */}
@@ -107,9 +111,8 @@ export function ProjectModal({ project, onClose }: Props) {
                 src={project.mediaSrc}
                 alt={project.mediaAlt ?? project.name}
                 fill
-                sizes="100vw"
+                sizes="(max-width: 1200px) 100vw, 1200px"
                 className="object-cover"
-                priority
               />
             )}
             <div
@@ -325,7 +328,6 @@ function GalleryStrip({ gallery }: { gallery: NonNullable<ProjectDetail["gallery
                   fill
                   sizes="90vw"
                   className="object-cover"
-                  priority
                 />
               </div>
               {current.caption && (

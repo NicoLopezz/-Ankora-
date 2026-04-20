@@ -6,7 +6,13 @@ import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from
 import { ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ProjectModal, type ProjectDetail } from "./ProjectModal";
+import dynamic from "next/dynamic";
+import type { ProjectDetail } from "./ProjectModal";
+
+const ProjectModal = dynamic(
+  () => import("./ProjectModal").then((m) => m.ProjectModal),
+  { ssr: false },
+);
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -135,7 +141,7 @@ const projects: Project[] = [
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-function PanelMedia({ media, isActive }: { media: Media; isActive: boolean }) {
+function PanelMedia({ media, isActive, eager }: { media: Media; isActive: boolean; eager?: boolean }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   // video: solo reproduce cuando el panel está activo (ahorra CPU)
@@ -155,9 +161,10 @@ function PanelMedia({ media, isActive }: { media: Media; isActive: boolean }) {
         src={media.src}
         alt={media.alt}
         fill
-        sizes="(max-width: 768px) 100vw, 55vw"
+        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 55vw, 800px"
         className="object-cover"
-        priority={false}
+        priority={eager}
+        loading={eager ? undefined : "lazy"}
       />
     );
   }
@@ -231,7 +238,7 @@ function Panel({
       animate={isMobile ? {} : { flexGrow: isActive ? 4 : 1 }}
       transition={{ duration: 0.9, ease: EASE }}
       className="group relative flex min-h-[520px] w-full cursor-pointer overflow-hidden rounded-[24px] border border-[var(--pale-oak)]/10 bg-[var(--surface)] isolate outline-none focus-visible:ring-2 focus-visible:ring-[var(--bronze)] md:min-h-0 md:rounded-[28px]"
-      style={isMobile ? undefined : { flexBasis: 0, willChange: "transform, opacity, filter, clip-path" }}
+      style={isMobile ? undefined : { flexBasis: 0 }}
     >
       {/* Media (image o video) con parallax */}
       <motion.div
@@ -243,7 +250,7 @@ function Panel({
           scale,
         }}
       >
-        <PanelMedia media={p.media} isActive={isActive} />
+        <PanelMedia media={p.media} isActive={isActive} eager={index === 0} />
       </motion.div>
 
       {/* Overlay oscuro — z:1 */}
@@ -576,7 +583,7 @@ export function Projects() {
         <h2
           ref={headingRef}
           className="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-light leading-[0.95] tracking-[-0.02em] text-[var(--pale-oak)]"
-          style={{ willChange: "transform, opacity, filter" }}
+          style={{ willChange: "transform", textShadow: "0 2px 24px rgba(0,0,0,0.45), 0 1px 2px rgba(0,0,0,0.35)" }}
         >
           <span data-word className="inline-block">Activos</span>{" "}
           <span data-word className="inline-block italic text-[var(--bronze)]">tangibles,</span>
@@ -619,7 +626,7 @@ export function Projects() {
   // Versión mobile / reduced-motion: layout original, sin pin ni scrub
   if (!isDesktop) {
     return (
-      <section id="proyectos" className="relative mx-auto w-full max-w-[1600px] px-6 py-32 md:py-48">
+      <section id="proyectos" className="relative mx-auto w-full max-w-[1600px] scroll-mt-28 px-6 py-32 md:py-48">
         <div className="mb-14">{header}</div>
         {grid}
         <AnimatePresence>
@@ -633,7 +640,7 @@ export function Projects() {
     <section
       id="proyectos"
       ref={wrapRef}
-      className="relative w-full"
+      className="relative w-full scroll-mt-28"
       style={{ height: "320vh" }}
     >
       <div

@@ -2,11 +2,18 @@
 
 import { useEffect, useId, useRef } from "react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const SEAL_TEXT = "ARKARA  •  TOKENIZACIÓN  •  ACTIVOS REALES  •  ";
-// DOM "nativo" grande — escalamos DOWN a 150px para máxima nitidez.
+// DOM "nativo" grande — en el estado minimizado se posiciona con centro en la esquina
+// inferior derecha del viewport: sólo se ve el cuadrante superior-izquierdo (~1/4 del círculo).
 const SEAL_BIG_PX = 620;
-const SEAL_SMALL_PX = 150;
+// Tamaño visible cuando está minimizado (el doble de lo que quedará visible como "gajo").
+const SEAL_SMALL_PX = 360;
 
 const u = (v: number) => Math.max(0, Math.min(1, v));
 const map = ([a, b]: readonly [number, number], p: number) => u((p - a) / (b - a));
@@ -31,27 +38,39 @@ export function HeroSeal() {
     if (!seal || !spinner || !floatEl) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
     const smallScale = SEAL_SMALL_PX / SEAL_BIG_PX;
 
-    if (reduced) {
-      gsap.set(seal, { x: 0, y: 0, scale: smallScale });
-      return;
-    }
+    // El seal está oculto por CSS en mobile (`hidden md:block`): evitamos rAF + listeners.
+    if (isMobile) return;
 
     let initialX = 0;
     let initialY = 0;
+    let targetX = 0;
+    let targetY = 0;
     let pinDistance = window.innerHeight * 2.2;
     const recompute = () => {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      const margin = vw >= 1024 ? 48 : 32;
-      const cornerCX = vw - margin - SEAL_BIG_PX / 2;
-      const cornerCY = vh - margin - SEAL_BIG_PX / 2;
-      initialX = vw / 2 - cornerCX;
-      initialY = vh / 2 - cornerCY;
+      // Wrapper está pegado a bottom-0/right-0 (ver JSX). Su centro natural está en
+      // (vw - SEAL_BIG_PX/2, vh - SEAL_BIG_PX/2).
+      const wrapperCX = vw - SEAL_BIG_PX / 2;
+      const wrapperCY = vh - SEAL_BIG_PX / 2;
+      // Estado inicial: centrado en el viewport → translate = (vw/2 - wrapperCX, vh/2 - wrapperCY)
+      initialX = vw / 2 - wrapperCX;
+      initialY = vh / 2 - wrapperCY;
+      // Estado final: centro del sello exactamente en la esquina (vw, vh) → translate = (vw - wrapperCX, vh - wrapperCY) = (halfSize, halfSize)
+      targetX = SEAL_BIG_PX / 2;
+      targetY = SEAL_BIG_PX / 2;
       pinDistance = vh * 2.2;
     };
     recompute();
+
+    if (reduced) {
+      gsap.set(seal, { x: targetX, y: targetY, scale: smallScale, transformOrigin: "50% 50%" });
+      gsap.set(floatEl, { opacity: 1 });
+      return;
+    }
 
     gsap.set(seal, {
       x: initialX,
@@ -87,8 +106,8 @@ export function HeroSeal() {
       current += (target - current) * 0.12;
       const sp = easeOut(map(SEAL_TRAVEL, current));
       gsap.set(seal, {
-        x: initialX * (1 - sp),
-        y: initialY * (1 - sp),
+        x: initialX * (1 - sp) + targetX * sp,
+        y: initialY * (1 - sp) + targetY * sp,
         scale: 1 + sp * (smallScale - 1),
       });
       spin.timeScale(1 + sp * 2.5);
@@ -115,12 +134,34 @@ export function HeroSeal() {
     // init
     onScroll();
 
+    // Atenuación contextual: en secciones densas de contenido (ej. Activos/Proyectos)
+    // el sello baja opacidad para no pisar imágenes y texto. Fade con GSAP para no saltar.
+    const dimSections = Array.from(
+      document.querySelectorAll<HTMLElement>("#proyectos, #pasos, #contacto"),
+    );
+    const dimTriggers = dimSections.map((el) =>
+      ScrollTrigger.create({
+        trigger: el,
+        start: "top 75%",
+        end: "bottom 25%",
+        onToggle: (self) => {
+          gsap.to(floatEl, {
+            opacity: self.isActive ? 0.22 : 1,
+            duration: 0.6,
+            ease: "power2.out",
+            overwrite: "auto",
+          });
+        },
+      }),
+    );
+
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
       cancelAnimationFrame(rafId);
       spin.kill();
       float.kill();
+      dimTriggers.forEach((t) => t.kill());
     };
   }, []);
 
@@ -128,7 +169,7 @@ export function HeroSeal() {
     <div
       ref={floatRef}
       aria-hidden
-      className="pointer-events-none fixed bottom-8 right-8 z-[60] hidden md:block lg:bottom-12 lg:right-12"
+      className="pointer-events-none fixed bottom-0 right-0 z-[60] hidden overflow-visible md:block"
       style={{
         width: SEAL_BIG_PX,
         height: SEAL_BIG_PX,
@@ -160,7 +201,7 @@ export function HeroSeal() {
               }}
             >
               <textPath href={`#hero-seal-${pathId}`} startOffset="0">
-                {SEAL_TEXT.repeat(2)}
+                {SEAL_TEXT}
               </textPath>
             </text>
           </svg>

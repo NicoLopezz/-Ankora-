@@ -2,29 +2,31 @@ import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter_Tight, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SmoothScroll } from "@/components/effects/SmoothScroll";
-import { CustomCursor } from "@/components/effects/CustomCursor";
 import { NoiseOverlay } from "@/components/effects/NoiseOverlay";
 import { ScrollProgress } from "@/components/effects/ScrollProgress";
-import { StickyCTA } from "@/components/ui/StickyCTA";
-import { HeroSeal } from "@/components/ui/HeroSeal";
+import { ClientChrome } from "@/components/effects/ClientChrome";
 import { Nav } from "@/components/layout/Nav";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
   subsets: ["latin"],
   display: "swap",
+  weight: ["300", "400"],
+  style: ["normal", "italic"],
 });
 
 const interTight = Inter_Tight({
   variable: "--font-inter-tight",
   subsets: ["latin"],
   display: "swap",
+  weight: ["400", "500"],
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
   display: "swap",
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
@@ -51,11 +53,9 @@ export default function RootLayout({
           <Nav />
           <ScrollProgress />
           {children}
-          <StickyCTA />
         </SmoothScroll>
         <NoiseOverlay />
-        <CustomCursor />
-        <HeroSeal />
+        <ClientChrome />
       </body>
     </html>
   );

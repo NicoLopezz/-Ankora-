@@ -94,150 +94,53 @@ export function Steps() {
     if (reduced || !wrapRef.current || !stageRef.current) return;
 
     const total = steps.length;
-    let idx = 0;
-    let animating = false;
-    let inside = false;
-    let touchStartY = 0;
-    let touchAccum = 0;
-    let lastWheelT = 0;
-    let acceptedGesture = false; // true = ya consumí un step, exigir silencio antes del próximo
-    const QUIET_MS = 220; // silencio necesario para considerar "nuevo gesto"
+    let lastIdx = -1;
+    let hasCompleted = false; // true una vez que el user pasó por los 4 estados al menos una vez
 
-    const progressProxy = { p: 0 };
-    let progressTween: gsap.core.Tween | null = null;
+    // Progreso visual "queued": al bajar, sigue al scroll pero no puede adelantarse más de
+    // STEP_SPEED por frame — garantiza que se vean los 4 estados aunque el scroll fulmine
+    // la sección. Una vez completado el primer traversal, subir (o moverse) queda libre.
+    let visualP = 0;
+    let targetP = 0;
+    let rafId: number | null = null;
+    const STEP_SPEED = 1 / 35; // fracción del progreso total avanzada por frame
 
     const setP = (p: number) => {
-      progressProxy.p = p;
-      setProgress(p);
       if (fillRef.current) fillRef.current.style.transform = `scaleX(${p})`;
-    };
-
-    const applyIdx = (i: number) => {
-      idx = i;
-      const p = total > 1 ? i / (total - 1) : 0;
-      setActive(i);
-      progressTween?.kill();
-      setP(p);
-    };
-
-    const tweenTo = (targetP: number, duration: number) => {
-      progressTween?.kill();
-      progressTween = gsap.to(progressProxy, {
-        p: targetP,
-        duration,
-        ease: "power2.inOut",
-        onUpdate: () => setP(progressProxy.p),
-      });
-    };
-
-    const sectionTopY = () => {
-      const rect = wrapRef.current!.getBoundingClientRect();
-      return window.scrollY + rect.top;
-    };
-
-    const goTo = (next: number) => {
-      if (animating) return false;
-      if (next < 0 || next > total - 1) return false;
-      animating = true;
-      const duration = 0.9;
-      const targetP = total > 1 ? next / (total - 1) : 0;
-      idx = next;
-      setActive(next);
-      tweenTo(targetP, duration);
-      const y = sectionTopY() + next * window.innerHeight;
-      const lenis = getLenis();
-      const done = () => {
-        animating = false;
-        // dejamos ventana de silencio: exigimos QUIET_MS sin wheels antes del próximo step.
-        // si el usuario todavía está empujando delta, lenis sigue stopped hasta que se calme.
-      };
-      if (lenis) {
-        // hard-lock: frenamos por completo el scroll suavizado para que deltas acumulados
-        // del usuario no empujen más allá del pin cuando termine el tween.
-        lenis.stop();
-        lenis.scrollTo(y, {
-          duration,
-          easing: (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2),
-          lock: true,
-          force: true,
-          onComplete: () => {
-            lenis.start();
-            done();
-          },
-        });
-      } else {
-        window.scrollTo({ top: y, behavior: "smooth" });
-        window.setTimeout(done, duration * 1000);
+      setProgress(p);
+      const i = Math.min(total - 1, Math.round(p * (total - 1)));
+      if (i !== lastIdx) {
+        lastIdx = i;
+        setActive(i);
       }
-      return true;
+      if (!hasCompleted && p >= 0.999) hasCompleted = true;
     };
 
-    const tryStep = (dir: number) => {
-      const next = idx + dir;
-      if (next < 0 || next > total - 1) return false; // dejar que el scroll natural salga de la sección
-      goTo(next);
-      return true;
-    };
-
-    const onWheel = (e: WheelEvent) => {
-      if (!inside) return;
-      const now = performance.now();
-      const dir = e.deltaY > 0 ? 1 : e.deltaY < 0 ? -1 : 0;
-      if (!dir) return;
-      // Si estamos en un extremo y el usuario scrollea hacia fuera, dejamos pasar
-      if ((idx === 0 && dir < 0) || (idx === total - 1 && dir > 0)) return;
-      e.preventDefault();
-      e.stopPropagation();
-
-      // mientras animamos, también frenamos lenis por si sigue procesando delta interno
-      if (animating) {
-        getLenis()?.stop();
-        lastWheelT = now;
+    const tick = () => {
+      const diff = targetP - visualP;
+      if (Math.abs(diff) < 0.0005) {
+        visualP = targetP;
+        setP(visualP);
+        rafId = null;
         return;
       }
-
-      const quiet = now - lastWheelT > QUIET_MS;
-      lastWheelT = now;
-
-      // Si ya consumí un step, requiero un período de silencio (inercia trackpad termina) antes del próximo
-      if (acceptedGesture && !quiet) return;
-
-      acceptedGesture = true;
-      tryStep(dir);
-    };
-
-    const onTouchStart = (e: TouchEvent) => {
-      if (!inside) return;
-      touchStartY = e.touches[0].clientY;
-      touchAccum = 0;
-    };
-    const onTouchMove = (e: TouchEvent) => {
-      if (!inside) return;
-      const y = e.touches[0].clientY;
-      const delta = touchStartY - y;
-      touchAccum = delta;
-      const dir = delta > 0 ? 1 : -1;
-      if ((idx === 0 && dir < 0) || (idx === total - 1 && dir > 0)) return;
-      e.preventDefault();
-      if (animating) return;
-      if (Math.abs(delta) < 45) return;
-      touchStartY = y;
-      tryStep(dir);
-    };
-
-    const onKey = (e: KeyboardEvent) => {
-      if (!inside || animating) return;
-      if (e.key === "ArrowDown" || e.key === "PageDown") {
-        if (tryStep(1)) e.preventDefault();
-      } else if (e.key === "ArrowUp" || e.key === "PageUp") {
-        if (tryStep(-1)) e.preventDefault();
+      const dir = Math.sign(diff);
+      // Cap solo mientras no se completó el primer descenso Y el usuario avanza (dir > 0).
+      // Al subir o después de completar, libre.
+      const capped = !hasCompleted && dir > 0;
+      const advance = capped ? Math.min(Math.abs(diff), STEP_SPEED) : Math.abs(diff);
+      visualP += dir * advance;
+      setP(visualP);
+      if (capped && Math.abs(targetP - visualP) > 0.0005) {
+        rafId = requestAnimationFrame(tick);
+      } else {
+        rafId = null;
       }
     };
 
-    window.addEventListener("wheel", onWheel, { passive: false });
-    window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchmove", onTouchMove, { passive: false });
-    window.addEventListener("keydown", onKey);
+    const kickRaf = () => {
+      if (rafId == null) rafId = requestAnimationFrame(tick);
+    };
 
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
@@ -246,35 +149,24 @@ export function Steps() {
         end: "bottom bottom",
         pin: stageRef.current!,
         pinSpacing: false,
-        onEnter: () => {
-          inside = true;
-          applyIdx(0);
-        },
-        onEnterBack: () => {
-          inside = true;
-          applyIdx(total - 1);
+        scrub: false,
+        onUpdate: (self) => {
+          targetP = self.progress;
+          kickRaf();
         },
         onLeave: () => {
-          inside = false;
-          acceptedGesture = false;
-          lastWheelT = 0;
-          // si salimos por abajo, garantizamos que el último step quede visualmente "completado"
-          applyIdx(total - 1);
+          targetP = 1;
+          kickRaf();
         },
         onLeaveBack: () => {
-          inside = false;
-          acceptedGesture = false;
-          lastWheelT = 0;
-          applyIdx(0);
+          targetP = 0;
+          kickRaf();
         },
       });
     }, wrapRef);
 
     return () => {
-      window.removeEventListener("wheel", onWheel);
-      window.removeEventListener("touchstart", onTouchStart);
-      window.removeEventListener("touchmove", onTouchMove);
-      window.removeEventListener("keydown", onKey);
+      if (rafId != null) cancelAnimationFrame(rafId);
       ctx.revert();
     };
   }, []);
@@ -286,7 +178,7 @@ export function Steps() {
     <section
       id="pasos"
       ref={wrapRef}
-      className="relative w-full"
+      className="relative w-full scroll-mt-28"
       style={{ height: `${steps.length * 100}vh` }}
     >
       <div
@@ -333,7 +225,10 @@ export function Steps() {
                 <span className="inline-block h-px w-10 bg-[var(--bronze)]" />
                 Cómo funciona
               </p>
-              <h2 className="font-display text-[clamp(2rem,4.5vw,4rem)] font-light leading-[0.95] tracking-[-0.02em] text-[var(--pale-oak)]">
+              <h2
+                className="font-display text-[clamp(2rem,4.5vw,4rem)] font-light leading-[0.95] tracking-[-0.02em] text-[var(--pale-oak)]"
+                style={{ textShadow: "0 2px 24px rgba(0,0,0,0.45), 0 1px 2px rgba(0,0,0,0.35)" }}
+              >
                 Cuatro pasos. <span className="italic text-[var(--bronze)]">Cero fricción.</span>
               </h2>
             </div>
@@ -348,9 +243,9 @@ export function Steps() {
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={active}
-                    initial={{ opacity: 0, y: 60, filter: "blur(12px)" }}
-                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                    exit={{ opacity: 0, y: -40, filter: "blur(12px)" }}
+                    initial={{ opacity: 0, y: 60 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -40 }}
                     transition={{ duration: 0.9, ease: EASE }}
                     className="absolute inset-0 flex items-center"
                   >
