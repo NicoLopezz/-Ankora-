@@ -38,6 +38,65 @@ function fibonacciSphere(n: number): [number, number, number][] {
   return pts;
 }
 
+// Polígonos simplificados de continentes en [lng, lat]. Precisión baja intencional:
+// buscamos silueta reconocible, no cartografía exacta.
+const LAND_POLYGONS: [number, number][][] = [
+  // Sudamérica
+  [[-81,-54],[-74,-52],[-67,-55],[-65,-40],[-60,-41],[-57,-35],[-53,-28],[-48,-25],[-40,-22],[-35,-10],[-42,-6],[-50,-1],[-58,4],[-62,8],[-70,11],[-75,9],[-79,6],[-81,0],[-81,-4],[-76,-6],[-72,-12],[-71,-22],[-73,-35],[-73,-46]],
+  // Norteamérica (incluye Centroamérica)
+  [[-168,66],[-155,72],[-140,70],[-125,70],[-95,72],[-80,73],[-60,82],[-45,75],[-55,62],[-62,55],[-70,48],[-70,43],[-75,40],[-76,37],[-81,32],[-85,30],[-90,29],[-97,26],[-99,22],[-97,18],[-93,17],[-87,15],[-83,9],[-79,9],[-82,13],[-96,16],[-106,22],[-114,29],[-122,36],[-125,42],[-124,48],[-132,54],[-140,58],[-152,60],[-165,54],[-168,62]],
+  // Groenlandia
+  [[-55,60],[-48,60],[-40,63],[-25,72],[-20,80],[-28,83],[-47,83],[-55,78],[-58,70],[-58,62]],
+  // Europa + Asia (Eurasia)
+  [[-10,36],[-5,42],[0,50],[-5,58],[6,62],[16,71],[30,71],[45,68],[60,72],[75,75],[100,77],[130,74],[145,72],[170,70],[180,66],[170,60],[158,52],[140,55],[135,43],[141,33],[130,33],[122,28],[117,22],[108,18],[104,10],[100,4],[103,1],[107,-2],[110,3],[118,6],[122,12],[121,18],[126,25],[132,32],[128,34],[115,38],[90,35],[75,30],[72,21],[68,23],[60,25],[56,25],[50,12],[44,12],[43,5],[42,-1],[40,-12],[45,-15],[43,2],[38,15],[33,27],[28,32],[20,32],[10,36],[2,37],[-8,36]],
+  // África
+  [[-17,22],[-15,12],[-10,4],[-5,5],[0,6],[5,4],[8,1],[12,-2],[14,-10],[13,-17],[14,-23],[18,-34],[22,-34],[28,-34],[33,-26],[35,-22],[40,-15],[42,-11],[51,-11],[51,-1],[42,11],[40,15],[37,19],[34,24],[28,30],[22,32],[14,32],[10,31],[2,30],[-5,28],[-12,25],[-16,22]],
+  // Australia
+  [[114,-22],[118,-20],[122,-17],[128,-15],[135,-12],[141,-12],[145,-14],[150,-18],[153,-25],[151,-32],[146,-37],[141,-38],[135,-35],[128,-33],[122,-32],[116,-32],[114,-26]],
+  // Antártida (anillo)
+  [[-180,-66],[-150,-70],[-120,-72],[-90,-72],[-60,-70],[-30,-70],[0,-68],[30,-68],[60,-70],[90,-70],[120,-66],[150,-68],[180,-66],[180,-85],[-180,-85]],
+];
+
+// Construye una máscara equirectangular de tierra: devuelve función sample(lng,lat) → 0|1.
+function buildLandMaskSampler(w = 720, h = 360): (lng: number, lat: number) => boolean {
+  const c = document.createElement("canvas");
+  c.width = w;
+  c.height = h;
+  const ctx = c.getContext("2d");
+  if (!ctx) return () => true;
+  ctx.fillStyle = "#000";
+  ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = "#fff";
+
+  for (const poly of LAND_POLYGONS) {
+    ctx.beginPath();
+    for (let i = 0; i < poly.length; i++) {
+      const [lng, lat] = poly[i];
+      const x = ((lng + 180) / 360) * w;
+      const y = ((90 - lat) / 180) * h;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  const data = ctx.getImageData(0, 0, w, h).data;
+  return (lng: number, lat: number) => {
+    const x = Math.max(0, Math.min(w - 1, Math.floor(((lng + 180) / 360) * w)));
+    const y = Math.max(0, Math.min(h - 1, Math.floor(((90 - lat) / 180) * h)));
+    const i = (y * w + x) * 4;
+    return data[i] > 128;
+  };
+}
+
+// xyz esfera → lat/lng
+function vecToLatLng([x, y, z]: [number, number, number]): [number, number] {
+  const lat = Math.asin(y) * (180 / Math.PI);
+  const lng = (Math.atan2(z, -x) * (180 / Math.PI)) - 180;
+  return [lat, ((lng + 540) % 360) - 180];
+}
+
 function latLngToVec(lat: number, lng: number): [number, number, number] {
   const phi = (90 - lat) * (Math.PI / 180);
   const theta = (lng + 180) * (Math.PI / 180);
@@ -97,7 +156,14 @@ export function GlobeCanvas({
     let centerX = 0;
     let centerY = 0;
 
-    const spherePoints = fibonacciSphere(pointCount);
+    // Generamos ~3x puntos, filtramos los que caen en océano para que queden
+    // aprox `pointCount` sobre los continentes.
+    const isLand = buildLandMaskSampler();
+    const rawPoints = fibonacciSphere(pointCount * 3);
+    const spherePoints = rawPoints.filter((v) => {
+      const [lat, lng] = vecToLatLng(v);
+      return isLand(lng, lat);
+    });
     const nodeVecs = nodes.map((n) => latLngToVec(n.lat, n.lng));
     const arcs = connections.map(([a, b]) => {
       const samples: [number, number, number][] = [];
@@ -157,7 +223,7 @@ export function GlobeCanvas({
       ctx.arc(centerX, centerY, radius * 1.2, 0, Math.PI * 2);
       ctx.fill();
 
-      // dot matrix
+      // dot matrix — solo puntos en tierra
       for (let i = 0; i < spherePoints.length; i++) {
         const p = spherePoints[i];
         const r = rotate(p, yaw, pitch);
@@ -165,8 +231,8 @@ export function GlobeCanvas({
         const x = centerX + r[0] * radius;
         const y = centerY - r[1] * radius;
         const depth = r[2];
-        const size = 0.4 + depth * 1.1;
-        const alpha = 0.1 + depth * 0.35;
+        const size = 0.6 + depth * 1.2;
+        const alpha = 0.18 + depth * 0.45;
         ctx.fillStyle = `rgba(232, 221, 201, ${alpha})`;
         ctx.beginPath();
         ctx.arc(x, y, size, 0, Math.PI * 2);
