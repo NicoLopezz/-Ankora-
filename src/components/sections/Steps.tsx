@@ -148,16 +148,22 @@ export function Steps() {
       const lenis = getLenis();
       const done = () => {
         animating = false;
+        // dejamos ventana de silencio: exigimos QUIET_MS sin wheels antes del próximo step.
+        // si el usuario todavía está empujando delta, lenis sigue stopped hasta que se calme.
       };
       if (lenis) {
+        // hard-lock: frenamos por completo el scroll suavizado para que deltas acumulados
+        // del usuario no empujen más allá del pin cuando termine el tween.
+        lenis.stop();
         lenis.scrollTo(y, {
           duration,
-          easing: (t: number) => {
-            // power2.inOut equivalente
-            return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-          },
+          easing: (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2),
           lock: true,
-          onComplete: done,
+          force: true,
+          onComplete: () => {
+            lenis.start();
+            done();
+          },
         });
       } else {
         window.scrollTo({ top: y, behavior: "smooth" });
@@ -183,10 +189,16 @@ export function Steps() {
       e.preventDefault();
       e.stopPropagation();
 
+      // mientras animamos, también frenamos lenis por si sigue procesando delta interno
+      if (animating) {
+        getLenis()?.stop();
+        lastWheelT = now;
+        return;
+      }
+
       const quiet = now - lastWheelT > QUIET_MS;
       lastWheelT = now;
 
-      if (animating) return;
       // Si ya consumí un step, requiero un período de silencio (inercia trackpad termina) antes del próximo
       if (acceptedGesture && !quiet) return;
 
@@ -246,11 +258,14 @@ export function Steps() {
           inside = false;
           acceptedGesture = false;
           lastWheelT = 0;
+          // si salimos por abajo, garantizamos que el último step quede visualmente "completado"
+          applyIdx(total - 1);
         },
         onLeaveBack: () => {
           inside = false;
           acceptedGesture = false;
           lastWheelT = 0;
+          applyIdx(0);
         },
       });
     }, wrapRef);
