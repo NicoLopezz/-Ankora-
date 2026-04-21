@@ -140,21 +140,23 @@ export function HeroSeal() {
     const dimSections = Array.from(
       document.querySelectorAll<HTMLElement>("#proyectos, #pasos, #contacto"),
     );
-    const dimTriggers = dimSections.map((el) =>
-      ScrollTrigger.create({
+    const dimTriggers = dimSections.map((el) => {
+      // En #proyectos el globo hace sync con el panel activo, así que lo mantenemos más visible.
+      const dimOpacity = el.id === "proyectos" ? 0.55 : 0.22;
+      return ScrollTrigger.create({
         trigger: el,
         start: "top 75%",
         end: "bottom 25%",
         onToggle: (self) => {
           gsap.to(floatEl, {
-            opacity: self.isActive ? 0.22 : 1,
+            opacity: self.isActive ? dimOpacity : 1,
             duration: 0.6,
             ease: "power2.out",
             overwrite: "auto",
           });
         },
-      }),
-    );
+      });
+    });
 
     return () => {
       window.removeEventListener("scroll", onScroll);

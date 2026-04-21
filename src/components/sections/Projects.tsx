@@ -418,6 +418,40 @@ export function Projects() {
     return () => mq.removeEventListener("change", update);
   }, []);
 
+  // Sync con el globo del HeroSeal: cuando cambia el panel activo, el globo
+  // enfoca + zoomea al marker correspondiente.
+  useEffect(() => {
+    const slug = projects[active]?.slug ?? null;
+    if (typeof window !== "undefined") {
+      console.log("[globe:focus] dispatch →", slug);
+      window.dispatchEvent(new CustomEvent("globe:focus", { detail: { slug } }));
+    }
+  }, [active]);
+
+  // Al salir de la sección (por scroll) o desmontar, liberamos el focus → auto-tour.
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        const inView = entries[0].isIntersecting;
+        if (!inView) {
+          window.dispatchEvent(new CustomEvent("globe:focus", { detail: { slug: null } }));
+        } else {
+          const slug = projects[active]?.slug ?? null;
+          window.dispatchEvent(new CustomEvent("globe:focus", { detail: { slug } }));
+        }
+      },
+      { threshold: 0 },
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      window.dispatchEvent(new CustomEvent("globe:focus", { detail: { slug: null } }));
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     if (!isDesktop) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

@@ -196,6 +196,51 @@ export function GlobeCanvas({
     let rafId: number | null = null;
     let visible = true;
 
+    // --- Auto-tour: cada ciclo enfoca un marker, viaja + dwell, sigue al siguiente.
+    let TRAVEL_MS = 2200;
+    const DWELL_MS = 2600;
+    const TRAVEL_AUTO = 2200;
+    const TRAVEL_FOCUS = 900; // más ágil cuando viene de un evento externo (hover panel)
+    let tourIdx = 0;
+    let tourPhase: "travel" | "dwell" = "travel";
+    let tourPhaseStart = performance.now();
+    const getTargetYaw = (mIdx: number) => {
+      const v = nodeVecs[mIdx];
+      return Math.atan2(-v[0], v[2]);
+    };
+    let tourStartYaw = yaw;
+    let tourTargetYaw = getTargetYaw(tourIdx);
+    const easeInOut = (u: number) => (u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2);
+
+    // --- Focus externo: cuando otro componente (ej. Projects) dispara `globe:focus`
+    // con un slug, el tour se pausa y el globo enfoca + zoomea al marker indicado.
+    let focusIdx: number | null = null;
+    let zoomTarget = 1; // multiplicador sobre el radio base
+    let zoomCurrent = 1;
+    const onGlobeFocus = (e: Event) => {
+      const detail = (e as CustomEvent<{ slug: string | null }>).detail;
+      if (!detail) return;
+      console.log("[globe:focus] receive →", detail.slug);
+      if (!detail.slug) {
+        focusIdx = null;
+        zoomTarget = 1;
+        return;
+      }
+      const idx = nodes.findIndex((n) => n.slug === detail.slug);
+      if (idx < 0) {
+        console.warn("[globe:focus] slug no matchea un nodo del globo:", detail.slug);
+        return;
+      }
+      focusIdx = idx;
+      zoomTarget = 1.55;
+      TRAVEL_MS = TRAVEL_FOCUS;
+      tourStartYaw = yaw;
+      tourTargetYaw = getTargetYaw(idx);
+      tourPhase = "travel";
+      tourPhaseStart = performance.now();
+    };
+    window.addEventListener("globe:focus", onGlobeFocus);
+
     const io = new IntersectionObserver(
       (entries) => {
         visible = entries[0].isIntersecting;
@@ -207,20 +252,23 @@ export function GlobeCanvas({
 
     const project = (v: [number, number, number]) => {
       const r = rotate(v, yaw, pitch);
-      return { x: centerX + r[0] * radius, y: centerY - r[1] * radius, z: r[2] };
+      const rad = radius * zoomCurrent;
+      return { x: centerX + r[0] * rad, y: centerY - r[1] * rad, z: r[2] };
     };
 
     const draw = (t: number) => {
       if (!W || !H) return;
       ctx.clearRect(0, 0, W, H);
 
+      const rEff = radius * zoomCurrent;
+
       // halo bronze muy sutil
-      const grad = ctx.createRadialGradient(centerX, centerY, radius * 0.4, centerX, centerY, radius * 1.2);
+      const grad = ctx.createRadialGradient(centerX, centerY, rEff * 0.4, centerX, centerY, rEff * 1.2);
       grad.addColorStop(0, "rgba(203, 146, 80, 0.06)");
       grad.addColorStop(1, "rgba(203, 146, 80, 0)");
       ctx.fillStyle = grad;
       ctx.beginPath();
-      ctx.arc(centerX, centerY, radius * 1.2, 0, Math.PI * 2);
+      ctx.arc(centerX, centerY, rEff * 1.2, 0, Math.PI * 2);
       ctx.fill();
 
       // dot matrix — solo puntos en tierra
@@ -228,8 +276,8 @@ export function GlobeCanvas({
         const p = spherePoints[i];
         const r = rotate(p, yaw, pitch);
         if (r[2] < -0.02) continue;
-        const x = centerX + r[0] * radius;
-        const y = centerY - r[1] * radius;
+        const x = centerX + r[0] * rEff;
+        const y = centerY - r[1] * rEff;
         const depth = r[2];
         const size = 0.6 + depth * 1.2;
         const alpha = 0.18 + depth * 0.45;
@@ -266,28 +314,47 @@ export function GlobeCanvas({
       }
 
       // markers
+      const RING_CYCLE = 2600;
+      const RING_MAX = 32;
       for (let i = 0; i < nodeVecs.length; i++) {
         const pr = project(nodeVecs[i]);
         if (pr.z < -0.05) continue;
         const visibleDepth = Math.max(0, Math.min(1, (pr.z + 0.2) / 1.2));
         const pulseScale = 1 + Math.sin(t / 420 + i) * 0.12;
         const rBase = 4.5 * (0.6 + visibleDepth * 0.7);
+        const isTourFocus = i === tourIdx && tourPhase === "dwell";
 
-        const hGrad = ctx.createRadialGradient(pr.x, pr.y, 0, pr.x, pr.y, rBase * 4);
-        hGrad.addColorStop(0, `rgba(203, 146, 80, ${0.55 * visibleDepth})`);
+        // --- Glow rings expandiéndose (2 en fase desfasada)
+        for (let k = 0; k < 2; k++) {
+          const phase = ((t / RING_CYCLE) + i * 0.25 + k * 0.5) % 1;
+          const rr = rBase + phase * RING_MAX;
+          const alpha = (1 - phase) * 0.55 * visibleDepth;
+          ctx.strokeStyle = `rgba(203, 146, 80, ${alpha})`;
+          ctx.lineWidth = 1.1;
+          ctx.beginPath();
+          ctx.arc(pr.x, pr.y, rr, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+
+        // --- Halo radial
+        const haloScale = isTourFocus ? 5.2 : 4;
+        const hGrad = ctx.createRadialGradient(pr.x, pr.y, 0, pr.x, pr.y, rBase * haloScale);
+        hGrad.addColorStop(0, `rgba(203, 146, 80, ${(isTourFocus ? 0.75 : 0.55) * visibleDepth})`);
         hGrad.addColorStop(1, "rgba(203, 146, 80, 0)");
         ctx.fillStyle = hGrad;
         ctx.beginPath();
-        ctx.arc(pr.x, pr.y, rBase * 4 * pulseScale, 0, Math.PI * 2);
+        ctx.arc(pr.x, pr.y, rBase * haloScale * pulseScale, 0, Math.PI * 2);
         ctx.fill();
 
+        // --- Dot (core)
+        const core = isTourFocus ? rBase * 1.25 : rBase;
         ctx.fillStyle = `rgba(232, 221, 201, ${0.85 * visibleDepth + 0.15})`;
         ctx.beginPath();
-        ctx.arc(pr.x, pr.y, rBase, 0, Math.PI * 2);
+        ctx.arc(pr.x, pr.y, core, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillStyle = `rgba(203, 146, 80, ${0.95 * visibleDepth})`;
         ctx.beginPath();
-        ctx.arc(pr.x, pr.y, rBase * 0.55, 0, Math.PI * 2);
+        ctx.arc(pr.x, pr.y, core * 0.55, 0, Math.PI * 2);
         ctx.fill();
       }
     };
@@ -296,7 +363,38 @@ export function GlobeCanvas({
       const now = t ?? performance.now();
       const dt = now - lastT;
       lastT = now;
-      if (!reduced) yaw += dt * 0.00008;
+
+      if (!reduced) {
+        // Zoom lerp suave hacia el target (1.0 = base, 1.32 = focus externo).
+        zoomCurrent += (zoomTarget - zoomCurrent) * Math.min(1, dt * 0.004);
+
+        const elapsed = now - tourPhaseStart;
+        if (tourPhase === "travel") {
+          const p = Math.min(1, elapsed / TRAVEL_MS);
+          let delta = ((tourTargetYaw - tourStartYaw + 3 * Math.PI) % (2 * Math.PI)) - Math.PI;
+          yaw = tourStartYaw + delta * easeInOut(p);
+          if (p >= 1) {
+            tourPhase = "dwell";
+            tourPhaseStart = now;
+          }
+        } else {
+          // dwell: micro-drift solo si NO hay focus externo. Con focus, nos quedamos fijos.
+          if (focusIdx === null) {
+            yaw += dt * 0.00003;
+            if (elapsed >= DWELL_MS) {
+              tourIdx = (tourIdx + 1) % nodeVecs.length;
+              tourStartYaw = yaw;
+              tourTargetYaw = getTargetYaw(tourIdx);
+              tourPhase = "travel";
+              tourPhaseStart = now;
+              TRAVEL_MS = TRAVEL_AUTO;
+            }
+          } else {
+            // forzamos tourIdx al focus para que el halo "dwell" destaque el marker correcto
+            tourIdx = focusIdx;
+          }
+        }
+      }
       draw(now);
       if (visible) {
         rafId = requestAnimationFrame(tick);
@@ -310,6 +408,7 @@ export function GlobeCanvas({
       if (rafId != null) cancelAnimationFrame(rafId);
       io.disconnect();
       ro.disconnect();
+      window.removeEventListener("globe:focus", onGlobeFocus);
     };
   }, [nodes, connections, pointCount, density]);
 
