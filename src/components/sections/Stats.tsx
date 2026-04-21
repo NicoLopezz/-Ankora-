@@ -25,8 +25,6 @@ export function Stats() {
           >
             <Counter
               to={s.value}
-              prefix={s.prefix}
-              suffix={s.suffix}
               format={s.format}
               className="font-display text-[clamp(2rem,4.5vw,3.75rem)] leading-none tracking-tight text-[var(--pale-oak)]"
             />
