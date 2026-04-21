@@ -1,6 +1,6 @@
 export function Footer() {
   return (
-    <footer className="border-t border-[var(--pale-oak)]/10 bg-[var(--surface)]/50">
+    <footer className="relative z-10 border-t border-[var(--pale-oak)]/10 bg-[var(--surface)]/50">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 py-16 md:flex-row md:justify-between">
         <div className="max-w-sm">
           <span className="font-display text-3xl tracking-[0.08em] text-[var(--pale-oak)]">
