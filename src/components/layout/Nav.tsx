@@ -7,6 +7,7 @@ import { MagneticButton } from "@/components/ui/MagneticButton";
 const items = [
   { label: "Proyectos", href: "#proyectos" },
   { label: "Cómo funciona", href: "#pasos" },
+  { label: "Estructura", href: "#estructura" },
   { label: "Contacto", href: "#contacto" },
 ];
 
