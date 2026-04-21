@@ -10,7 +10,7 @@ type Props = {
 };
 
 export function RotatingSeal({
-  text = "ARKARA  •  TOKENIZACIÓN  •  ACTIVOS REALES  •  ",
+  text = "ANKORA  •  ANCHORED TO REAL ASSETS  •  RWA  •  ",
   size = 180,
   className,
 }: Props) {

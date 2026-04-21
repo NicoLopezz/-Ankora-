@@ -20,24 +20,24 @@ export function CTA() {
       >
         <p className="mb-6 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--pale-oak)]/60">
           <span className="inline-block h-px w-10 bg-[var(--bronze)]" />
-          Empezá hoy
+          Acceso anticipado · Fase demo
         </p>
         <h2 className="max-w-4xl font-display text-[clamp(2.5rem,8vw,7rem)] font-light leading-[0.95] tracking-[-0.03em] text-[var(--pale-oak)]">
-          El próximo activo <span className="italic text-[var(--bronze)]">ya está tokenizado.</span>
+          Anclá tu inversión <span className="italic text-[var(--bronze)]">a lo real.</span>
         </h2>
         <p className="mt-8 max-w-xl text-[var(--pale-oak)]/75">
-          Sumate a la lista de inversores y accedé a la próxima emisión 48hs antes que el público general.
+          Ankora está en fase demo: la operatoria transaccional se habilita con la activación regulatoria final del stack. Dejanos tu mail y te avisamos cuando se abra el primer tramo del piloto.
         </p>
         <div className="mt-12 flex flex-wrap gap-4">
           <MagneticButton href="#registro" className="btn-gold group" strength={0.3}>
-            Crear cuenta
+            Sumarme a la lista
             <ArrowUpRight className="h-4 w-4 transition-transform duration-500 ease-out group-hover:rotate-45" />
           </MagneticButton>
           <MagneticButton
-            href="#contacto-directo"
+            href="mailto:hola@ankora.io"
             className="inline-flex items-center gap-2 rounded-full border border-[var(--pale-oak)]/30 px-6 py-[0.95rem] text-sm text-[var(--pale-oak)] transition-colors duration-300 hover:border-[var(--bronze)] hover:text-[var(--bronze)]"
           >
-            Hablar con un asesor
+            Hablar con el equipo
           </MagneticButton>
         </div>
       </motion.div>

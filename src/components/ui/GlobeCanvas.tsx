@@ -12,10 +12,10 @@ export type GlobeNode = {
 };
 
 const DEFAULT_NODES: GlobeNode[] = [
-  { slug: "costa-norte", name: "Costa Norte", tag: "Inmobiliario", location: "Punta del Este, UY", lat: -34.97, lng: -54.95 },
-  { slug: "pampa-fertil", name: "Pampa Fértil", tag: "Agro", location: "Buenos Aires, AR", lat: -34.6, lng: -58.38 },
-  { slug: "solar-atacama", name: "Solar Atacama", tag: "Infraestructura", location: "Antofagasta, CL", lat: -23.65, lng: -70.4 },
-  { slug: "cafayate-rwa", name: "Cafayate", tag: "Land Asset", location: "Salta, AR", lat: -26.09, lng: -66.01 },
+  { slug: "cafayate", name: "Cafayate Vineyards I", tag: "Tierra vitivinícola", location: "Salta, AR", lat: -26.09, lng: -66.01 },
+  { slug: "alto-agrelo", name: "Alto Agrelo Estates", tag: "Inmobiliario productivo", location: "Mendoza, AR", lat: -33.05, lng: -68.88 },
+  { slug: "cantini", name: "Cantini Estates", tag: "Viñedo + Hospitality", location: "Mendoza, AR", lat: -33.08, lng: -68.92 },
+  { slug: "caravan-tech", name: "Caravan Tech", tag: "Livestock Tech", location: "Brasil · Argentina", lat: -15.78, lng: -47.93 },
 ];
 
 const DEFAULT_CONNECTIONS: [number, number][] = [

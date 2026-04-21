@@ -4,10 +4,10 @@ import { motion } from "motion/react";
 import { Counter } from "@/components/ui/Counter";
 
 const stats = [
-  { label: "Capital tokenizado", value: 12800000, prefix: "USD ", format: (n: number) => (n / 1_000_000).toFixed(1) + "M" },
-  { label: "Inversores activos", value: 4200, suffix: "+" },
-  { label: "Proyectos financiados", value: 27 },
-  { label: "TIR promedio", value: 13.4, suffix: "%", format: (n: number) => n.toFixed(1) },
+  { label: "Ticket mínimo", value: 500, prefix: "USD " },
+  { label: "Proyectos del piloto", value: 4 },
+  { label: "Hectáreas · Piloto Cafayate", value: 500, suffix: " ha" },
+  { label: "Raise · Piloto Cafayate", value: 2820000, prefix: "USD ", format: (n: number) => (n / 1_000_000).toFixed(2) + "M" },
 ];
 
 export function Stats() {

@@ -30,9 +30,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Arkara — Tokenización de activos reales",
+  title: "Ankora — Anchored to real assets",
   description:
-    "Invertí en proyectos reales en cuatro pasos. Inmobiliario, agro e infraestructura tokenizados.",
+    "Marketplace regulado de tokenización de activos reales. Viñedos, tierras, inmobiliario e infraestructura desde USD 500. Operado por AMG Capital Group S.A. bajo régimen CNV RG 1069/2025.",
 };
 
 export const viewport: Viewport = {

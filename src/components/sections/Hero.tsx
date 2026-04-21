@@ -113,15 +113,15 @@ export function Hero() {
           style={{ opacity: 0 }}
         >
           <span className="inline-block h-px w-10 bg-[var(--bronze)]" />
-          Arkara — Tokenización de activos reales
+          ANKORA · Anchored to real assets
         </p>
 
         <h1 className="font-display text-[clamp(2.25rem,7vw,6.5rem)] font-light leading-[1] tracking-[-0.03em] text-[var(--pale-oak)]">
           <div ref={title1Ref} style={{ opacity: 0 }}>
-            Tokenizá <span className="italic text-[var(--bronze)]">lo</span> real.
+            Comprá un <span className="italic text-[var(--bronze)]">pedazo</span>
           </div>
           <div ref={title2Ref} style={{ opacity: 0 }}>
-            Invertí en <span className="gradient-text">minutos.</span>
+            de algo <span className="gradient-text">real.</span>
           </div>
         </h1>
 
@@ -131,8 +131,8 @@ export function Hero() {
             className="max-w-sm text-balance text-base leading-relaxed text-[var(--pale-oak)]/75"
             style={{ opacity: 0 }}
           >
-            Acceso fraccional a proyectos inmobiliarios, agrícolas y de infraestructura.
-            Cuatro pasos, sin intermediarios.
+            Marketplace regulado de activos reales tokenizados. Viñedos,
+            tierras, inmobiliario e infraestructura desde USD 500.
           </p>
 
           <div

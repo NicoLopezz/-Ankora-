@@ -9,7 +9,7 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const SEAL_TEXT = "ARKARA  •  TOKENIZACIÓN  •  ACTIVOS REALES  •  ";
+const SEAL_TEXT = "ANKORA  •  ANCHORED TO REAL ASSETS  •  RWA  •  ";
 // DOM "nativo" grande — en el estado minimizado se posiciona con centro en la esquina
 // inferior derecha del viewport: sólo se ve el cuadrante superior-izquierdo (~1/4 del círculo).
 const SEAL_BIG_PX = 620;
@@ -135,32 +135,49 @@ export function HeroSeal() {
     // init
     onScroll();
 
-    // Atenuación contextual: en secciones densas de contenido (ej. Activos/Proyectos)
-    // el sello baja opacidad para no pisar imágenes y texto. Fade con GSAP para no saltar.
+    // Atenuación contextual: en Steps/Contacto el sello baja opacidad + grayscale
+    // para no pisar texto. #proyectos queda excluido porque el globo hace sync
+    // con el panel activo; el dim específico de Caravan Tech va por evento abajo.
     const dimSections = Array.from(
-      document.querySelectorAll<HTMLElement>("#proyectos, #pasos, #contacto"),
+      document.querySelectorAll<HTMLElement>("#pasos, #contacto"),
     );
-    const dimTriggers = dimSections.map((el) => {
-      // En #proyectos el globo hace sync con el panel activo, así que lo mantenemos más visible.
-      const dimOpacity = el.id === "proyectos" ? 0.55 : 0.22;
-      return ScrollTrigger.create({
+    const dimTriggers = dimSections.map((el) =>
+      ScrollTrigger.create({
         trigger: el,
         start: "top 75%",
         end: "bottom 25%",
         onToggle: (self) => {
           gsap.to(floatEl, {
-            opacity: self.isActive ? dimOpacity : 1,
+            opacity: self.isActive ? 0.35 : 1,
+            filter: self.isActive ? "grayscale(1)" : "grayscale(0)",
             duration: 0.6,
             ease: "power2.out",
             overwrite: "auto",
           });
         },
+      }),
+    );
+
+    // Hover sobre Caravan Tech (proyecto 4): apagar el sello. El globo del sello
+    // no tiene visual útil para ese proyecto (Brasil fuera del foco argentino)
+    // y compite con la imagen del panel.
+    const onGlobeFocus = (e: Event) => {
+      const detail = (e as CustomEvent<{ slug: string | null }>).detail;
+      const isCaravan = detail?.slug === "caravan-tech";
+      gsap.to(floatEl, {
+        opacity: isCaravan ? 0.08 : 1,
+        filter: isCaravan ? "grayscale(1)" : "grayscale(0)",
+        duration: 0.5,
+        ease: "power2.out",
+        overwrite: "auto",
       });
-    });
+    };
+    window.addEventListener("globe:focus", onGlobeFocus);
 
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("globe:focus", onGlobeFocus);
       cancelAnimationFrame(rafId);
       spin.kill();
       float.kill();

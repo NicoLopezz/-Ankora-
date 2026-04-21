@@ -7,7 +7,7 @@ import { MagneticButton } from "@/components/ui/MagneticButton";
 const items = [
   { label: "Proyectos", href: "#proyectos" },
   { label: "Cómo funciona", href: "#pasos" },
-  { label: "Nosotros", href: "#nosotros" },
+  { label: "Contacto", href: "#contacto" },
 ];
 
 export function Nav() {
@@ -62,8 +62,8 @@ export function Nav() {
         }}
       >
         <a href="#top" className="flex items-center gap-2" data-cursor="hover">
-          <span className="font-display text-xl tracking-tight text-[var(--pale-oak)]">
-            Ark<span className="text-[var(--bronze)]">ara</span>
+          <span className="font-display text-xl tracking-[0.08em] text-[var(--pale-oak)]">
+            AN<span className="text-[var(--bronze)]">K</span>ORA
           </span>
         </a>
         <ul className="hidden items-center gap-7 md:flex">
@@ -80,7 +80,7 @@ export function Nav() {
           ))}
         </ul>
         <MagneticButton href="#contacto" className="btn-gold text-sm" strength={0.35}>
-          Invertir
+          Acceso anticipado
         </MagneticButton>
       </nav>
     </motion.header>
