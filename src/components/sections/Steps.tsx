@@ -88,10 +88,24 @@ export function Steps() {
   const fillRef = useRef<HTMLDivElement | null>(null);
   const [active, setActive] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced || !wrapRef.current || !stageRef.current) return;
+
+    // En mobile, damos "linger" al paso 4: la sección es más alta, pero el progreso
+    // se mapea para completar antes del final, dejando scroll extra para ver el halo.
+    const mobile = window.matchMedia("(max-width: 767px)").matches;
+    const lingerRatio = mobile ? 0.78 : 1;
 
     const total = steps.length;
     let lastIdx = -1;
@@ -151,7 +165,7 @@ export function Steps() {
         pinSpacing: false,
         scrub: false,
         onUpdate: (self) => {
-          targetP = self.progress;
+          targetP = Math.min(1, self.progress / lingerRatio);
           kickRaf();
         },
         onLeave: () => {
@@ -179,7 +193,7 @@ export function Steps() {
       id="pasos"
       ref={wrapRef}
       className="relative w-full scroll-mt-28"
-      style={{ height: `${steps.length * 100}vh` }}
+      style={{ height: `${steps.length * 100 + (isMobile ? 120 : 0)}vh` }}
     >
       <div
         ref={stageRef}
@@ -219,7 +233,7 @@ export function Steps() {
         </AnimatePresence>
 
         <div className="mx-auto w-full max-w-7xl">
-          <div className="mb-14 flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
+          <div className="mb-8 flex flex-col items-start gap-4 md:mb-14 md:flex-row md:items-end md:justify-between md:gap-6">
             <div>
               <p className="mb-4 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--pale-oak)]/60">
                 <span className="inline-block h-px w-10 bg-[var(--bronze)]" />
@@ -237,9 +251,9 @@ export function Steps() {
             </p>
           </div>
 
-          <div className="relative grid grid-cols-12 items-center gap-8">
+          <div className="relative grid grid-cols-12 items-center gap-2 md:gap-8">
             <div className="col-span-12 md:col-span-5">
-              <div className="relative h-[240px] md:h-[380px]">
+              <div className="relative h-[160px] md:h-[380px]">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={active}
@@ -308,7 +322,7 @@ export function Steps() {
             </div>
           </div>
 
-          <div className="mt-16 flex items-center gap-6">
+          <div className="mt-10 flex items-center gap-6 md:mt-16">
             <div className="flex-1">
               <div className="relative h-px w-full bg-[var(--pale-oak)]/15">
                 <div

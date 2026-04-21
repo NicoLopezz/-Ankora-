@@ -82,7 +82,7 @@ const projects: Project[] = [
     status: "Próximamente",
     media: {
       type: "image",
-      src: "/projects/alto-agrelo/hero.jpg",
+      src: "/projects/alto-agrelo/hero-v2.jpg",
       alt: "Alto Agrelo Estates — desarrollo inmobiliario productivo en Luján de Cuyo, Mendoza",
     },
     detail: {
@@ -101,7 +101,7 @@ const projects: Project[] = [
       totalRaise: "TBD",
       soldPct: 0,
       gallery: [
-        { src: "/projects/alto-agrelo/hero.jpg", alt: "Vista del valle en Alto Agrelo", caption: "Luján de Cuyo · Land of Malbec" },
+        { src: "/projects/alto-agrelo/hero-v2.jpg", alt: "Vista del valle en Alto Agrelo", caption: "Luján de Cuyo · Land of Malbec" },
         { src: "/projects/alto-agrelo/gallery-01.jpg", alt: "Paisaje del desarrollo", caption: "Paisaje" },
         { src: "/projects/alto-agrelo/gallery-02.jpg", alt: "Render de residencia rural", caption: "Residencia rural" },
         { src: "/projects/alto-agrelo/gallery-03.jpg", alt: "Cultivos de alto valor", caption: "Cultivos productivos" },
@@ -287,7 +287,7 @@ function Panel({
       data-cursor="hover"
       animate={isMobile ? {} : { flexGrow: isActive ? 4 : 1 }}
       transition={{ duration: 0.9, ease: EASE }}
-      className="group relative flex min-h-[520px] w-full cursor-pointer overflow-hidden rounded-[24px] border border-[var(--pale-oak)]/10 bg-[var(--surface)] isolate outline-none focus-visible:ring-2 focus-visible:ring-[var(--bronze)] md:min-h-0 md:rounded-[28px]"
+      className="group relative flex min-h-[520px] w-[82vw] max-w-[360px] shrink-0 snap-center cursor-pointer overflow-hidden rounded-[24px] border border-[var(--pale-oak)]/10 bg-[var(--surface)] isolate outline-none focus-visible:ring-2 focus-visible:ring-[var(--bronze)] md:w-full md:max-w-none md:shrink md:snap-align-none md:min-h-0 md:rounded-[28px]"
       style={isMobile ? undefined : { flexBasis: 0 }}
     >
       {/* Media (image o video) con parallax */}
@@ -690,7 +690,7 @@ export function Projects() {
   const grid = (
     <div
       ref={gridRef}
-      className="flex w-full flex-col gap-4 md:h-[58vh] md:min-h-[440px] md:flex-row md:gap-4"
+      className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:h-[58vh] md:min-h-[440px] md:w-full md:flex-row md:gap-4 md:overflow-visible md:px-0 md:pb-0"
       style={{ willChange: "transform, opacity" }}
     >
       {projects.map((p, i) => (

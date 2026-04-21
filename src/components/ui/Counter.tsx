@@ -29,12 +29,22 @@ export function Counter({ to, from = 0, duration = 2.2, prefix = "", suffix = ""
   }, [inView, from, to, duration]);
 
   const display = format ? format(value) : Math.round(value).toLocaleString("es-AR");
+  const finalDisplay = format ? format(to) : Math.round(to).toLocaleString("es-AR");
 
   return (
-    <span ref={ref} className={className}>
-      {prefix}
-      {display}
-      {suffix}
+    <span ref={ref} className={className} style={{ fontVariantNumeric: "tabular-nums" }}>
+      <span className="relative inline-block">
+        <span aria-hidden className="invisible">
+          {prefix}
+          {finalDisplay}
+          {suffix}
+        </span>
+        <span className="absolute inset-0">
+          {prefix}
+          {display}
+          {suffix}
+        </span>
+      </span>
     </span>
   );
 }

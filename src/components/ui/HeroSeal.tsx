@@ -39,11 +39,10 @@ export function HeroSeal() {
     if (!seal || !spinner || !floatEl) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const isMobile = window.matchMedia("(max-width: 767px)").matches;
-    const smallScale = SEAL_SMALL_PX / SEAL_BIG_PX;
 
-    // El seal está oculto por CSS en mobile (`hidden md:block`): evitamos rAF + listeners.
-    if (isMobile) return;
+    let bigPx = SEAL_BIG_PX;
+    let smallPx = SEAL_SMALL_PX;
+    let smallScale = smallPx / bigPx;
 
     let initialX = 0;
     let initialY = 0;
@@ -53,16 +52,19 @@ export function HeroSeal() {
     const recompute = () => {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      // Wrapper está pegado a bottom-0/right-0 (ver JSX). Su centro natural está en
-      // (vw - SEAL_BIG_PX/2, vh - SEAL_BIG_PX/2).
-      const wrapperCX = vw - SEAL_BIG_PX / 2;
-      const wrapperCY = vh - SEAL_BIG_PX / 2;
-      // Estado inicial: centrado en el viewport → translate = (vw/2 - wrapperCX, vh/2 - wrapperCY)
+      const isMobile = vw < 768;
+      // En mobile: el sello escala al viewport (≈88% del ancho) para que entre completo en centro.
+      bigPx = isMobile ? Math.min(vw * 0.88, 420) : SEAL_BIG_PX;
+      smallPx = isMobile ? bigPx * 0.58 : SEAL_SMALL_PX;
+      smallScale = smallPx / bigPx;
+      floatEl.style.width = `${bigPx}px`;
+      floatEl.style.height = `${bigPx}px`;
+      const wrapperCX = vw - bigPx / 2;
+      const wrapperCY = vh - bigPx / 2;
       initialX = vw / 2 - wrapperCX;
       initialY = vh / 2 - wrapperCY;
-      // Estado final: centro del sello exactamente en la esquina (vw, vh) → translate = (vw - wrapperCX, vh - wrapperCY) = (halfSize, halfSize)
-      targetX = SEAL_BIG_PX / 2;
-      targetY = SEAL_BIG_PX / 2;
+      targetX = bigPx / 2;
+      targetY = bigPx / 2;
       pinDistance = vh * 2.2;
     };
     recompute();
@@ -189,10 +191,12 @@ export function HeroSeal() {
     <div
       ref={floatRef}
       aria-hidden
-      className="pointer-events-none fixed bottom-0 right-0 z-[60] hidden overflow-visible md:block"
+      className="pointer-events-none fixed bottom-0 right-0 z-[60] overflow-visible"
       style={{
         width: SEAL_BIG_PX,
         height: SEAL_BIG_PX,
+        maxWidth: "100vw",
+        maxHeight: "100vh",
         willChange: "transform",
         opacity: 0,
       }}

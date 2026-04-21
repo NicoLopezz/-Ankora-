@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 
 type Pillar = {
   role: string;
@@ -34,6 +35,9 @@ const pillars: Pillar[] = [
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 export function Structure() {
+  const [activeMobile, setActiveMobile] = useState(0);
+  const activePillar = pillars[activeMobile];
+
   return (
     <section
       id="estructura"
@@ -59,7 +63,57 @@ export function Structure() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-0 md:grid-cols-2 lg:grid-cols-4">
+      {/* Mobile: grid 2x2 compacto + detalle desplegable abajo */}
+      <div className="md:hidden">
+        <div className="grid grid-cols-2 gap-3">
+          {pillars.map((p, i) => {
+            const isActive = activeMobile === i;
+            return (
+              <button
+                key={p.role}
+                type="button"
+                onClick={() => setActiveMobile(i)}
+                className={`flex flex-col gap-2 rounded-xl border p-4 text-left transition-colors duration-300 ${
+                  isActive
+                    ? "border-[var(--bronze)]/60 bg-[color-mix(in_oklab,var(--bronze)_12%,transparent)]"
+                    : "border-[var(--pale-oak)]/15 bg-[var(--surface)]/30"
+                }`}
+              >
+                <span className={`font-mono text-[9px] uppercase tracking-[0.25em] ${isActive ? "text-[var(--bronze)]" : "text-[var(--bronze)]/70"}`}>
+                  {p.role}
+                </span>
+                <span className="font-display text-base font-light leading-tight text-[var(--pale-oak)]">
+                  {p.name}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activePillar.role}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.4, ease: EASE }}
+            className="mt-4 rounded-xl border border-[var(--pale-oak)]/10 bg-[var(--surface)]/40 p-5"
+          >
+            <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[var(--bronze)]">
+              {activePillar.role}
+            </p>
+            <p className="mt-2 font-display text-xl font-light leading-tight text-[var(--pale-oak)]">
+              {activePillar.name}
+            </p>
+            <p className="mt-3 text-sm leading-relaxed text-[var(--pale-oak)]/70">
+              {activePillar.detail}
+            </p>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* Desktop: 4 columnas con contenido completo visible */}
+      <div className="hidden md:grid md:grid-cols-2 md:gap-0 lg:grid-cols-4">
         {pillars.map((p, i) => (
           <motion.div
             key={p.role}
@@ -67,7 +121,7 @@ export function Structure() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-15% 0px" }}
             transition={{ duration: 0.9, ease: EASE, delay: i * 0.08 }}
-            className="flex flex-col gap-4 border-t border-[var(--pale-oak)]/10 py-10 md:border-l md:border-t-0 md:px-8 md:py-4 md:first:border-l-0 lg:first:border-l-0 lg:[&:nth-child(3)]:border-l-0 md:[&:nth-child(3)]:border-l lg:[&:nth-child(3)]:border-l"
+            className="flex flex-col gap-4 border-[var(--pale-oak)]/10 md:border-l md:px-8 md:py-4 md:first:border-l-0 lg:[&:nth-child(3)]:border-l lg:first:border-l-0"
           >
             <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[var(--bronze)]">
               {p.role}
@@ -123,14 +177,6 @@ export function Structure() {
           </p>
         </div>
       </motion.div>
-
-      <p className="mt-12 max-w-3xl text-xs leading-relaxed text-[var(--pale-oak)]/45">
-        Toda inversión en activos reales implica riesgo de pérdida parcial o
-        total del capital invertido. Los rendimientos proyectados son
-        estimaciones basadas en comparables del mercado y no constituyen
-        garantía de rendimiento futuro. Ankora está en fase demo — la operatoria
-        transaccional se habilita con la activación regulatoria final del stack.
-      </p>
     </section>
   );
 }
