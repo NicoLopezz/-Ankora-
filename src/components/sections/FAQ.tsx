@@ -88,7 +88,7 @@ export function FAQ() {
   return (
     <section
       id="faq"
-      className="relative w-full scroll-mt-28 py-24 md:py-32"
+      className="relative w-full scroll-mt-28 py-16 md:py-32"
     >
       {/* Glow de fondo sutil */}
       <div

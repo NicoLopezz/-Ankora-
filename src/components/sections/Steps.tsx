@@ -311,10 +311,10 @@ export function Steps() {
                   <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--bronze)]">
                     {steps[active].kicker}
                   </p>
-                  <h3 className="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-light leading-[0.95] tracking-[-0.02em] text-[var(--pale-oak)]">
+                  <h3 className="font-display text-[clamp(1.75rem,6vw,5.5rem)] font-light leading-[1] tracking-[-0.02em] text-[var(--pale-oak)] md:leading-[0.95]">
                     {steps[active].title}
                   </h3>
-                  <p className="max-w-lg text-lg leading-relaxed text-[var(--pale-oak)]/75">
+                  <p className="max-w-lg text-[0.95rem] leading-snug text-[var(--pale-oak)]/75 md:text-lg md:leading-relaxed">
                     {steps[active].body}
                   </p>
                 </motion.div>

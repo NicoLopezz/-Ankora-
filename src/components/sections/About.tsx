@@ -45,7 +45,7 @@ export function About() {
   return (
     <section
       id="nosotros"
-      className="relative mx-auto w-full max-w-7xl scroll-mt-28 px-6 py-32 md:py-48"
+      className="relative mx-auto w-full max-w-7xl scroll-mt-28 px-6 py-20 md:py-48"
     >
       {/* Kicker */}
       <motion.p

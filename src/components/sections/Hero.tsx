@@ -137,7 +137,7 @@ export function Hero() {
 
           <div
             ref={buttonsRef}
-            className="flex flex-wrap items-center gap-4"
+            className="flex flex-nowrap items-center gap-3 md:flex-wrap md:gap-4"
             style={{ opacity: 0 }}
           >
             <MagneticButton href="#proyectos" className="btn-gold group" strength={0.3}>

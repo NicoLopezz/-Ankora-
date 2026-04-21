@@ -416,12 +416,12 @@ function Panel({
                   </div>
                 </div>
 
-                <div className="flex w-full flex-wrap items-center gap-3 md:w-auto">
+                <div className="flex w-full flex-nowrap items-center gap-2 md:w-auto md:flex-wrap md:gap-3">
                   <a
                     href={`#invertir-${p.slug}`}
                     data-cursor="hover"
                     onClick={(e) => e.stopPropagation()}
-                    className="btn-gold group/btn text-sm"
+                    className="btn-gold group/btn flex-1 justify-center whitespace-nowrap text-sm md:flex-initial"
                   >
                     Invertir
                     <ArrowUpRight className="h-4 w-4 transition-transform duration-500 ease-out group-hover/btn:rotate-45" />
@@ -433,7 +433,7 @@ function Panel({
                       onOpen();
                     }}
                     data-cursor="hover"
-                    className="inline-flex items-center gap-2 rounded-full border border-[var(--pale-oak)]/40 bg-black/20 px-5 py-3 text-sm text-[var(--pale-oak)] backdrop-blur-md transition-colors duration-300 hover:border-[var(--bronze)] hover:text-[var(--bronze)]"
+                    className="inline-flex flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-full border border-[var(--pale-oak)]/40 bg-black/20 px-5 py-3 text-sm text-[var(--pale-oak)] backdrop-blur-md transition-colors duration-300 hover:border-[var(--bronze)] hover:text-[var(--bronze)] md:flex-initial"
                   >
                     Ver más
                   </button>
@@ -710,7 +710,7 @@ export function Projects() {
   // Versión mobile / reduced-motion: layout original, sin pin ni scrub
   if (!isDesktop) {
     return (
-      <section id="proyectos" className="relative mx-auto w-full max-w-[1600px] scroll-mt-28 px-6 py-32 md:py-48">
+      <section id="proyectos" className="relative mx-auto w-full max-w-[1600px] scroll-mt-28 px-6 py-20 md:py-48">
         <div className="mb-14">{header}</div>
         {grid}
         <AnimatePresence>

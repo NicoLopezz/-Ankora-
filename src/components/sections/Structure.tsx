@@ -41,7 +41,7 @@ export function Structure() {
   return (
     <section
       id="estructura"
-      className="relative mx-auto w-full max-w-7xl scroll-mt-28 px-6 py-32 md:py-48"
+      className="relative mx-auto w-full max-w-7xl scroll-mt-28 px-6 py-20 md:py-48"
     >
       <div className="mb-14 flex flex-col gap-6 md:mb-20 md:flex-row md:items-end md:justify-between">
         <div>
