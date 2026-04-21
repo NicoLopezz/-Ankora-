@@ -4,10 +4,10 @@ import { motion } from "motion/react";
 import { Counter } from "@/components/ui/Counter";
 
 const stats = [
-  { label: "Ticket mínimo", value: 500, prefix: "USD " },
+  { label: "USD · Ticket mínimo", value: 500 },
   { label: "Proyectos del piloto", value: 4 },
-  { label: "Hectáreas · Piloto Cafayate", value: 500, suffix: " ha" },
-  { label: "Raise · Piloto Cafayate", value: 2820000, prefix: "USD ", format: (n: number) => (n / 1_000_000).toFixed(2) + "M" },
+  { label: "Hectáreas · Piloto Cafayate", value: 500 },
+  { label: "USD M · Raise · Piloto Cafayate", value: 2820000, format: (n: number) => (n / 1_000_000).toFixed(2) },
 ];
 
 export function Stats() {
