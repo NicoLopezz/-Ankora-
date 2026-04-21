@@ -38,6 +38,22 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-[var(--pale-oak)]/10">
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-3 px-6 py-8 md:flex-row md:gap-10">
+          <p className="shrink-0 font-mono text-[10px] uppercase tracking-[0.3em] text-[#c4392a]/85 md:w-[140px] md:pt-0.5">
+            Advertencia de riesgos
+          </p>
+          <p className="max-w-4xl text-xs leading-relaxed text-[var(--pale-oak)]/45">
+            Toda inversión en activos reales implica riesgo de pérdida parcial o
+            total del capital invertido. Los rendimientos proyectados son
+            estimaciones basadas en comparables del mercado y no constituyen
+            garantía de rendimiento futuro. Ankora está en fase demo — la
+            operatoria transaccional se habilita con la activación regulatoria
+            final del stack. No ofrecemos asesoramiento financiero personalizado;
+            consultá a tu asesor antes de invertir.
+          </p>
+        </div>
+      </div>
+      <div className="border-t border-[var(--pale-oak)]/10">
         <div className="mx-auto flex w-full max-w-7xl flex-col justify-between gap-2 px-6 py-6 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--pale-oak)]/45 md:flex-row">
           <span>© 2026 AMG Capital Group S.A. · PSAV CNV DI-2024-50276668</span>
           <span>Ankora — Anchored to real assets</span>

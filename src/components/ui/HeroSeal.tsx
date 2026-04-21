@@ -243,7 +243,7 @@ export function HeroSeal() {
         <GlobeCanvas
           pointCount={1400}
           density={0.82}
-          className="absolute left-1/2 top-1/2 aspect-square w-[72%] -translate-x-1/2 -translate-y-1/2"
+          className="absolute left-1/2 top-1/2 aspect-square w-[72%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full"
         />
       </div>
     </div>

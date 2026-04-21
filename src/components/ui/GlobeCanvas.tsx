@@ -190,8 +190,19 @@ export function GlobeCanvas({
     const ro = new ResizeObserver(resize);
     ro.observe(container);
 
-    const pitch = 0.35;
+    const PITCH_BASE = 0.35;
+    let pitch = PITCH_BASE;
+    let pitchTarget = PITCH_BASE;
     let yaw = Math.PI * 1.05;
+
+    // Offset del centro de proyección. Cuando hay focus desde Projects, el sello
+    // está minimizado en bottom-right y solo se ve su cuadrante superior-izquierdo;
+    // desplazamos el "centro" del globo hacia ese cuadrante para que el marker
+    // enfocado caiga donde el usuario efectivamente lo ve.
+    let centerBiasX = 0; // -0.5..0.5 (porcentaje de W)
+    let centerBiasY = 0;
+    let centerBiasTargetX = 0;
+    let centerBiasTargetY = 0;
     let lastT = performance.now();
     let rafId: number | null = null;
     let visible = true;
@@ -224,6 +235,9 @@ export function GlobeCanvas({
       if (!detail.slug) {
         focusIdx = null;
         zoomTarget = 1;
+        pitchTarget = PITCH_BASE;
+        centerBiasTargetX = 0;
+        centerBiasTargetY = 0;
         return;
       }
       const idx = nodes.findIndex((n) => n.slug === detail.slug);
@@ -232,7 +246,14 @@ export function GlobeCanvas({
         return;
       }
       focusIdx = idx;
-      zoomTarget = 1.55;
+      zoomTarget = 2.8;
+      // Tilt hacia la latitud del marker: pitch = lat en radianes, negado porque
+      // en el sistema del canvas +pitch inclina el hemisferio norte hacia cámara.
+      pitchTarget = -(nodes[idx].lat * Math.PI) / 180;
+      // Desplaza el centro ~25% arriba-izquierda para que el marker caiga en el
+      // cuadrante visible cuando el sello está minimizado en la esquina.
+      centerBiasTargetX = -0.22;
+      centerBiasTargetY = -0.22;
       TRAVEL_MS = TRAVEL_FOCUS;
       tourStartYaw = yaw;
       tourTargetYaw = getTargetYaw(idx);
@@ -253,7 +274,9 @@ export function GlobeCanvas({
     const project = (v: [number, number, number]) => {
       const r = rotate(v, yaw, pitch);
       const rad = radius * zoomCurrent;
-      return { x: centerX + r[0] * rad, y: centerY - r[1] * rad, z: r[2] };
+      const cx = centerX + W * centerBiasX;
+      const cy = centerY + H * centerBiasY;
+      return { x: cx + r[0] * rad, y: cy - r[1] * rad, z: r[2] };
     };
 
     const draw = (t: number) => {
@@ -365,8 +388,13 @@ export function GlobeCanvas({
       lastT = now;
 
       if (!reduced) {
-        // Zoom lerp suave hacia el target (1.0 = base, 1.32 = focus externo).
+        // Zoom lerp suave hacia el target (1.0 = base, 2.8 = focus externo).
         zoomCurrent += (zoomTarget - zoomCurrent) * Math.min(1, dt * 0.004);
+        // Pitch lerp: mismo smoothing que zoom. Inclina el globo hacia la latitud del marker.
+        pitch += (pitchTarget - pitch) * Math.min(1, dt * 0.004);
+        // Bias del centro lerp (para que el focus caiga en el cuadrante visible).
+        centerBiasX += (centerBiasTargetX - centerBiasX) * Math.min(1, dt * 0.004);
+        centerBiasY += (centerBiasTargetY - centerBiasY) * Math.min(1, dt * 0.004);
 
         const elapsed = now - tourPhaseStart;
         if (tourPhase === "travel") {

@@ -45,8 +45,8 @@ const projects: Project[] = [
     status: "En emisión",
     media: {
       type: "image",
-      src: "/projects/cafayate/render-01.jpeg",
-      alt: "Bodega circular de vidrio y hormigón entre viñedos en Cafayate, con los Valles Calchaquíes al fondo",
+      src: "/projects/cafayate/hero-main.jpg",
+      alt: "Cafayate Vineyards I — proyecto RWA en los Valles Calchaquíes, Salta",
     },
     detail: {
       description:
