@@ -359,7 +359,7 @@ export function Steps() {
                 ))}
               </div>
             </div>
-            <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--pale-oak)]/60">
+            <div className="hidden font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--pale-oak)]/60 md:block">
               {String(active + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}
             </div>
           </div>

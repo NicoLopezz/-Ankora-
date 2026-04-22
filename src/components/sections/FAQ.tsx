@@ -83,7 +83,7 @@ const CATEGORY_STYLES: Record<Category, string> = {
 };
 
 export function FAQ() {
-  const [openId, setOpenId] = useState<string | null>(faqs[0]?.id ?? null);
+  const [openId, setOpenId] = useState<string | null>(null);
 
   return (
     <section

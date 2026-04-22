@@ -140,13 +140,13 @@ export function Hero() {
             className="flex flex-nowrap items-center gap-3 md:flex-wrap md:gap-4"
             style={{ opacity: 0 }}
           >
-            <MagneticButton href="#proyectos" className="btn-gold group" strength={0.3}>
+            <MagneticButton href="#proyectos" className="btn-gold group whitespace-nowrap px-5 py-3 text-sm md:px-7 md:py-[0.95rem]" strength={0.3}>
               Ver proyectos
               <ArrowUpRight className="h-4 w-4 transition-transform duration-500 ease-out group-hover:rotate-45" />
             </MagneticButton>
             <MagneticButton
               href="#pasos"
-              className="inline-flex items-center gap-2 rounded-full border border-[var(--pale-oak)]/30 px-6 py-[0.95rem] text-sm text-[var(--pale-oak)] transition-colors duration-300 hover:border-[var(--bronze)] hover:text-[var(--bronze)]"
+              className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-[var(--pale-oak)]/30 px-5 py-3 text-sm text-[var(--pale-oak)] transition-colors duration-300 hover:border-[var(--bronze)] hover:text-[var(--bronze)] md:px-6 md:py-[0.95rem]"
               strength={0.25}
             >
               Cómo funciona
