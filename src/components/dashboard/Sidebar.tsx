@@ -102,8 +102,36 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
         })}
       </nav>
 
+      {/* Decorative globe above footer */}
+      {!collapsed && (
+        <div className="pointer-events-none relative h-24 overflow-hidden">
+          <div className="pointer-events-none absolute -bottom-4 -right-4 h-28 w-28 opacity-50 animate-planet-drift">
+            <div
+              className="absolute inset-0 rounded-full"
+              style={{
+                background: "radial-gradient(circle, rgba(212,164,90,0.35) 0%, rgba(212,164,90,0) 60%)",
+                filter: "blur(16px)",
+              }}
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/globe.svg"
+              alt=""
+              aria-hidden
+              className="relative h-full w-full object-contain"
+              style={{
+                filter:
+                  "drop-shadow(0 10px 24px rgba(0,0,0,0.5)) sepia(0.35) hue-rotate(-10deg) saturate(1.3) brightness(1.1)",
+              }}
+            />
+          </div>
+          {/* Fade into footer */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#2a0e0b] to-transparent" />
+        </div>
+      )}
+
       {/* Footer */}
-      <div className="border-t border-[#ddcfc9]/[0.06] px-2 py-3 overflow-hidden">
+      <div className="relative border-t border-[#ddcfc9]/[0.06] px-2 py-3 overflow-hidden">
         <button
           className={cn(
             "flex w-full items-center gap-3 rounded-lg py-2.5 text-[13px] font-medium text-[#b8a99e] transition-all duration-150 hover:bg-[#ddcfc9]/[0.04] hover:text-[#ddcfc9] cursor-pointer",

@@ -67,7 +67,7 @@ export default async function AssetDetailPage({ params }: { params: RouteParams 
         <div className="absolute inset-0 bg-grid-pattern opacity-50" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,164,90,0.2),transparent_55%)]" />
         <div className="pointer-events-none absolute -bottom-20 -left-20 h-[320px] w-[320px] rounded-full bg-[#6d2721] opacity-40 blur-[120px]" />
-        <PlanetDecor size={260} className="-right-10 -top-10 hidden md:block" opacity={0.45} />
+        <PlanetDecor size={110} className="-right-2 -top-2 hidden md:block" opacity={0.3} />
         <div className="relative flex flex-wrap items-center gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-black/30 px-3 py-1 text-xs font-medium text-[#ddcfc9] backdrop-blur-sm">
             <span>{categoryEmoji[asset.category]}</span>

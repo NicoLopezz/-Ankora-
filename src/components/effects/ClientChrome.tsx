@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 // Dynamic + ssr:false requiere client boundary. Este wrapper los saca del first-load.
 const CustomCursor = dynamic(
@@ -15,6 +16,8 @@ const HeroSeal = dynamic(
 
 export function ClientChrome() {
   const [finePointer, setFinePointer] = useState(false);
+  const pathname = usePathname();
+  const isDashboard = pathname?.startsWith("/dashboard");
 
   useEffect(() => {
     setFinePointer(window.matchMedia("(pointer: fine)").matches);
@@ -23,7 +26,7 @@ export function ClientChrome() {
   return (
     <>
       {finePointer && <CustomCursor />}
-      <HeroSeal />
+      {!isDashboard && <HeroSeal />}
     </>
   );
 }

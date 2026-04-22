@@ -45,9 +45,9 @@ export default function ActivosPage() {
                 <div className="absolute inset-0 bg-grid-pattern opacity-40" />
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,164,90,0.2),transparent_60%)]" />
                 <PlanetDecor
-                  size={140}
-                  className="-right-6 -top-6 transition-transform duration-500 ease-in-out group-hover:scale-110"
-                  opacity={0.4}
+                  size={80}
+                  className="-right-2 -top-2 transition-transform duration-500 ease-in-out group-hover:scale-110"
+                  opacity={0.3}
                 />
                 <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-black/30 px-2.5 py-1 text-[11px] font-medium text-[#ddcfc9] backdrop-blur-sm">
                   <span>{categoryEmoji[a.category]}</span>

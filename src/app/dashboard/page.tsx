@@ -5,7 +5,6 @@ import { PortfolioChart } from "@/components/dashboard/PortfolioChart";
 import { HoldingsTable } from "@/components/dashboard/HoldingsTable";
 import { OpportunitiesCard } from "@/components/dashboard/OpportunitiesCard";
 import { RecentActivity } from "@/components/dashboard/RecentActivity";
-import { PlanetDecor } from "@/components/dashboard/PlanetDecor";
 import {
   dummyUser,
   dummyAssets,
@@ -47,14 +46,6 @@ export default function DashboardPage() {
         {/* Ambient gold glow */}
         <div className="pointer-events-none absolute -top-20 -right-20 h-[400px] w-[400px] rounded-full bg-[#D4A45A] opacity-[0.12] blur-[140px]" />
         <div className="pointer-events-none absolute -bottom-24 left-1/3 h-[300px] w-[300px] rounded-full bg-[#6d2721] opacity-50 blur-[120px]" />
-
-        {/* Planet in corner */}
-        <PlanetDecor
-          size={300}
-          className="-right-12 -top-14 hidden md:block"
-          opacity={0.55}
-        />
-        <PlanetDecor size={180} className="-right-8 -top-6 md:hidden" opacity={0.35} />
 
         <div className="relative flex flex-col gap-6 p-6 md:flex-row md:items-center md:justify-between md:p-10">
           <div className="max-w-xl">

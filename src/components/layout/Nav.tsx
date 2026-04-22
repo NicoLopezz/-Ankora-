@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
+import { usePathname } from "next/navigation";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 
 const items = [
@@ -12,6 +13,7 @@ const items = [
 ];
 
 export function Nav() {
+  const pathname = usePathname();
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(true);
   const [scrolled, setScrolled] = useState(false);
@@ -38,6 +40,9 @@ export function Nav() {
 
     lastYRef.current = y;
   });
+
+  // Hide landing nav on dashboard routes (dashboard has its own Sidebar + Topbar)
+  if (pathname?.startsWith("/dashboard")) return null;
 
   return (
     <motion.header
