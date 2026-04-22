@@ -14,7 +14,6 @@ import {
   FileText,
 } from "lucide-react";
 import { PageHeader } from "@/components/dashboard/PageHeader";
-import { PlanetDecor } from "@/components/dashboard/PlanetDecor";
 import { dummyUser, formatDateAr } from "@/lib/dummy-data";
 import { cn } from "@/lib/utils";
 
@@ -50,7 +49,6 @@ export default function PerfilPage() {
           }}
         >
           <div className="absolute inset-0 bg-grid-pattern opacity-50" />
-          <PlanetDecor size={90} className="-right-2 -top-2" opacity={0.3} />
         </div>
         <div className="relative px-6 pb-6">
           <div className="-mt-12 flex h-20 w-20 items-center justify-center rounded-2xl border-4 border-[#4a1a16] bg-gradient-to-br from-[#D4A45A] to-[#a87a3a] text-2xl font-bold text-[#3a1410] shadow-lg">
