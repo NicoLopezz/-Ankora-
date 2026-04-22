@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 
 // Dynamic + ssr:false requiere client boundary. Este wrapper los saca del first-load.
 const CustomCursor = dynamic(
@@ -13,9 +14,15 @@ const HeroSeal = dynamic(
 );
 
 export function ClientChrome() {
+  const [finePointer, setFinePointer] = useState(false);
+
+  useEffect(() => {
+    setFinePointer(window.matchMedia("(pointer: fine)").matches);
+  }, []);
+
   return (
     <>
-      <CustomCursor />
+      {finePointer && <CustomCursor />}
       <HeroSeal />
     </>
   );

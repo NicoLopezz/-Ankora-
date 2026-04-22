@@ -149,6 +149,7 @@ export function GlobeCanvas({
     if (!ctx) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
     let dpr = Math.min(window.devicePixelRatio || 1, 2);
     let W = 0;
     let H = 0;
@@ -157,13 +158,35 @@ export function GlobeCanvas({
     let centerY = 0;
 
     // Generamos ~3x puntos, filtramos los que caen en océano para que queden
-    // aprox `pointCount` sobre los continentes.
+    // aprox `pointCount` sobre los continentes. En mobile reducimos a la mitad
+    // para bajar CPU por frame sin sacrificar silueta reconocible.
+    const effectivePointCount = isMobile ? Math.round(pointCount * 0.5) : pointCount;
     const isLand = buildLandMaskSampler();
-    const rawPoints = fibonacciSphere(pointCount * 3);
+    const rawPoints = fibonacciSphere(effectivePointCount * 3);
     const spherePoints = rawPoints.filter((v) => {
       const [lat, lng] = vecToLatLng(v);
       return isLand(lng, lat);
     });
+
+    // Accent points: ~2 por continente que destellan en bronze sobre el dot
+    // matrix. Fase desfasada por índice para que el brillo rote por el globo.
+    const ACCENT_LATLNG: [number, number][] = [
+      // Norteamérica
+      [40.7, -74.0], [34.0, -118.2], [45.5, -73.6], [41.9, -87.6], [29.7, -95.4],
+      // Centro + Caribe
+      [19.4, -99.1], [18.5, -66.1],
+      // Sudamérica (complemento — los 4 nodes reales viven en AR/BR)
+      [4.7, -74.1], [-23.5, -46.6], [-12.0, -77.0], [10.5, -66.9],
+      // Europa
+      [51.5, -0.1], [48.9, 2.3], [52.5, 13.4], [41.9, 12.5], [40.4, -3.7], [59.3, 18.1],
+      // África
+      [-1.3, 36.8], [30.0, 31.2], [6.5, 3.4], [-26.2, 28.0], [33.6, -7.6],
+      // Asia
+      [35.7, 139.7], [1.35, 103.8], [25.0, 121.5], [28.6, 77.2], [25.2, 55.3], [22.3, 114.2], [31.2, 121.5],
+      // Oceanía
+      [-33.9, 151.2], [-36.8, 174.8], [-37.8, 144.9], [-31.9, 115.9],
+    ];
+    const accentVecs = ACCENT_LATLNG.map(([lat, lng]) => latLngToVec(lat, lng));
     const nodeVecs = nodes.map((n) => latLngToVec(n.lat, n.lng));
     const arcs = connections.map(([a, b]) => {
       const samples: [number, number, number][] = [];
@@ -307,6 +330,52 @@ export function GlobeCanvas({
         ctx.fillStyle = `rgba(232, 221, 201, ${alpha})`;
         ctx.beginPath();
         ctx.arc(x, y, size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // decorative markers — replica visual de los nodes reales pero escalados
+      // y con opacidad reducida. No rotan con el tour ni interactúan; funcionan
+      // como "presencia global" del portfolio de assets.
+      const DECO_RING_CYCLE = 3200;
+      const DECO_RING_MAX = 22;
+      const DECO_SCALE = 0.6;
+      const DECO_OPACITY = 0.55;
+      for (let i = 0; i < accentVecs.length; i++) {
+        const pr = project(accentVecs[i]);
+        if (pr.z < -0.05) continue;
+        const visibleDepth = Math.max(0, Math.min(1, (pr.z + 0.2) / 1.2));
+        const pulseScale = 1 + Math.sin(t / 520 + i * 0.7) * 0.1;
+        const rBase = 4.5 * DECO_SCALE * (0.6 + visibleDepth * 0.7);
+
+        // Glow rings expandiéndose
+        for (let k = 0; k < 2; k++) {
+          const phase = ((t / DECO_RING_CYCLE) + i * 0.17 + k * 0.5) % 1;
+          const rr = rBase + phase * DECO_RING_MAX;
+          const alpha = (1 - phase) * 0.5 * visibleDepth * DECO_OPACITY;
+          ctx.strokeStyle = `rgba(203, 146, 80, ${alpha})`;
+          ctx.lineWidth = 0.9;
+          ctx.beginPath();
+          ctx.arc(pr.x, pr.y, rr, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+
+        // Halo radial
+        const hGrad = ctx.createRadialGradient(pr.x, pr.y, 0, pr.x, pr.y, rBase * 4);
+        hGrad.addColorStop(0, `rgba(203, 146, 80, ${0.45 * visibleDepth * DECO_OPACITY})`);
+        hGrad.addColorStop(1, "rgba(203, 146, 80, 0)");
+        ctx.fillStyle = hGrad;
+        ctx.beginPath();
+        ctx.arc(pr.x, pr.y, rBase * 4 * pulseScale, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Dot (core)
+        ctx.fillStyle = `rgba(232, 221, 201, ${(0.7 * visibleDepth + 0.15) * DECO_OPACITY})`;
+        ctx.beginPath();
+        ctx.arc(pr.x, pr.y, rBase, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = `rgba(203, 146, 80, ${0.85 * visibleDepth * DECO_OPACITY})`;
+        ctx.beginPath();
+        ctx.arc(pr.x, pr.y, rBase * 0.55, 0, Math.PI * 2);
         ctx.fill();
       }
 
