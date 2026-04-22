@@ -118,7 +118,7 @@ export function Hero() {
 
         <h1 className="font-display text-[clamp(2.25rem,7vw,6.5rem)] font-light leading-[1] tracking-[-0.03em] text-[var(--pale-oak)]">
           <div ref={title1Ref} style={{ opacity: 0 }}>
-            Comprá un <span className="italic text-[var(--bronze)]">pedazo</span>
+            Comprá una <span className="italic text-[var(--bronze)]">fracción</span>
           </div>
           <div ref={title2Ref} style={{ opacity: 0 }}>
             de algo <span className="gradient-text">real.</span>

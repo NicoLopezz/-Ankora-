@@ -121,7 +121,7 @@ export function About() {
                 Promesa
               </p>
               <p className="mt-3 font-display text-xl italic leading-tight text-[var(--pale-oak)] md:text-2xl">
-                Comprá un pedazo de algo real. Cobrá renta. Vendé cuando
+                Comprá una fracción de algo real. Cobrá renta. Vendé cuando
                 quieras.
               </p>
             </div>
