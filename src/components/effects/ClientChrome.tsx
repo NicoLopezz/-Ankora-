@@ -17,7 +17,7 @@ const HeroSeal = dynamic(
 export function ClientChrome() {
   const [finePointer, setFinePointer] = useState(false);
   const pathname = usePathname();
-  const isDashboard = pathname?.startsWith("/dashboard");
+  const isDashboard = pathname?.startsWith("/dashboard") || pathname?.startsWith("/admin");
 
   useEffect(() => {
     setFinePointer(window.matchMedia("(pointer: fine)").matches);

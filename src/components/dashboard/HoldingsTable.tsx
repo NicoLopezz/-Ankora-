@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { dummyAssets, formatUsd, categoryLabel, statusLabel, categoryEmoji } from "@/lib/dummy-data";
+import { dummyAssets, formatUsd, categoryLabel, statusLabel } from "@/lib/dummy-data";
 import { cn } from "@/lib/utils";
 
 const statusStyles: Record<string, string> = {
@@ -53,7 +53,6 @@ export function HoldingsTable() {
                       className="block transition-colors group-hover:text-[#D4A45A]"
                     >
                       <p className="font-medium text-[#ddcfc9] group-hover:text-[#D4A45A]">
-                        <span className="mr-1.5">{categoryEmoji[a.category]}</span>
                         {a.name}
                       </p>
                       <p className="text-xs text-[#b8a99e]">

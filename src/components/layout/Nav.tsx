@@ -41,8 +41,8 @@ export function Nav() {
     lastYRef.current = y;
   });
 
-  // Hide landing nav on dashboard routes (dashboard has its own Sidebar + Topbar)
-  if (pathname?.startsWith("/dashboard")) return null;
+  // Hide landing nav on dashboard + admin routes (both have their own shell)
+  if (pathname?.startsWith("/dashboard") || pathname?.startsWith("/admin")) return null;
 
   return (
     <motion.header

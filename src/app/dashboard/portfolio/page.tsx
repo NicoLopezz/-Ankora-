@@ -7,7 +7,6 @@ import {
   getPortfolioMetrics,
   formatUsd,
   categoryLabel,
-  categoryEmoji,
 } from "@/lib/dummy-data";
 import type { AssetCategory } from "@/types/ankora";
 
@@ -105,7 +104,7 @@ export default function PortfolioPage() {
                     style={{ backgroundColor: s.color }}
                   />
                   <span className="text-[#ddcfc9]">
-                    {categoryEmoji[s.category]} {categoryLabel[s.category]}
+                    {categoryLabel[s.category]}
                   </span>
                 </div>
                 <span className="tabular-nums font-semibold text-[#ddcfc9]">
@@ -127,10 +126,7 @@ export default function PortfolioPage() {
               return (
                 <li key={a.id}>
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-[#ddcfc9]">
-                      <span className="mr-1">{categoryEmoji[a.category]}</span>
-                      {a.shortName}
-                    </span>
+                    <span className="text-[#ddcfc9]">{a.shortName}</span>
                     <span className="tabular-nums text-[#b8a99e]">
                       <span className="text-[#D4A45A] font-semibold">
                         {a.ytdReturnPct.toFixed(1)}%

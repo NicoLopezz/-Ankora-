@@ -19,9 +19,9 @@ import {
   formatDateAr,
   categoryLabel,
   statusLabel,
-  categoryEmoji,
 } from "@/lib/dummy-data";
 import { cn } from "@/lib/utils";
+import { AssetActions } from "@/components/dashboard/AssetActions";
 
 const statusStyles: Record<string, string> = {
   activo: "bg-[#ddcfc9]/[0.06] text-[#b8a99e]",
@@ -58,17 +58,28 @@ export default async function AssetDetailPage({ params }: { params: RouteParams 
         Volver a mis activos
       </Link>
 
-      {/* Hero */}
+      {/* Hero with project image */}
       <div
-        className="relative overflow-hidden rounded-3xl border border-[#ddcfc9]/[0.08] p-6 animate-fade-in-up md:p-10"
+        className="relative overflow-hidden rounded-3xl border border-[#ddcfc9]/[0.08] p-6 animate-fade-in-up md:p-10 min-h-[360px]"
         style={{ background: `linear-gradient(135deg, ${asset.heroColor}, #3a1410 80%)` }}
       >
-        <div className="absolute inset-0 bg-grid-pattern opacity-50" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,164,90,0.2),transparent_55%)]" />
-        <div className="pointer-events-none absolute -bottom-20 -left-20 h-[320px] w-[320px] rounded-full bg-[#6d2721] opacity-40 blur-[120px]" />
+        {asset.imageUrl && (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={asset.imageUrl}
+            alt=""
+            aria-hidden
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        )}
+        {/* Dark gradient overlay for text legibility */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#3a1410] via-[#3a1410]/85 to-[#3a1410]/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#3a1410]/80 via-transparent to-[#3a1410]/20" />
+        <div className="absolute inset-0 bg-grid-pattern opacity-30" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,164,90,0.15),transparent_55%)]" />
+        <div className="pointer-events-none absolute -bottom-20 -left-20 h-[320px] w-[320px] rounded-full bg-[#6d2721] opacity-30 blur-[120px]" />
         <div className="relative flex flex-wrap items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-black/30 px-3 py-1 text-xs font-medium text-[#ddcfc9] backdrop-blur-sm">
-            <span>{categoryEmoji[asset.category]}</span>
+          <span className="inline-flex items-center rounded-full bg-black/30 px-3 py-1 text-xs font-medium text-[#ddcfc9] backdrop-blur-sm">
             {categoryLabel[asset.category]}
           </span>
           <span
@@ -167,13 +178,8 @@ export default async function AssetDetailPage({ params }: { params: RouteParams 
             style={{ width: `${Math.min(ownership * 20, 100)}%` }}
           />
         </div>
-        <div className="mt-5 flex flex-wrap gap-3">
-          <button className="inline-flex items-center gap-1.5 rounded-full bg-[#ddcfc9] px-4 py-2 text-sm font-semibold text-[#3a1410] transition-opacity hover:opacity-90">
-            Comprar más tokens
-          </button>
-          <button className="inline-flex items-center gap-1.5 rounded-full border border-[#ddcfc9]/20 px-4 py-2 text-sm font-medium text-[#ddcfc9] transition-colors hover:bg-[#ddcfc9]/[0.04]">
-            Vender en secundario
-          </button>
+        <div className="mt-5">
+          <AssetActions asset={asset} />
         </div>
       </div>
 

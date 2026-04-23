@@ -2,46 +2,39 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import dynamic from "next/dynamic";
 import { useRef } from "react";
 import { LogOut, PanelLeftClose, PanelLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import { LayoutDashboardIcon, type LayoutDashboardIconHandle } from "@/components/ui/layout-dashboard";
-import { CoinsIcon, type CoinsIconHandle } from "@/components/ui/coins";
-import { PieChartIcon, type PieChartIconHandle } from "@/components/ui/pie-chart";
-import { StoreIcon, type StoreIconHandle } from "@/components/ui/store";
 import { UsersIcon, type UsersIconHandle } from "@/components/ui/users";
 import { ArrowLeftRightIcon, type ArrowLeftRightIconHandle } from "@/components/ui/arrow-left-right";
-import { UserIcon, type UserIconHandle } from "@/components/ui/user";
-
-// Globe animado 2D (canvas) para decoración del sidebar
-const GlobeCanvas = dynamic(
-  () => import("@/components/ui/GlobeCanvas").then((m) => m.GlobeCanvas),
-  { ssr: false }
-);
+import { DollarSignIcon, type DollarSignIconHandle } from "@/components/ui/dollar-sign";
+import { ShieldIcon, type ShieldIconHandle } from "@/components/ui/shield";
+import { ShieldAlertIcon, type ShieldAlertIconHandle } from "@/components/ui/shield-alert";
+import { BuildingIcon, type BuildingIconHandle } from "@/components/ui/building";
 
 type IconHandle =
   | LayoutDashboardIconHandle
-  | CoinsIconHandle
-  | PieChartIconHandle
-  | StoreIconHandle
   | UsersIconHandle
   | ArrowLeftRightIconHandle
-  | UserIconHandle;
+  | DollarSignIconHandle
+  | ShieldIconHandle
+  | ShieldAlertIconHandle
+  | BuildingIconHandle;
 
 type IconComponent = React.ForwardRefExoticComponent<
   React.HTMLAttributes<HTMLDivElement> & { size?: number } & React.RefAttributes<IconHandle>
 >;
 
 const navItems: { href: string; label: string; Icon: IconComponent }[] = [
-  { href: "/dashboard", label: "Panel", Icon: LayoutDashboardIcon as unknown as IconComponent },
-  { href: "/dashboard/activos", label: "Mis activos", Icon: CoinsIcon as unknown as IconComponent },
-  { href: "/dashboard/portfolio", label: "Portfolio", Icon: PieChartIcon as unknown as IconComponent },
-  { href: "/dashboard/marketplace", label: "Marketplace", Icon: StoreIcon as unknown as IconComponent },
-  { href: "/dashboard/p2p", label: "Market P2P", Icon: UsersIcon as unknown as IconComponent },
-  { href: "/dashboard/transacciones", label: "Transacciones", Icon: ArrowLeftRightIcon as unknown as IconComponent },
-  { href: "/dashboard/perfil", label: "Perfil", Icon: UserIcon as unknown as IconComponent },
+  { href: "/admin", label: "Overview", Icon: LayoutDashboardIcon as unknown as IconComponent },
+  { href: "/admin/usuarios", label: "Clientes", Icon: UsersIcon as unknown as IconComponent },
+  { href: "/admin/kyc", label: "Cola KYC", Icon: ShieldIcon as unknown as IconComponent },
+  { href: "/admin/proyectos", label: "Fideicomisos", Icon: BuildingIcon as unknown as IconComponent },
+  { href: "/admin/compliance", label: "Compliance", Icon: ShieldAlertIcon as unknown as IconComponent },
+  { href: "/admin/mercado", label: "Mercado P2P", Icon: ArrowLeftRightIcon as unknown as IconComponent },
+  { href: "/admin/finanzas", label: "Tesorería", Icon: DollarSignIcon as unknown as IconComponent },
 ];
 
 interface SidebarProps {
@@ -91,35 +84,38 @@ function NavItem({
   );
 }
 
-export function Sidebar({ collapsed, onToggle }: SidebarProps) {
+export function AdminSidebar({ collapsed, onToggle }: SidebarProps) {
   const pathname = usePathname();
 
   return (
     <aside
       className={cn(
-        "fixed left-0 top-0 z-40 hidden h-screen flex-col border-r border-[#ddcfc9]/[0.06] bg-[#2a0e0b] transition-all duration-300 md:flex",
+        "fixed left-0 top-0 z-40 hidden h-screen flex-col border-r border-[#D4A45A]/[0.12] bg-[#1f0a08] transition-all duration-300 md:flex",
         collapsed ? "w-[56px]" : "w-60"
       )}
     >
-      {/* Logo */}
-      <div className="flex h-16 items-center overflow-hidden border-b border-[#ddcfc9]/[0.06] px-4">
-        <Link href="/dashboard" className="group/logo flex items-center gap-2 min-w-0">
+      {/* Logo + ADMIN badge */}
+      <div className="flex h-16 items-center overflow-hidden border-b border-[#D4A45A]/[0.12] px-4">
+        <Link href="/admin" className="group/logo flex items-center gap-2 min-w-0">
           <span className="h-2.5 w-2.5 rotate-45 rounded-sm bg-[#D4A45A] flex-shrink-0 transition-all duration-500 ease-in-out group-hover/logo:rotate-[135deg]" />
-          <span
+          <div
             className={cn(
-              "text-xl font-bold tracking-tight text-[#ddcfc9] whitespace-nowrap transition-all duration-300",
+              "flex flex-col leading-tight whitespace-nowrap transition-all duration-300",
               collapsed ? "w-0 opacity-0" : "w-auto opacity-100"
             )}
           >
-            Ankora
-          </span>
+            <span className="text-xl font-bold tracking-tight text-[#ddcfc9]">Ankora</span>
+            <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#D4A45A]">
+              Admin
+            </span>
+          </div>
         </Link>
       </div>
 
       {/* Toggle */}
       <button
         onClick={onToggle}
-        className="absolute top-[1.25rem] -right-3 z-50 flex h-6 w-6 items-center justify-center rounded-full border border-[#ddcfc9]/10 bg-[#2a0e0b] text-[#b8a99e] shadow-sm transition-colors hover:text-[#ddcfc9] cursor-pointer"
+        className="absolute top-[1.25rem] -right-3 z-50 flex h-6 w-6 items-center justify-center rounded-full border border-[#D4A45A]/20 bg-[#1f0a08] text-[#b8a99e] shadow-sm transition-colors hover:text-[#ddcfc9] cursor-pointer"
         title={collapsed ? "Expandir" : "Colapsar"}
       >
         {collapsed ? <PanelLeft className="h-3 w-3" /> : <PanelLeftClose className="h-3 w-3" />}
@@ -130,7 +126,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
         {navItems.map((item) => {
           const isActive =
             pathname === item.href ||
-            (item.href !== "/dashboard" && pathname?.startsWith(item.href));
+            (item.href !== "/admin" && pathname?.startsWith(item.href));
           return (
             <NavItem
               key={item.href}
@@ -144,18 +140,8 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
         })}
       </nav>
 
-      {/* Decorative 3D-look globe — esquinado bottom-left del sidebar */}
-      {!collapsed && (
-        <div
-          className="pointer-events-none absolute bottom-12 -left-20 h-[240px] w-[240px] opacity-60"
-          aria-hidden
-        >
-          <GlobeCanvas className="relative h-full w-full" density={1} pointCount={700} />
-        </div>
-      )}
-
       {/* Footer */}
-      <div className="relative border-t border-[#ddcfc9]/[0.06] px-2 py-3 overflow-hidden">
+      <div className="relative border-t border-[#D4A45A]/[0.12] px-2 py-3 overflow-hidden">
         <button
           className={cn(
             "flex w-full items-center gap-3 rounded-lg py-2.5 text-[13px] font-medium text-[#b8a99e] transition-all duration-150 hover:bg-[#ddcfc9]/[0.04] hover:text-[#ddcfc9] cursor-pointer",

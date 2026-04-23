@@ -8,7 +8,6 @@ import {
   formatUsd,
   formatDateAr,
   categoryLabel,
-  categoryEmoji,
 } from "@/lib/dummy-data";
 import type { AssetCategory } from "@/types/ankora";
 import { cn } from "@/lib/utils";
@@ -73,8 +72,7 @@ export default function MarketplacePage() {
             className="group flex flex-col rounded-2xl border border-[#ddcfc9]/[0.08] bg-[#4a1a16] p-5 transition-all duration-300 ease-in-out hover:-translate-y-[3px] hover:border-[#D4A45A]/40 hover:shadow-[0_16px_48px_rgba(212,164,90,0.08)]"
           >
             <div className="flex items-center justify-between gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#ddcfc9]/[0.04] px-2.5 py-1 text-[11px] font-medium text-[#b8a99e]">
-                <span>{categoryEmoji[op.category]}</span>
+              <span className="inline-flex items-center rounded-full bg-[#ddcfc9]/[0.04] px-2.5 py-1 text-[11px] font-medium text-[#b8a99e]">
                 {categoryLabel[op.category]}
               </span>
               {op.highlight && (

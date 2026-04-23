@@ -339,3 +339,15 @@ html.lenis body {
 .animate-pulse-gold {
   animation: pulse-gold 2.4s ease-out infinite;
 }
+
+/* Hide main scrollbar on dashboard routes (applied via layout.tsx) */
+html.dashboard-no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge legacy */
+}
+html.dashboard-no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+html.dashboard-no-scrollbar body::-webkit-scrollbar {
+  display: none;
+}

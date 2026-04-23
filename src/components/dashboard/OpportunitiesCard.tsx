@@ -4,8 +4,8 @@ import { dummyOpportunities, categoryLabel, formatUsd, formatDateAr } from "@/li
 
 export function OpportunitiesCard() {
   return (
-    <div className="rounded-2xl border border-[#ddcfc9]/[0.08] bg-[#4a1a16] p-5 md:p-6">
-      <div className="flex items-start justify-between">
+    <div className="flex h-full max-h-[640px] flex-col rounded-2xl border border-[#ddcfc9]/[0.08] bg-[#4a1a16] p-5 md:p-6">
+      <div className="flex flex-shrink-0 items-start justify-between">
         <div>
           <div className="inline-flex items-center gap-1.5 rounded-full bg-[#D4A45A]/10 px-2.5 py-1 text-[11px] font-medium text-[#D4A45A]">
             <Sparkles className="h-3 w-3" />
@@ -24,7 +24,7 @@ export function OpportunitiesCard() {
         </Link>
       </div>
 
-      <div className="mt-5 space-y-3">
+      <div className="mt-5 flex-1 min-h-0 space-y-3 overflow-y-auto pr-1 [mask-image:linear-gradient(to_bottom,black_calc(100%-24px),transparent)]">
         {dummyOpportunities.map((op) => (
           <div
             key={op.id}

@@ -6,7 +6,6 @@ import {
   formatUsd,
   categoryLabel,
   statusLabel,
-  categoryEmoji,
 } from "@/lib/dummy-data";
 import { cn } from "@/lib/utils";
 
@@ -36,15 +35,24 @@ export default function ActivosPage() {
               href={`/dashboard/activos/${a.slug}`}
               className="group relative overflow-hidden rounded-2xl border border-[#ddcfc9]/[0.08] bg-[#4a1a16] transition-all duration-300 ease-in-out hover:-translate-y-[3px] hover:border-[#D4A45A]/40 hover:shadow-[0_16px_48px_rgba(212,164,90,0.08)]"
             >
-              {/* Hero strip */}
+              {/* Hero strip with project image */}
               <div
-                className="relative h-28 overflow-hidden"
+                className="relative h-36 overflow-hidden"
                 style={{ background: `linear-gradient(135deg, ${a.heroColor}, #3a1410)` }}
               >
-                <div className="absolute inset-0 bg-grid-pattern opacity-40" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,164,90,0.2),transparent_60%)]" />
-                <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-black/30 px-2.5 py-1 text-[11px] font-medium text-[#ddcfc9] backdrop-blur-sm">
-                  <span>{categoryEmoji[a.category]}</span>
+                {a.imageUrl && (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img
+                    src={a.imageUrl}
+                    alt=""
+                    aria-hidden
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-[6000ms] ease-[cubic-bezier(0.6,0.01,0.05,0.95)] group-hover:scale-110"
+                  />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#3a1410] via-[#3a1410]/60 to-[#3a1410]/20" />
+                <div className="absolute inset-0 bg-grid-pattern opacity-25" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,164,90,0.15),transparent_60%)]" />
+                <div className="absolute top-4 left-4 inline-flex items-center rounded-full bg-black/30 px-2.5 py-1 text-[11px] font-medium text-[#ddcfc9] backdrop-blur-sm">
                   {categoryLabel[a.category]}
                 </div>
                 <div className="absolute top-4 right-4">

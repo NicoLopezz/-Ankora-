@@ -39,46 +39,52 @@ export default function PerfilPage() {
         description="Datos personales, verificación y preferencias"
       />
 
-      {/* Identity card */}
-      <div className="relative overflow-hidden rounded-2xl border border-[#ddcfc9]/[0.08] bg-[#4a1a16] animate-fade-in-up animate-delay-100">
-        <div
-          className="relative h-28 overflow-hidden"
-          style={{
-            background:
-              "linear-gradient(135deg, #6d2721, #3a1410 70%), radial-gradient(circle at top right, rgba(212,164,90,0.2), transparent 60%)",
-          }}
-        >
-          <div className="absolute inset-0 bg-grid-pattern opacity-50" />
-        </div>
-        <div className="relative px-6 pb-6">
-          <div className="-mt-12 flex h-20 w-20 items-center justify-center rounded-2xl border-4 border-[#4a1a16] bg-gradient-to-br from-[#D4A45A] to-[#a87a3a] text-2xl font-bold text-[#3a1410] shadow-lg">
+      {/* Identity card — dense horizontal layout */}
+      <div
+        className="relative overflow-hidden rounded-2xl border border-[#ddcfc9]/[0.08] bg-[#4a1a16] p-5 animate-fade-in-up animate-delay-100 md:p-6"
+        style={{
+          backgroundImage:
+            "radial-gradient(ellipse at top right, rgba(212,164,90,0.08), transparent 55%)",
+        }}
+      >
+        <div className="pointer-events-none absolute inset-0 bg-grid-pattern opacity-20" />
+
+        <div className="relative flex flex-col gap-5 md:flex-row md:items-center md:gap-6">
+          {/* Avatar */}
+          <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#D4A45A] to-[#a87a3a] text-xl font-bold text-[#3a1410] shadow-lg md:h-20 md:w-20 md:text-2xl">
             {initials}
           </div>
-          <div className="mt-4 flex flex-wrap items-start justify-between gap-3">
-            <div>
-              <h2 className="text-xl font-semibold text-[#ddcfc9]">{dummyUser.name}</h2>
-              <p className="mt-0.5 text-sm text-[#b8a99e]">
-                Inversor desde {formatDateAr(dummyUser.memberSince)}
-              </p>
-            </div>
-            {dummyUser.kycVerified && (
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#D4A45A]/30 bg-[#D4A45A]/5 px-3 py-1.5 text-xs font-medium text-[#D4A45A]">
-                <ShieldCheck className="h-3.5 w-3.5" />
-                KYC verificado
-              </span>
-            )}
-          </div>
 
-          <div className="mt-6 grid gap-3 md:grid-cols-2">
-            <InfoRow icon={Mail} label="Email" value={dummyUser.email} />
-            <InfoRow icon={Phone} label="Teléfono" value={dummyUser.phone} />
-            <InfoRow icon={Globe} label="País" value={dummyUser.country} />
-            <InfoRow
-              icon={CalendarDays}
-              label="Miembro desde"
-              value={formatDateAr(dummyUser.memberSince)}
-            />
+          {/* Name + member */}
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <h2 className="text-xl font-semibold text-[#ddcfc9] md:text-2xl">
+                {dummyUser.name}
+              </h2>
+              {dummyUser.kycVerified && (
+                <span className="inline-flex items-center gap-1 rounded-full border border-[#D4A45A]/30 bg-[#D4A45A]/5 px-2.5 py-0.5 text-[11px] font-medium text-[#D4A45A]">
+                  <ShieldCheck className="h-3 w-3" />
+                  KYC verificado
+                </span>
+              )}
+            </div>
+            <p className="mt-1 text-sm text-[#b8a99e]">
+              Inversor desde {formatDateAr(dummyUser.memberSince)} ·{" "}
+              <span className="font-mono text-[#ddcfc9]">{dummyUser.walletShort}</span>
+            </p>
           </div>
+        </div>
+
+        {/* Info grid */}
+        <div className="relative mt-5 grid gap-2.5 md:mt-6 md:grid-cols-4">
+          <InfoRow icon={Mail} label="Email" value={dummyUser.email} />
+          <InfoRow icon={Phone} label="Teléfono" value={dummyUser.phone} />
+          <InfoRow icon={Globe} label="País" value={dummyUser.country} />
+          <InfoRow
+            icon={CalendarDays}
+            label="Miembro desde"
+            value={formatDateAr(dummyUser.memberSince)}
+          />
         </div>
       </div>
 
