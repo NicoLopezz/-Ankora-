@@ -32,10 +32,27 @@ const geistMono = Geist_Mono({
   weight: ["400"],
 });
 
+const siteUrl = "https://ankora.blexgroup.com";
+const siteDescription =
+  "Regulated marketplace for tokenized real-world assets. Vineyards, land, real estate and infrastructure from USD 500. Operated by AMG Capital Group S.A. under CNV regime RG 1069/2025.";
+
 export const metadata: Metadata = {
-  title: "Ankora",
-  description:
-    "Marketplace regulado de tokenización de activos reales. Viñedos, tierras, inmobiliario e infraestructura desde USD 500. Operado por AMG Capital Group S.A. bajo régimen CNV RG 1069/2025.",
+  metadataBase: new URL(siteUrl),
+  title: "Ankora — Anchored to real assets",
+  description: siteDescription,
+  openGraph: {
+    title: "Ankora — Anchored to real assets",
+    description: siteDescription,
+    url: siteUrl,
+    siteName: "Ankora",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ankora — Anchored to real assets",
+    description: siteDescription,
+  },
 };
 
 export const viewport: Viewport = {
