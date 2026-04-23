@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Search, ShieldCheck, ShieldAlert, Clock, Ban, Flag } from "lucide-react";
+import { Search, ShieldCheck, ShieldAlert, Clock, Ban, Flag, Users } from "lucide-react";
 import { PageHeader } from "@/components/dashboard/PageHeader";
+import { EmptyState } from "@/components/dashboard/EmptyState";
 import { dummyClients } from "@/lib/admin-data";
 import { formatUsd, formatDateAr } from "@/lib/dummy-data";
 import type { ClientKycStatus } from "@/types/ankora";
@@ -198,7 +199,12 @@ export default function AdminUsuariosPage() {
           </table>
         </div>
         {filtered.length === 0 && (
-          <p className="p-8 text-center text-sm text-[#b8a99e]">Sin clientes para este filtro</p>
+          <EmptyState
+            icon={Users}
+            title="Sin clientes para este filtro"
+            description="Ajustá la búsqueda o el estado KYC para ver otros resultados"
+            className="border-0 bg-transparent"
+          />
         )}
       </div>
     </div>

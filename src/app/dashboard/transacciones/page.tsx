@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowDownLeft, ArrowUpRight, Coins, Download, ExternalLink } from "lucide-react";
+import { ArrowDownLeft, ArrowUpRight, Coins, Download, ExternalLink, Receipt } from "lucide-react";
 import { PageHeader } from "@/components/dashboard/PageHeader";
+import { EmptyState } from "@/components/dashboard/EmptyState";
 import { dummyTransactions, formatUsd, formatDateAr } from "@/lib/dummy-data";
 import type { Transaction } from "@/types/ankora";
 import { cn } from "@/lib/utils";
@@ -205,7 +206,13 @@ export default function TransaccionesPage() {
         </div>
 
         {filtered.length === 0 && (
-          <p className="py-12 text-center text-sm text-[#b8a99e]">Sin movimientos en esta categoría.</p>
+          <EmptyState
+            icon={Receipt}
+            title="Sin movimientos en esta categoría"
+            description="Probá cambiar el filtro o hacé tu primera operación"
+            action={{ label: "Explorar marketplace", href: "/dashboard/marketplace" }}
+            className="border-0 bg-transparent"
+          />
         )}
       </div>
     </div>

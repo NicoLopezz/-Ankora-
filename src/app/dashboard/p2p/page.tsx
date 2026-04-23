@@ -16,6 +16,7 @@ import {
 import { PageHeader } from "@/components/dashboard/PageHeader";
 import { Dialog } from "@/components/dashboard/Dialog";
 import { P2PTakeOrderDialog } from "@/components/dashboard/P2PTakeOrderDialog";
+import { EmptyState } from "@/components/dashboard/EmptyState";
 import { useToast } from "@/components/ui/toast";
 import {
   dummyP2POrders,
@@ -345,15 +346,12 @@ export default function P2PPage() {
         </div>
 
         {visible.length === 0 && (
-          <div className="flex flex-col items-center gap-2 px-6 py-16 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#ddcfc9]/[0.04]">
-              <Clock className="h-5 w-5 text-[#b8a99e]" />
-            </div>
-            <p className="text-sm text-[#ddcfc9]">No hay órdenes en este momento</p>
-            <p className="text-xs text-[#b8a99e]">
-              Probá cambiar el filtro o publicá tu propia orden
-            </p>
-          </div>
+          <EmptyState
+            icon={Clock}
+            title="Sin órdenes disponibles"
+            description="No hay operaciones abiertas para este filtro. Publicá tu propia orden y se matchea en cuanto aparezca una contraparte."
+            className="border-0 bg-transparent"
+          />
         )}
       </div>
 

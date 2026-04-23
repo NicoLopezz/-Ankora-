@@ -22,6 +22,7 @@ import {
 } from "@/lib/dummy-data";
 import { cn } from "@/lib/utils";
 import { AssetActions } from "@/components/dashboard/AssetActions";
+import { AssetGallery } from "@/components/dashboard/AssetGallery";
 
 const statusStyles: Record<string, string> = {
   activo: "bg-[#ddcfc9]/[0.06] text-[#b8a99e]",
@@ -253,6 +254,9 @@ export default async function AssetDetailPage({ params }: { params: RouteParams 
           </ol>
         </div>
       </div>
+
+      {/* Gallery */}
+      {asset.gallery && asset.gallery.length > 0 && <AssetGallery items={asset.gallery} />}
 
       {/* Documents */}
       <div className="rounded-2xl border border-[#ddcfc9]/[0.08] bg-[#4a1a16] p-6 animate-fade-in-up animate-delay-400">

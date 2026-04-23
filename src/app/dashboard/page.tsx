@@ -5,6 +5,7 @@ import { HoldingsTable } from "@/components/dashboard/HoldingsTable";
 import { OpportunitiesCard } from "@/components/dashboard/OpportunitiesCard";
 import { RecentActivity } from "@/components/dashboard/RecentActivity";
 import { ActivitySummary } from "@/components/dashboard/ActivitySummary";
+import { OnboardingChecklist } from "@/components/dashboard/OnboardingChecklist";
 import { dummyUser, getPortfolioMetrics, formatUsd, formatDateAr } from "@/lib/dummy-data";
 
 export default function DashboardPage() {
@@ -27,6 +28,9 @@ export default function DashboardPage() {
           desde que empezaste.
         </p>
       </div>
+
+      {/* Onboarding checklist — aparece hasta completar todos los pasos, dismissible */}
+      <OnboardingChecklist />
 
       {/* Activity summary — dividendos, próximo pago, últimas liquidaciones, hitos */}
       <ActivitySummary />

@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { MapPin, Sparkles, ShieldCheck } from "lucide-react";
+import { MapPin, Sparkles, ShieldCheck, Store } from "lucide-react";
 import { PageHeader } from "@/components/dashboard/PageHeader";
+import { EmptyState } from "@/components/dashboard/EmptyState";
 import {
   dummyOpportunities,
   formatUsd,
@@ -134,9 +135,11 @@ export default function MarketplacePage() {
       </div>
 
       {filtered.length === 0 && (
-        <p className="py-12 text-center text-sm text-[#b8a99e]">
-          No hay oportunidades en esta categoría por ahora.
-        </p>
+        <EmptyState
+          icon={Store}
+          title="Sin oportunidades en esta categoría"
+          description="Estamos evaluando nuevos proyectos para esta vertical. Mirá los otros activos disponibles."
+        />
       )}
     </div>
   );

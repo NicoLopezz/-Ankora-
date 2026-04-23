@@ -41,6 +41,7 @@ export interface Asset {
   nextDividendDate?: string;
   heroColor: string;
   imageUrl?: string;
+  gallery?: { src: string; caption?: string }[];
   dividendHistory: DividendEntry[];
   milestones: Milestone[];
   documents: AssetDocument[];

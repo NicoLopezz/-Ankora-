@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   CheckCircle2,
   Copy,
@@ -10,21 +9,15 @@ import {
   CalendarDays,
   ShieldCheck,
   Wallet,
-  Bell,
   FileText,
 } from "lucide-react";
 import { PageHeader } from "@/components/dashboard/PageHeader";
+import { ReferralProgram } from "@/components/dashboard/ReferralProgram";
+import { NotificationPreferences } from "@/components/dashboard/NotificationPreferences";
 import { dummyUser, formatDateAr } from "@/lib/dummy-data";
 import { cn } from "@/lib/utils";
 
 export default function PerfilPage() {
-  const [notif, setNotif] = useState({
-    dividendos: true,
-    nuevasOportunidades: true,
-    reportes: false,
-    marketing: false,
-  });
-
   const initials = dummyUser.name
     .split(" ")
     .map((n) => n[0])
@@ -147,56 +140,11 @@ export default function PerfilPage() {
         </div>
       </div>
 
-      {/* Notifications */}
-      <div className="rounded-2xl border border-[#ddcfc9]/[0.08] bg-[#4a1a16] p-6 animate-fade-in-up animate-delay-300">
-        <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#D4A45A]/10 text-[#D4A45A]">
-            <Bell className="h-4 w-4" />
-          </div>
-          <h3 className="text-sm font-semibold text-[#ddcfc9]">Notificaciones</h3>
-        </div>
-        <p className="mt-3 text-xs text-[#b8a99e]">Elegí qué eventos querés recibir por email</p>
+      {/* Referral program */}
+      <ReferralProgram />
 
-        <div className="mt-5 space-y-2">
-          {(
-            [
-              { key: "dividendos", label: "Pagos de dividendos", desc: "Te avisamos cada vez que recibís un pago." },
-              { key: "nuevasOportunidades", label: "Nuevas oportunidades", desc: "Proyectos recién lanzados en el marketplace." },
-              { key: "reportes", label: "Reportes trimestrales", desc: "Informes operativos de tus activos." },
-              { key: "marketing", label: "Novedades y newsletter", desc: "Contenido de la comunidad Ankora." },
-            ] as const
-          ).map((opt) => {
-            const on = notif[opt.key];
-            return (
-              <label
-                key={opt.key}
-                className="flex cursor-pointer items-center justify-between rounded-xl border border-[#ddcfc9]/[0.06] bg-[#ddcfc9]/[0.02] px-4 py-3 transition-colors hover:border-[#D4A45A]/30"
-              >
-                <div>
-                  <p className="text-sm font-medium text-[#ddcfc9]">{opt.label}</p>
-                  <p className="mt-0.5 text-[11px] text-[#b8a99e]">{opt.desc}</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setNotif((s) => ({ ...s, [opt.key]: !s[opt.key] }))}
-                  className={cn(
-                    "relative h-5 w-9 flex-shrink-0 rounded-full transition-colors",
-                    on ? "bg-[#D4A45A]" : "bg-[#ddcfc9]/10"
-                  )}
-                  aria-pressed={on}
-                >
-                  <span
-                    className={cn(
-                      "absolute top-0.5 h-4 w-4 rounded-full bg-[#3a1410] shadow-sm transition-all",
-                      on ? "left-4" : "left-0.5"
-                    )}
-                  />
-                </button>
-              </label>
-            );
-          })}
-        </div>
-      </div>
+      {/* Notifications preferences — matrix email/push/in-app */}
+      <NotificationPreferences />
     </div>
   );
 }
