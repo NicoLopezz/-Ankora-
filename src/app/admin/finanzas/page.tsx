@@ -10,7 +10,7 @@ export default function AdminFinanzasPage() {
       <PageHeader
         eyebrow="Admin"
         title="Tesorería"
-        description="Fees, escrow, dividendos pendientes · conciliación Allaria"
+        description="Fees, escrow, dividendos pendientes · conciliación fiduciario"
       />
 
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">

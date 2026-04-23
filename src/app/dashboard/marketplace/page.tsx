@@ -39,7 +39,7 @@ export default function MarketplacePage() {
         action={
           <div className="inline-flex items-center gap-1.5 rounded-full border border-[#D4A45A]/30 bg-[#D4A45A]/5 px-3 py-1.5 text-xs font-medium text-[#D4A45A]">
             <ShieldCheck className="h-3.5 w-3.5" />
-            Fiduciario: Allaria SA
+            Fiduciario: ALyC regulado
           </div>
         }
       />
