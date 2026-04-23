@@ -1,11 +1,14 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter_Tight, Geist_Mono } from "next/font/google";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 import "./globals.css";
 import { SmoothScroll } from "@/components/effects/SmoothScroll";
 import { NoiseOverlay } from "@/components/effects/NoiseOverlay";
 import { ScrollProgress } from "@/components/effects/ScrollProgress";
 import { ClientChrome } from "@/components/effects/ClientChrome";
 import { Nav } from "@/components/layout/Nav";
+import { LanguageSwitch } from "@/components/layout/LanguageSwitch";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -30,7 +33,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ankora — Anchored to real assets",
+  title: "Ankora",
   description:
     "Marketplace regulado de tokenización de activos reales. Viñedos, tierras, inmobiliario e infraestructura desde USD 500. Operado por AMG Capital Group S.A. bajo régimen CNV RG 1069/2025.",
 };
@@ -40,22 +43,27 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
   return (
     <html
-      lang="es"
+      lang={locale}
       className={`${fraunces.variable} ${interTight.variable} ${geistMono.variable} antialiased`}
     >
       <body className="relative min-h-screen bg-[var(--background)] text-[var(--foreground)]">
-        <SmoothScroll>
-          <Nav />
-          <ScrollProgress />
-          {children}
-        </SmoothScroll>
-        <NoiseOverlay />
-        <ClientChrome />
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <SmoothScroll>
+            <Nav />
+            <ScrollProgress />
+            {children}
+          </SmoothScroll>
+          <LanguageSwitch />
+          <NoiseOverlay />
+          <ClientChrome />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

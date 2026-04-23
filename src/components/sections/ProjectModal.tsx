@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { X, ArrowUpRight, MapPin, Calendar, ShieldCheck, Layers, ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export type ProjectDetail = {
   slug: string;
@@ -33,6 +34,7 @@ type Props = {
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 export function ProjectModal({ project, onClose }: Props) {
+  const t = useTranslations("projectModal");
   // ESC + lock scroll
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -58,7 +60,7 @@ export function ProjectModal({ project, onClose }: Props) {
     >
       {/* Backdrop */}
       <motion.button
-        aria-label="Cerrar"
+        aria-label={t("close")}
         onClick={onClose}
         variants={{
           hidden: { opacity: 0 },
@@ -87,7 +89,7 @@ export function ProjectModal({ project, onClose }: Props) {
         <button
           onClick={onClose}
           data-cursor="hover"
-          aria-label="Cerrar"
+          aria-label={t("close")}
           className="absolute right-5 top-5 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-[var(--pale-oak)]/25 bg-black/40 text-[var(--pale-oak)] backdrop-blur-md transition-colors duration-300 hover:border-[var(--bronze)] hover:bg-[var(--bronze)] hover:text-[var(--night-bordeaux)]"
         >
           <X className="h-4 w-4" />
@@ -156,7 +158,7 @@ export function ProjectModal({ project, onClose }: Props) {
           >
             <div className="md:col-span-3">
               <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.3em] text-[var(--pale-oak)]/55">
-                Sobre el proyecto
+                {t("about")}
               </p>
               <p className="text-lg leading-relaxed text-[var(--pale-oak)]/85">
                 {project.description}
@@ -180,7 +182,7 @@ export function ProjectModal({ project, onClose }: Props) {
               {project.gallery && project.gallery.length > 0 && (
                 <div className="mt-12">
                   <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.3em] text-[var(--pale-oak)]/55">
-                    Galería
+                    {t("gallery")}
                   </p>
                   <GalleryStrip gallery={project.gallery} />
                 </div>
@@ -189,16 +191,16 @@ export function ProjectModal({ project, onClose }: Props) {
 
             <aside className="md:col-span-2">
               <div className="glass-card flex flex-col gap-5 p-6">
-                <Stat label="TIR estimada" value={project.tir} accent />
-                <Stat label="Ticket mínimo" value={project.min} />
+                <Stat label={t("tir")} value={project.tir} accent />
+                <Stat label={t("ticketMin")} value={project.min} />
                 <div className="h-px bg-[var(--pale-oak)]/15" />
-                <Stat label="Emisor" value={project.emitter} icon={<ShieldCheck className="h-3.5 w-3.5" />} />
-                <Stat label="Cronograma" value={project.timeline} icon={<Calendar className="h-3.5 w-3.5" />} />
-                <Stat label="Monto objetivo" value={project.totalRaise} icon={<Layers className="h-3.5 w-3.5" />} />
+                <Stat label={t("emitter")} value={project.emitter} icon={<ShieldCheck className="h-3.5 w-3.5" />} />
+                <Stat label={t("timeline")} value={project.timeline} icon={<Calendar className="h-3.5 w-3.5" />} />
+                <Stat label={t("totalRaise")} value={project.totalRaise} icon={<Layers className="h-3.5 w-3.5" />} />
 
                 <div>
                   <div className="mb-2 flex justify-between font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--pale-oak)]/60">
-                    <span>Colocado</span>
+                    <span>{t("sold")}</span>
                     <span>{project.soldPct}%</span>
                   </div>
                   <div className="relative h-1 overflow-hidden rounded-full bg-[var(--pale-oak)]/10">
@@ -216,7 +218,7 @@ export function ProjectModal({ project, onClose }: Props) {
                   data-cursor="hover"
                   className="btn-gold group/btn mt-2 text-sm"
                 >
-                  Invertir ahora
+                  {t("invest")}
                   <ArrowUpRight className="h-4 w-4 transition-transform duration-500 ease-out group-hover/btn:rotate-45" />
                 </a>
               </div>
@@ -229,6 +231,7 @@ export function ProjectModal({ project, onClose }: Props) {
 }
 
 function GalleryStrip({ gallery }: { gallery: NonNullable<ProjectDetail["gallery"]> }) {
+  const t = useTranslations("projectModal");
   const [lightbox, setLightbox] = useState<number | null>(null);
 
   // ESC cierra sólo el lightbox (frena al parent) + flechas para navegar
@@ -265,7 +268,7 @@ function GalleryStrip({ gallery }: { gallery: NonNullable<ProjectDetail["gallery
             }}
             tabIndex={0}
             role="button"
-            aria-label={`Ampliar ${g.alt}`}
+            aria-label={t("zoom", { alt: g.alt })}
             data-cursor="hover"
             className="group relative cursor-zoom-in overflow-hidden rounded-2xl border border-[var(--pale-oak)]/10 bg-black/20 outline-none focus-visible:ring-2 focus-visible:ring-[var(--bronze)]"
           >
@@ -306,7 +309,7 @@ function GalleryStrip({ gallery }: { gallery: NonNullable<ProjectDetail["gallery
             transition={{ duration: 0.3, ease: EASE }}
           >
             <motion.button
-              aria-label="Cerrar vista ampliada"
+              aria-label={t("closeZoom")}
               onClick={() => setLightbox(null)}
               data-cursor="hover"
               className="absolute inset-0 cursor-zoom-out bg-black/80 backdrop-blur-xl"
@@ -348,7 +351,7 @@ function GalleryStrip({ gallery }: { gallery: NonNullable<ProjectDetail["gallery
                 setLightbox((i) => (i === null ? 0 : (i - 1 + gallery.length) % gallery.length));
               }}
               data-cursor="hover"
-              aria-label="Imagen anterior"
+              aria-label={t("prevImage")}
               className="absolute left-3 top-1/2 z-[2] flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-[var(--pale-oak)]/25 bg-black/50 text-[var(--pale-oak)] backdrop-blur-md transition-colors hover:border-[var(--bronze)] hover:text-[var(--bronze)] md:left-6"
             >
               <ChevronLeft className="h-5 w-5" />
@@ -360,7 +363,7 @@ function GalleryStrip({ gallery }: { gallery: NonNullable<ProjectDetail["gallery
                 setLightbox((i) => (i === null ? 0 : (i + 1) % gallery.length));
               }}
               data-cursor="hover"
-              aria-label="Imagen siguiente"
+              aria-label={t("nextImage")}
               className="absolute right-3 top-1/2 z-[2] flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-[var(--pale-oak)]/25 bg-black/50 text-[var(--pale-oak)] backdrop-blur-md transition-colors hover:border-[var(--bronze)] hover:text-[var(--bronze)] md:right-6"
             >
               <ChevronRight className="h-5 w-5" />
@@ -372,7 +375,7 @@ function GalleryStrip({ gallery }: { gallery: NonNullable<ProjectDetail["gallery
                 setLightbox(null);
               }}
               data-cursor="hover"
-              aria-label="Cerrar"
+              aria-label={t("close")}
               className="absolute right-3 top-3 z-[2] flex h-10 w-10 items-center justify-center rounded-full border border-[var(--pale-oak)]/25 bg-black/50 text-[var(--pale-oak)] backdrop-blur-md transition-colors hover:border-[var(--bronze)] hover:text-[var(--bronze)] md:right-6 md:top-6"
             >
               <X className="h-4 w-4" />

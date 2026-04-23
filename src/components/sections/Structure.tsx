@@ -2,40 +2,22 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { useTranslations } from "next-intl";
 
-type Pillar = {
-  role: string;
-  name: string;
-  detail: string;
-};
-
-const pillars: Pillar[] = [
-  {
-    role: "Operador · PSAV",
-    name: "AMG Capital Group S.A.",
-    detail: "Inscripto en CNV como Proveedor de Servicios de Activos Virtuales — DI-2024-50276668. Opera el marketplace y custodia los tokens.",
-  },
-  {
-    role: "Fiduciario · Colocador",
-    name: "Allaria S.A.",
-    detail: "ALyC top-tier. Administra los fideicomisos financieros que son el vehículo legal de cada emisión y coloca los tokens.",
-  },
-  {
-    role: "Stack tecnológico",
-    name: "Brickken",
-    detail: "White-label de tokenización. Smart contracts estándar ERC-7943, desplegados en Polygon.",
-  },
-  {
-    role: "Marco regulatorio",
-    name: "CNV RG 1069/2025",
-    detail: "Régimen de tokenización de activos reales en Argentina (con RG 1081 y 1087 modificatorias). Sandbox sancionado.",
-  },
-];
+const pillarKeys = ["operator", "trustee", "tech", "regulatory"] as const;
+type PillarKey = (typeof pillarKeys)[number];
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 export function Structure() {
-  const [activeMobile, setActiveMobile] = useState(0);
+  const t = useTranslations("structure");
+  const [activeMobile, setActiveMobile] = useState<number>(0);
+  const pillars = pillarKeys.map((key) => ({
+    key,
+    role: t(`pillars.${key}.role`),
+    name: t(`pillars.${key}.name`),
+    detail: t(`pillars.${key}.detail`),
+  }));
   const activePillar = pillars[activeMobile];
 
   return (
@@ -47,19 +29,17 @@ export function Structure() {
         <div>
           <p className="mb-6 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--pale-oak)]/60">
             <span className="inline-block h-px w-10 bg-[var(--bronze)]" />
-            Cómo está estructurado
+            {t("kicker")}
           </p>
           <h2
             className="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-light leading-[0.95] tracking-[-0.02em] text-[var(--pale-oak)]"
             style={{ textShadow: "0 2px 24px rgba(0,0,0,0.45), 0 1px 2px rgba(0,0,0,0.35)" }}
           >
-            Regulado. <span className="italic text-[var(--bronze)]">Custodiado.</span> Auditable.
+            {t("titlePre")} <span className="italic text-[var(--bronze)]">{t("titleEm")}</span> {t("titlePost")}
           </h2>
         </div>
         <p className="max-w-md text-sm leading-relaxed text-[var(--pale-oak)]/65">
-          Cada activo del marketplace se emite como fideicomiso financiero con
-          oferta pública bajo supervisión de la CNV. Roles separados — operador,
-          fiduciario, tecnología, legal — cada uno con responsabilidad propia.
+          {t("lead")}
         </p>
       </div>
 
@@ -143,39 +123,19 @@ export function Structure() {
         transition={{ duration: 0.8, ease: EASE, delay: 0.4 }}
         className="mt-16 flex flex-col gap-4 border-t border-[var(--pale-oak)]/10 pt-10 md:mt-20 md:flex-row md:items-start md:gap-12"
       >
-        <div className="flex-1">
-          <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[var(--pale-oak)]/55">
-            Asesoría legal
-          </p>
-          <p className="mt-2 font-display text-lg text-[var(--pale-oak)]">
-            Estudio MB Partners
-          </p>
-          <p className="mt-1 text-sm text-[var(--pale-oak)]/55">
-            Estructuración, compliance, representación ante CNV.
-          </p>
-        </div>
-        <div className="flex-1">
-          <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[var(--pale-oak)]/55">
-            Procesamiento fiat
-          </p>
-          <p className="mt-2 font-display text-lg text-[var(--pale-oak)]">
-            Mecaenpol S.R.L.
-          </p>
-          <p className="mt-1 text-sm text-[var(--pale-oak)]/55">
-            PSPCP inscripto en BCRA. On-ramp en pesos argentinos.
-          </p>
-        </div>
-        <div className="flex-1">
-          <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[var(--pale-oak)]/55">
-            Holding
-          </p>
-          <p className="mt-2 font-display text-lg text-[var(--pale-oak)]">
-            Grupo Blex
-          </p>
-          <p className="mt-1 text-sm text-[var(--pale-oak)]/55">
-            AMG Capital Group y Mecaenpol son parte del grupo.
-          </p>
-        </div>
+        {(["legal", "fiat", "holding"] as const).map((key) => (
+          <div key={key} className="flex-1">
+            <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[var(--pale-oak)]/55">
+              {t(`advisors.${key}.kicker`)}
+            </p>
+            <p className="mt-2 font-display text-lg text-[var(--pale-oak)]">
+              {t(`advisors.${key}.name`)}
+            </p>
+            <p className="mt-1 text-sm text-[var(--pale-oak)]/55">
+              {t(`advisors.${key}.detail`)}
+            </p>
+          </div>
+        ))}
       </motion.div>
     </section>
   );

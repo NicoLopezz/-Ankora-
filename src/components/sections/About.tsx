@@ -2,45 +2,26 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { useTranslations } from "next-intl";
 
-const values = [
-  {
-    key: "real",
-    label: "Real",
-    tagline: "Si no se puede ver, tocar o visitar, no entra.",
-    body: "Cero activos sintéticos. Cero derivados. Cada token tiene atrás una hectárea, un metro cuadrado, una cosecha.",
-  },
-  {
-    key: "anclado",
-    label: "Anclado",
-    tagline: "El yield viene del mundo físico.",
-    body: "No staking, no farming. Viene de un viñedo en producción, una propiedad rentada, una infraestructura energética.",
-  },
-  {
-    key: "regulado",
-    label: "Regulado",
-    tagline: "La regulación es parte del producto.",
-    body: "Operamos bajo CNV RG 1069/1081/1087 porque la regulación es una promesa al inversor, no un obstáculo.",
-  },
-  {
-    key: "accesible",
-    label: "Accesible",
-    tagline: "Tickets desde USD 500. Calidad premium.",
-    body: "No competimos con plataformas que venden tokens de USD 5. Accesibilidad de entry, calidad de selección.",
-  },
-  {
-    key: "global",
-    label: "Global",
-    tagline: "Un inversor en Miami, con la misma facilidad que uno en Buenos Aires.",
-    body: "Pesos argentinos, dólares, transferencias internacionales desde el día uno. La fricción cambiaria histórica termina acá.",
-  },
-];
+const valueKeys = ["real", "anclado", "regulado", "accesible", "global"] as const;
+type ValueKey = (typeof valueKeys)[number];
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 export function About() {
-  const [active, setActive] = useState<string>("real");
+  const t = useTranslations("about");
+  const [active, setActive] = useState<ValueKey>("real");
+  const values = valueKeys.map((key) => ({
+    key,
+    label: t(`values.${key}.label`),
+    tagline: t(`values.${key}.tagline`),
+    body: t(`values.${key}.body`),
+  }));
   const activeValue = values.find((v) => v.key === active) ?? values[0];
+  const narrative = t.raw("narrative") as string[];
+  const noSomos = t.raw("noSomos") as string[];
+  const somos = t.raw("somos") as string[];
 
   return (
     <section
@@ -56,7 +37,7 @@ export function About() {
         className="mb-12 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--pale-oak)]/60 md:mb-16"
       >
         <span className="inline-block h-px w-10 bg-[var(--bronze)]" />
-        Sobre Ankora
+        {t("kicker")}
       </motion.p>
 
       {/* Editorial split: statement + narrativa */}
@@ -72,29 +53,19 @@ export function About() {
             className="font-display text-[clamp(2.25rem,5.5vw,5rem)] font-light leading-[1] tracking-[-0.025em] text-[var(--pale-oak)]"
             style={{ textShadow: "0 2px 24px rgba(0,0,0,0.45), 0 1px 2px rgba(0,0,0,0.35)" }}
           >
-            No tokenizamos{" "}
-            <span className="italic text-[var(--pale-oak)]/50">pixels.</span>
+            {t("titleLine1Pre")}{" "}
+            <span className="italic text-[var(--pale-oak)]/50">{t("titleLine1Em")}</span>
             <br />
-            Tokenizamos{" "}
-            <span className="italic text-[var(--bronze)]">hectáreas.</span>
+            {t("titleLine2Pre")}{" "}
+            <span className="italic text-[var(--bronze)]">{t("titleLine2Em")}</span>
           </h2>
 
           <div className="mt-10 space-y-5 text-base leading-relaxed text-[var(--pale-oak)]/80 md:text-lg">
-            <p>
-              El patrimonio real estuvo reservado durante siglos para los que ya
-              lo tenían. Comprar un campo, una finca, un viñedo: requería
-              capital que la mayoría de las personas nunca iba a tener.
-            </p>
-            <p>
-              Mientras, el dinero pierde valor en pesos. Y el mundo cripto, con
-              toda su promesa, terminó siendo un casino donde los activos no
-              existen fuera de una pantalla.
-            </p>
-            <p className="text-[var(--pale-oak)]">
-              Hay un camino distinto. Traer el patrimonio real al mundo digital.
-              Hacerlo divisible, comprable, vendible. Sin perder lo que lo hace
-              real.
-            </p>
+            {narrative.map((p, i) => (
+              <p key={i} className={i === narrative.length - 1 ? "text-[var(--pale-oak)]" : undefined}>
+                {p}
+              </p>
+            ))}
           </div>
         </motion.div>
 
@@ -108,21 +79,18 @@ export function About() {
           <div className="flex flex-col gap-8 border-l border-[var(--bronze)]/30 pl-8">
             <div>
               <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-[var(--bronze)]">
-                Propósito
+                {t("purposeKicker")}
               </p>
               <p className="mt-3 text-base leading-relaxed text-[var(--pale-oak)]/85">
-                Hacer del patrimonio físico real algo accesible, líquido y
-                transferible para cualquier persona — no solo para los que ya
-                lo tienen.
+                {t("purposeBody")}
               </p>
             </div>
             <div>
               <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-[var(--bronze)]">
-                Promesa
+                {t("promiseKicker")}
               </p>
               <p className="mt-3 font-display text-xl italic leading-tight text-[var(--pale-oak)] md:text-2xl">
-                Comprá una fracción de algo real. Cobrá renta. Vendé cuando
-                quieras.
+                {t("promiseBody")}
               </p>
             </div>
           </div>
@@ -139,7 +107,7 @@ export function About() {
           className="mb-10 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--pale-oak)]/60"
         >
           <span className="inline-block h-px w-10 bg-[var(--bronze)]" />
-          Cinco principios no negociables
+          {t("principlesKicker")}
         </motion.p>
 
         {/* Row de labels grandes */}
@@ -219,24 +187,22 @@ export function About() {
       >
         <div>
           <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.3em] text-[var(--pale-oak)]/45">
-            No somos
+            {t("noSomosKicker")}
           </p>
           <ul className="space-y-3 text-lg text-[var(--pale-oak)]/55 md:text-xl">
-            <li className="line-through decoration-[var(--pale-oak)]/30 decoration-1">Un exchange de cripto</li>
-            <li className="line-through decoration-[var(--pale-oak)]/30 decoration-1">Una billetera</li>
-            <li className="line-through decoration-[var(--pale-oak)]/30 decoration-1">Un fondo común de inversión</li>
-            <li className="line-through decoration-[var(--pale-oak)]/30 decoration-1">DeFi puro</li>
+            {noSomos.map((item) => (
+              <li key={item} className="line-through decoration-[var(--pale-oak)]/30 decoration-1">{item}</li>
+            ))}
           </ul>
         </div>
         <div>
           <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.3em] text-[var(--bronze)]">
-            Somos
+            {t("somosKicker")}
           </p>
           <ul className="space-y-3 text-lg text-[var(--pale-oak)] md:text-xl">
-            <li>Un marketplace regulado de RWA</li>
-            <li>Fideicomisos financieros con oferta pública</li>
-            <li>Custodia de tokens bajo PSAV CNV</li>
-            <li>Blockchain como infraestructura, no como ideología</li>
+            {somos.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
           </ul>
         </div>
       </motion.div>

@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 
 if (typeof window !== "undefined") {
@@ -26,6 +27,7 @@ const map = ([a, b]: readonly [number, number], p: number) => u((p - a) / (b - a
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 
 export function Hero() {
+  const t = useTranslations("hero");
   const sectionRef = useRef<HTMLElement | null>(null);
   const kickerRef = useRef<HTMLParagraphElement | null>(null);
   const title1Ref = useRef<HTMLDivElement | null>(null);
@@ -113,15 +115,15 @@ export function Hero() {
           style={{ opacity: 0 }}
         >
           <span className="inline-block h-px w-10 bg-[var(--bronze)]" />
-          ANKORA · Anchored to real assets
+          {t("kicker")}
         </p>
 
         <h1 className="font-display text-[clamp(2.25rem,7vw,6.5rem)] font-light leading-[1] tracking-[-0.03em] text-[var(--pale-oak)]">
           <div ref={title1Ref} style={{ opacity: 0 }}>
-            Comprá una <span className="italic text-[var(--bronze)]">fracción</span>
+            {t("titleLine1Pre")} <span className="italic text-[var(--bronze)]">{t("titleLine1Em")}</span>
           </div>
           <div ref={title2Ref} style={{ opacity: 0 }}>
-            de algo <span className="gradient-text">real.</span>
+            {t("titleLine2Pre")} <span className="gradient-text">{t("titleLine2Em")}</span>
           </div>
         </h1>
 
@@ -131,8 +133,7 @@ export function Hero() {
             className="max-w-sm text-balance text-base leading-relaxed text-[var(--pale-oak)]/75"
             style={{ opacity: 0 }}
           >
-            Marketplace regulado de activos reales tokenizados. Viñedos,
-            tierras, inmobiliario e infraestructura desde USD 500.
+            {t("description")}
           </p>
 
           <div
@@ -141,7 +142,7 @@ export function Hero() {
             style={{ opacity: 0 }}
           >
             <MagneticButton href="#proyectos" className="btn-gold group whitespace-nowrap px-5 py-3 text-sm md:px-7 md:py-[0.95rem]" strength={0.3}>
-              Ver proyectos
+              {t("ctaPrimary")}
               <ArrowUpRight className="h-4 w-4 transition-transform duration-500 ease-out group-hover:rotate-45" />
             </MagneticButton>
             <MagneticButton
@@ -149,7 +150,7 @@ export function Hero() {
               className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-[var(--pale-oak)]/30 px-5 py-3 text-sm text-[var(--pale-oak)] transition-colors duration-300 hover:border-[var(--bronze)] hover:text-[var(--bronze)] md:px-6 md:py-[0.95rem]"
               strength={0.25}
             >
-              Cómo funciona
+              {t("ctaSecondary")}
               <ArrowDown className="h-4 w-4" />
             </MagneticButton>
           </div>
@@ -162,7 +163,7 @@ export function Hero() {
         style={{ opacity: 0 }}
       >
         <span className="h-[6px] w-[6px] animate-pulse rounded-full bg-[var(--bronze)]" />
-        Scroll
+        {t("scrollHint")}
       </div>
     </section>
   );

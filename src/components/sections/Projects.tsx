@@ -7,6 +7,7 @@ import { ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import dynamic from "next/dynamic";
+import { useTranslations } from "next-intl";
 import type { ProjectDetail } from "./ProjectModal";
 
 const ProjectModal = dynamic(
@@ -19,179 +20,93 @@ if (typeof window !== "undefined") {
 }
 
 type Media =
-  | { type: "image"; src: string; alt: string }
+  | { type: "image"; src: string }
   | { type: "video"; src: string; poster?: string };
 
-type Project = {
+type StatusKey = "en_emision" | "abierto" | "proximamente";
+
+type ProjectStatic = {
   slug: string;
+  statusKey: StatusKey;
+  media: Media;
+  galleryPaths: string[];
+  soldPct: number;
+};
+
+type Project = ProjectStatic & {
   tag: string;
   name: string;
   location: string;
   tir: string;
   min: string;
-  status: "En emisión" | "Abierto" | "Próximamente";
-  media: Media;
+  status: string;
+  media: Media & { alt?: string };
   detail: Omit<ProjectDetail, "slug" | "tag" | "name" | "location" | "tir" | "min" | "status" | "mediaSrc" | "mediaType" | "mediaAlt">;
 };
 
-const projects: Project[] = [
+const projectsStatic: ProjectStatic[] = [
   {
     slug: "cafayate",
-    tag: "Tierra vitivinícola",
-    name: "Cafayate Vineyards I",
-    location: "Cafayate, Salta · AR",
-    tir: "~30% APY",
-    min: "USD 500",
-    status: "En emisión",
-    media: {
-      type: "image",
-      src: "/projects/cafayate/hero-main.jpg",
-      alt: "Cafayate Vineyards I — proyecto RWA en los Valles Calchaquíes, Salta",
-    },
-    detail: {
-      description:
-        "Fideicomiso financiero con oferta pública sobre 500 hectáreas de tierra virgen con acuífero certificado en los Valles Calchaquíes, a 1.660 msnm. El valor se genera por transformación del activo durante 36 meses (riego, caminos, parcelamiento, viñedos jóvenes) y apreciación del suelo vitivinícola premium. Sponsor operativo: Bodega Lavaque.",
-      bullets: [
-        "500 ha · 450 ha colocables + 50 ha reserva sponsor",
-        "Tramos: Early Adopters USD 5.000/ha → R2 USD 6.500 → R3 USD 8.450 · salida proyectada USD 11.000/ha",
-        "Ticket mínimo USD 500 (equivale a 0,1 ha) en el tramo Early Adopters",
-        "Acuífero certificado · 340 días de sol · terroir reconocido mundialmente por Torrontés y Malbec de altura",
-        "Stack: Brickken (Polygon, ERC-7943) · Fiduciario: Allaria S.A. · PSAV: AMG Capital Group S.A.",
-      ],
-      timeline: "Tramo Early Adopters abierto · Horizonte 36 meses · Salida proyectada año 3",
-      emitter: "Cafayate Vineyards I · Fideicomiso financiero (Allaria S.A.)",
-      totalRaise: "USD 2.82 M",
-      soldPct: 0,
-      gallery: [
-        { src: "/projects/cafayate/hero.jpg", alt: "Vista del terreno en Cafayate, Salta", caption: "500 ha · 1.660 msnm" },
-        { src: "/projects/cafayate/vineyard-01.jpg", alt: "Viñedo en los Valles Calchaquíes", caption: "Terroir Cafayate" },
-        { src: "/projects/cafayate/vineyard-02.jpg", alt: "Viñedo en altura", caption: "Malbec & Torrontés de altura" },
-        { src: "/projects/cafayate/render-01.jpeg", alt: "Render del desarrollo proyectado", caption: "Render · desarrollo proyectado" },
-        { src: "/projects/cafayate/render-02.jpeg", alt: "Render con bodega e infraestructura", caption: "Render · bodega e infraestructura" },
-        { src: "/projects/cafayate/map.png", alt: "Mapa de ubicación del terreno", caption: "Ubicación catastral" },
-      ],
-    },
+    statusKey: "en_emision",
+    media: { type: "image", src: "/projects/cafayate/hero-main.jpg" },
+    galleryPaths: [
+      "/projects/cafayate/hero.jpg",
+      "/projects/cafayate/vineyard-01.jpg",
+      "/projects/cafayate/vineyard-02.jpg",
+      "/projects/cafayate/render-01.jpeg",
+      "/projects/cafayate/render-02.jpeg",
+      "/projects/cafayate/map.png",
+    ],
+    soldPct: 0,
   },
   {
     slug: "alto-agrelo",
-    tag: "Inmobiliario productivo",
-    name: "Alto Agrelo Estates",
-    location: "Luján de Cuyo, Mendoza · AR",
-    tir: "TBD",
-    min: "TBD",
-    status: "Próximamente",
-    media: {
-      type: "image",
-      src: "/projects/alto-agrelo/hero-v2.jpg",
-      alt: "Alto Agrelo Estates — desarrollo inmobiliario productivo en Luján de Cuyo, Mendoza",
-    },
-    detail: {
-      description:
-        "Desarrollo inmobiliario productivo en Alto Agrelo, Luján de Cuyo — el corazón vitivinícola argentino. Integra parcela productiva con cultivos de alto valor (nogales, pistachos, lavanda, viñedos), residencia rural con potencial Airbnb y management profesional. Cada parcela funciona como unidad económica autónoma.",
-      bullets: [
-        "Paquete integral del desarrollador: USD 345.000 (land + planting + vivienda) — referencia, no ticket tokenizado",
-        "Cultivos seleccionados: nogales y pistachos (ciclo 10 años), lavanda (4–5 años), viñedos premium",
-        "Modelo self-sufficient: la producción primaria cubre los costos de mantenimiento anual",
-        "Cash flow desde año 1 vía alquiler turístico · breakeven operativo en año 11",
-        "Ubicación premium: 25 min de Mendoza, 40 min del aeropuerto, vistas a los Andes",
-        "Estructura de tokenización en definición con Allaria S.A. como fiduciario",
-      ],
-      timeline: "En estructuración · Listing Ankora próximamente",
-      emitter: "Alto Agrelo Estates · Fideicomiso financiero a estructurar (Allaria S.A.)",
-      totalRaise: "TBD",
-      soldPct: 0,
-      gallery: [
-        { src: "/projects/alto-agrelo/hero-v2.jpg", alt: "Vista del valle en Alto Agrelo", caption: "Luján de Cuyo · Land of Malbec" },
-        { src: "/projects/alto-agrelo/gallery-01.jpg", alt: "Paisaje del desarrollo", caption: "Paisaje" },
-        { src: "/projects/alto-agrelo/gallery-02.jpg", alt: "Render de residencia rural", caption: "Residencia rural" },
-        { src: "/projects/alto-agrelo/gallery-03.jpg", alt: "Cultivos de alto valor", caption: "Cultivos productivos" },
-        { src: "/projects/alto-agrelo/gallery-04.jpg", alt: "Vistas a los Andes", caption: "Vistas a los Andes" },
-        { src: "/projects/alto-agrelo/timeline.png", alt: "Timeline de proyección a 15 años", caption: "Proyección 15 años" },
-      ],
-    },
+    statusKey: "proximamente",
+    media: { type: "image", src: "/projects/alto-agrelo/hero-v2.jpg" },
+    galleryPaths: [
+      "/projects/alto-agrelo/hero-v2.jpg",
+      "/projects/alto-agrelo/gallery-01.jpg",
+      "/projects/alto-agrelo/gallery-02.jpg",
+      "/projects/alto-agrelo/gallery-03.jpg",
+      "/projects/alto-agrelo/gallery-04.jpg",
+      "/projects/alto-agrelo/timeline.png",
+    ],
+    soldPct: 0,
   },
   {
     slug: "cantini",
-    tag: "Viñedo + Hospitality",
-    name: "Cantini Estates",
-    location: "Alto Agrelo, Mendoza · AR",
-    tir: "TBD",
-    min: "TBD",
-    status: "Próximamente",
-    media: {
-      type: "image",
-      src: "/projects/cantini/hero.jpg",
-      alt: "Cantini Estates — ecosistema de fine wine en Alto Agrelo, Mendoza",
-    },
-    detail: {
-      description:
-        "Ecosistema multi-capa que integra propiedad de viñedo (25 ha · 250.000 m²), producción anual de fine wine y experiencias reales — hospitalidad, botellas coleccionables, acceso a Oria Club en Mendoza, Toscana y Punta del Este. \"From soil to glass, from vine to villa.\" Propuesta en adaptación al régimen CNV RG 1069/2025.",
-      bullets: [
-        "25 hectáreas de viñedo tokenizadas como unidades fraccionales (m² con trazabilidad on-chain)",
-        "Sistema de tiers — Mosaic · Quadro · Altura · Terroir Landlord — con beneficios físicos escalables",
-        "Rewards reales: estadías en hotel boutique, catas, spa, blending sessions, acceso Oria Club",
-        "Yield anual en equivalente botella: NFTs canjeables por vino físico de la añada",
-        "Plataforma digital propuesta: mapa 3D, dashboard, trazabilidad de terroir, governance opcional",
-        "Adaptación en curso a fideicomiso financiero bajo CNV con Allaria S.A.",
-      ],
-      timeline: "Propuesta en revisión · Integración Ankora TBD",
-      emitter: "Cantini Estates · Fideicomiso financiero a estructurar",
-      totalRaise: "TBD",
-      soldPct: 0,
-      gallery: [
-        { src: "/projects/cantini/hero.jpg", alt: "Viñedo de Cantini Estates al atardecer", caption: "Viñedo al atardecer" },
-        { src: "/projects/cantini/gallery-01.jpg", alt: "Vista aérea del estate", caption: "Estate · vista aérea" },
-        { src: "/projects/cantini/gallery-02.jpg", alt: "Arquitectura integrada al paisaje", caption: "Arquitectura" },
-        { src: "/projects/cantini/gallery-03.jpg", alt: "Hotel boutique", caption: "Hotel boutique" },
-        { src: "/projects/cantini/gallery-04.jpg", alt: "Interiores de hospitalidad", caption: "Hospitality" },
-        { src: "/projects/cantini/gallery-05.jpg", alt: "Detalles de producción vinícola", caption: "Producción" },
-        { src: "/projects/cantini/gallery-06.jpg", alt: "Experiencia enológica", caption: "Experiencia" },
-        { src: "/projects/cantini/gallery-07.jpg", alt: "Botella coleccionable", caption: "Fine wine" },
-        { src: "/projects/cantini/gallery-08.jpg", alt: "Paisaje de Alto Agrelo", caption: "Alto Agrelo" },
-      ],
-    },
+    statusKey: "proximamente",
+    media: { type: "image", src: "/projects/cantini/hero.jpg" },
+    galleryPaths: [
+      "/projects/cantini/hero.jpg",
+      "/projects/cantini/gallery-01.jpg",
+      "/projects/cantini/gallery-02.jpg",
+      "/projects/cantini/gallery-03.jpg",
+      "/projects/cantini/gallery-04.jpg",
+      "/projects/cantini/gallery-05.jpg",
+      "/projects/cantini/gallery-06.jpg",
+      "/projects/cantini/gallery-07.jpg",
+      "/projects/cantini/gallery-08.jpg",
+    ],
+    soldPct: 0,
   },
   {
     slug: "caravan-tech",
-    tag: "Livestock Tech",
-    name: "Caravan Tech",
-    location: "Brasil · Argentina",
-    tir: "~14% proyectado",
-    min: "TBD",
-    status: "Próximamente",
-    media: {
-      type: "image",
-      src: "/projects/caravan-tech/hero.jpg",
-      alt: "Caravan Tech — tokenización de ganado con infraestructura tecnológica propia",
-    },
-    detail: {
-      description:
-        "Tokenización de ganado en producción usando tecnología propietaria: ear tags con GPS, bolus ruminales, DNA storage y remote sensing satelital. Cada token corresponde a un animal real, auditable end-to-end, con pricing ajustado automáticamente por raza, salud, trazabilidad legal y etapa de desarrollo. 8+ años de tecnología madura, certificación ICAR.",
-      bullets: [
-        "Hardware propietario: ear tag solar con GPS cada 15 min · bolus ruminal · DNA storage 10+ años · remote sensing",
-        "Smart contract de pricing dinámico: Legal · Breed · Rearing · Health · Development Stage × CME Live Cattle",
-        "Retorno proyectado al inversor: ~14% anual (whitepaper técnico)",
-        "Compliance EUDR — ganado verificable como libre de deforestación",
-        "Patentes registradas en USA, Brasil y principales mercados productores",
-        "Adaptación a fideicomiso financiero CNV en curso — envoltorio legal para Ankora",
-      ],
-      timeline: "En estructuración · Listing Ankora próximamente",
-      emitter: "Caravan Tech · Fideicomiso financiero a estructurar",
-      totalRaise: "TBD",
-      soldPct: 0,
-      gallery: [
-        { src: "/projects/caravan-tech/hero.jpg", alt: "Ganado con sistema Caravan Tech", caption: "Ganado digitalizado" },
-        { src: "/projects/caravan-tech/gallery-01.png", alt: "Blueprint técnico", caption: "Blueprint" },
-        { src: "/projects/caravan-tech/gallery-02.png", alt: "Operación en campo", caption: "Operación en campo" },
-        { src: "/projects/caravan-tech/infrastructure.png", alt: "Diagrama de infraestructura de tokenización", caption: "Arquitectura del sistema" },
-      ],
-    },
+    statusKey: "proximamente",
+    media: { type: "image", src: "/projects/caravan-tech/hero.jpg" },
+    galleryPaths: [
+      "/projects/caravan-tech/hero.jpg",
+      "/projects/caravan-tech/gallery-01.png",
+      "/projects/caravan-tech/gallery-02.png",
+      "/projects/caravan-tech/infrastructure.png",
+    ],
+    soldPct: 0,
   },
 ];
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-function PanelMedia({ media, isActive, eager }: { media: Media; isActive: boolean; eager?: boolean }) {
+function PanelMedia({ media, alt, isActive, eager }: { media: Media; alt: string; isActive: boolean; eager?: boolean }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   // video: solo reproduce cuando el panel está activo (ahorra CPU)
@@ -209,7 +124,7 @@ function PanelMedia({ media, isActive, eager }: { media: Media; isActive: boolea
     return (
       <Image
         src={media.src}
-        alt={media.alt}
+        alt={alt}
         fill
         sizes="(max-width: 768px) 100vw, (max-width: 1280px) 55vw, 800px"
         className="object-cover"
@@ -235,6 +150,8 @@ function PanelMedia({ media, isActive, eager }: { media: Media; isActive: boolea
 
 function Panel({
   p,
+  mediaAlt,
+  labels,
   isActive,
   isMobile,
   onEnter,
@@ -242,6 +159,15 @@ function Panel({
   index,
 }: {
   p: Project;
+  mediaAlt: string;
+  labels: {
+    tir: string;
+    ticketMin: string;
+    invest: string;
+    more: string;
+    viewDetails: string;
+    live: string;
+  };
   isActive: boolean;
   isMobile: boolean;
   onEnter: () => void;
@@ -282,7 +208,7 @@ function Panel({
         }
       }}
       role="button"
-      aria-label={`Ver detalles de ${p.name}`}
+      aria-label={labels.viewDetails.replace("{name}", p.name)}
       tabIndex={0}
       data-cursor="hover"
       animate={isMobile ? {} : { flexGrow: isActive ? 4 : 1 }}
@@ -300,7 +226,7 @@ function Panel({
           scale,
         }}
       >
-        <PanelMedia media={p.media} isActive={isActive} eager={index === 0} />
+        <PanelMedia media={p.media} alt={mediaAlt} isActive={isActive} eager={index === 0} />
       </motion.div>
 
       {/* Overlay oscuro — z:1 */}
@@ -368,10 +294,10 @@ function Panel({
                 <span className="rounded-full border border-[var(--pale-oak)]/30 bg-black/40 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--pale-oak)] backdrop-blur-md">
                   {p.tag}
                 </span>
-                {p.status === "En emisión" && (
+                {p.statusKey === "en_emision" && (
                   <span className="flex items-center gap-1.5 rounded-full bg-[var(--bronze)]/95 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--night-bordeaux)]">
                     <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--night-bordeaux)]" />
-                    Live
+                    {labels.live}
                   </span>
                 )}
               </div>
@@ -404,13 +330,13 @@ function Panel({
                 <div className="flex gap-8 md:gap-10">
                   <div>
                     <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--pale-oak)]/70">
-                      TIR estimada
+                      {labels.tir}
                     </p>
                     <p className="mt-1 font-display text-2xl text-[var(--bronze)] md:text-3xl">{p.tir}</p>
                   </div>
                   <div>
                     <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--pale-oak)]/70">
-                      Ticket mínimo
+                      {labels.ticketMin}
                     </p>
                     <p className="mt-1 font-display text-2xl text-[var(--pale-oak)] md:text-3xl">{p.min}</p>
                   </div>
@@ -423,7 +349,7 @@ function Panel({
                     onClick={(e) => e.stopPropagation()}
                     className="btn-gold group/btn flex-1 justify-center whitespace-nowrap text-sm md:flex-initial"
                   >
-                    Invertir
+                    {labels.invest}
                     <ArrowUpRight className="h-4 w-4 transition-transform duration-500 ease-out group-hover/btn:rotate-45" />
                   </a>
                   <button
@@ -435,7 +361,7 @@ function Panel({
                     data-cursor="hover"
                     className="inline-flex flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-full border border-[var(--pale-oak)]/40 bg-black/20 px-5 py-3 text-sm text-[var(--pale-oak)] backdrop-blur-md transition-colors duration-300 hover:border-[var(--bronze)] hover:text-[var(--bronze)] md:flex-initial"
                   >
-                    Ver más
+                    {labels.more}
                   </button>
                 </div>
               </motion.div>
@@ -448,9 +374,47 @@ function Panel({
 }
 
 export function Projects() {
+  const t = useTranslations("projects");
   const [active, setActive] = useState(0);
   const [openSlug, setOpenSlug] = useState<string | null>(null);
   const [isDesktop, setIsDesktop] = useState(true);
+
+  const projects: Project[] = projectsStatic.map((s) => {
+    const base = `items.${s.slug}`;
+    const galleryI18n = t.raw(`${base}.gallery`) as Array<{ alt: string; caption?: string }>;
+    return {
+      ...s,
+      tag: t(`${base}.tag`),
+      name: t(`${base}.name`),
+      location: t(`${base}.location`),
+      tir: t(`${base}.tir`),
+      min: t(`${base}.min`),
+      status: t(`status.${s.statusKey}`),
+      media: { ...s.media, alt: t(`${base}.mediaAlt`) },
+      detail: {
+        description: t(`${base}.description`),
+        bullets: t.raw(`${base}.bullets`) as string[],
+        timeline: t(`${base}.timeline`),
+        emitter: t(`${base}.emitter`),
+        totalRaise: t(`${base}.totalRaise`),
+        soldPct: s.soldPct,
+        gallery: s.galleryPaths.map((src, i) => ({
+          src,
+          alt: galleryI18n[i]?.alt ?? "",
+          caption: galleryI18n[i]?.caption,
+        })),
+      },
+    };
+  });
+
+  const labels = {
+    tir: t("labels.tir"),
+    ticketMin: t("labels.ticketMin"),
+    invest: t("labels.invest"),
+    more: t("labels.more"),
+    viewDetails: t.raw("labels.viewDetails") as string,
+    live: t("labels.live"),
+  };
   const wrapRef = useRef<HTMLElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
   const titleRef = useRef<HTMLDivElement | null>(null);
@@ -648,7 +612,7 @@ export function Projects() {
         status: openProject.status,
         mediaSrc: openProject.media.src,
         mediaType: openProject.media.type,
-        mediaAlt: openProject.media.type === "image" ? openProject.media.alt : undefined,
+        mediaAlt: openProject.media.alt,
         ...openProject.detail,
       }
     : null;
@@ -662,18 +626,23 @@ export function Projects() {
           style={{ willChange: "transform, opacity" }}
         >
           <span className="inline-block h-px w-10 bg-[var(--bronze)]" />
-          Oportunidades activas
+          {t("kicker")}
         </p>
         <h2
           ref={headingRef}
           className="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-light leading-[0.95] tracking-[-0.02em] text-[var(--pale-oak)]"
           style={{ willChange: "transform", textShadow: "0 2px 24px rgba(0,0,0,0.45), 0 1px 2px rgba(0,0,0,0.35)" }}
         >
-          <span data-word className="inline-block">Activos</span>{" "}
-          <span data-word className="inline-block italic text-[var(--bronze)]">tangibles,</span>
-          <br />
-          <span data-word className="inline-block">rendimientos</span>{" "}
-          <span data-word className="inline-block">medibles.</span>
+          {(t.raw("titleWords") as string[]).map((word, i) => (
+            <span
+              key={i}
+              data-word
+              className={`inline-block${i === 1 ? " italic text-[var(--bronze)]" : ""}`}
+            >
+              {word}
+              {i === 1 ? <br /> : i < 3 ? " " : null}
+            </span>
+          ))}
         </h2>
       </div>
       <p
@@ -681,8 +650,8 @@ export function Projects() {
         className="max-w-xs text-sm text-[var(--pale-oak)]/60"
         style={{ willChange: "transform, opacity" }}
       >
-        <span className="hidden md:inline">Hoverá un panel para explorarlo. La ficha se expande en el lugar.</span>
-        <span className="md:hidden">Tocá un proyecto para ver más detalles.</span>
+        <span className="hidden md:inline">{t("leadDesktop")}</span>
+        <span className="md:hidden">{t("leadMobile")}</span>
       </p>
     </div>
   );
@@ -697,6 +666,8 @@ export function Projects() {
         <Panel
           key={p.slug}
           p={p}
+          mediaAlt={p.media.alt ?? p.name}
+          labels={labels}
           index={i}
           isActive={isDesktop ? i === active : true}
           isMobile={!isDesktop}
