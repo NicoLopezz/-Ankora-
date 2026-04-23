@@ -7,7 +7,99 @@ fecha descendente. Cada bullet referencia archivos/funciones concretas.
 
 ---
 
-## Sesión 2026-04-23
+## Sesión 2026-04-23 · i18n + OG
+
+### Hecho
+
+- **Landing bilingüe ES/EN con `next-intl` 4.9** (modo cookie, sin routing
+  prefix). Config en `src/i18n/{config,locale,request}.ts`.
+  - `messages/es.json` + `messages/en.json` con 11 namespaces: `nav`,
+    `languageSwitch`, `hero`, `stats`, `steps`, `projects`,
+    `projectModal`, `structure`, `about`, `faq`, `cta`, `footer`.
+  - `NextIntlClientProvider` en `RootLayout`; `<html lang>` dinámico.
+  - Server actions `getUserLocale/setUserLocale` con cookie
+    `ANKORA_LOCALE` (path `/`, maxAge 1 año, sameSite lax).
+  - Dashboard/admin **fuera del scope i18n** — siguen en castellano.
+- **Componentes migrados a `useTranslations`**: Nav, Hero, Stats, Steps,
+  Projects, ProjectModal, Structure, About, FAQ, CTA, Footer. Status de
+  proyectos y categorías FAQ se mantienen como keys (Spanish) con label
+  resuelta via `t(\`categories.\${key}\`)` para no tocar estilos por
+  categoría.
+- **`LanguageSwitch`** (`src/components/layout/LanguageSwitch.tsx`) —
+  toggle ES/EN que llama al server action + `router.refresh()` dentro de
+  `useTransition`. Está montado **dentro del Nav**, reemplazando el
+  antiguo CTA "Acceso anticipado".
+- **Logo del Nav** achicado de `h-7 md:h-8` a `h-5 md:h-6` para
+  compensar el toggle.
+- **OG card dinámica** en `src/app/opengraph-image.tsx` (Next `ImageResponse`
+  runtime nodejs, 1200×630): lee `src/app/icon.svg`, renderiza fondo
+  bordeaux + logo Ankora + "Anchored to real assets" + subtitle
+  "Tokenized real-world assets · Regulated marketplace".
+- **Metadata en inglés** en `src/app/layout.tsx`: title, description,
+  `openGraph`, `twitter` (Next auto-cablea el `opengraph-image.tsx` como
+  `og:image` / `twitter:image`).
+- **Commits de la sesión en `main`**:
+  - `8393605` — scaffold i18n + migración secciones.
+  - `d03d630` — misc (brand assets, TODO, AGENTS, ajustes
+    dashboard/admin/dummy-data).
+  - `ebdd421` — OG card + metadata en inglés.
+  - `6cb385f` — nav logo chico + toggle ES/EN en vez de CTA.
+  - Merge commit `f2314ec` de `feat/i18n-landing`.
+- **Infra**: rama `feat/i18n-landing` mergeada y pusheada. Vercel
+  auto-deploy OK (último Ready al momento de cerrar).
+
+### Convenciones a respetar
+
+- **Para agregar strings nuevos**: meter la clave en ambos `messages/*.json`
+  y consumir con `useTranslations('<namespace>')`. Usar `t.raw()` cuando
+  el string tenga placeholders `{var}` que se resuelven más tarde (ej.
+  `projects.labels.viewDetails` con `{name}`), para evitar que
+  `next-intl` tire `FORMATTING_ERROR` al cargar.
+- **Datos con estructura** (proyectos, pilares, FAQs): el código tiene
+  las keys estáticas (slugs, IDs) y el copy vive en el diccionario. Ver
+  `Projects.tsx` `projectsStatic` + `t.raw('items.\${slug}.gallery')`
+  como patrón.
+- **React Compiler (Next 16)**: no usar `useMemo` para memorizar los
+  objects de traducción — si necesitás construir un array por render,
+  hacelo inline y el compiler lo resuelve.
+- **No tocar dashboard/admin con i18n**. Son paneles regulados AR y
+  quedan en castellano. Si mañana se abren a inglés, mover esas rutas
+  bajo `[locale]/` y cambiar a `next-intl` en modo routing.
+- **Cache de WhatsApp/Telegram**: al cambiar OG, la preview vieja queda
+  cacheada. Para forzar refresh compartir URL con query param (`?v=2`).
+  Validar scraping real con https://www.opengraph.xyz/.
+
+### Pendiente (nueva sesión)
+
+**i18n / marca**
+
+- [ ] **Favicon más distintivo a tamaño chico**. `src/app/icon.svg`
+      tiene 3 triangular paths que forman la "A" de Ankora pero a
+      16–32px colapsan visualmente en un triángulo (puede confundirse
+      con el logo de Vercel). Opciones: SVG alternativo más bold
+      (A rellena en bronze sobre fondo bordeaux), o favicon dinámico
+      programático usando la fuente Fraunces.
+- [ ] **Metadata bilingüe real**: `src/app/layout.tsx` hoy tiene title/
+      description siempre en inglés. Para que un scraper vea el title
+      español cuando el cookie dice `es`, usar `generateMetadata()` con
+      `getLocale()` y devolver metadata del idioma activo. Impacto SEO.
+- [ ] **Upgrade a routing `/en`** si/cuando se busque SEO bilingüe real
+      (hreflang, URLs indexables separadas). Hoy con cookie-only Google
+      solo indexa la versión default (español). Requiere mover `page.tsx`
+      a `app/[locale]/page.tsx` con middleware que excluya
+      `/dashboard` y `/admin`.
+- [ ] **Dashboard/admin i18n**: si el producto cruza fronteras, migrar
+      esos paneles a `useTranslations`. Reusar la infra de `next-intl`
+      ya instalada. Alto volumen de strings (disclosures CNV/UIF,
+      labels financieros, estados P2P).
+
+**Heredado — sigue vigente del TODO anterior**
+
+*(lo de más abajo no se tocó, sigue siendo el backlog real del producto)*
+
+---
+
+## Sesión 2026-04-23 · Dashboard + Admin
 
 ### Hecho
 
