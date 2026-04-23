@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { MagneticButton } from "@/components/ui/MagneticButton";
+import { LanguageSwitch } from "./LanguageSwitch";
 
 const itemKeys = [
   { key: "projects", href: "#proyectos" },
@@ -73,7 +73,7 @@ export function Nav() {
           <span
             role="img"
             aria-label="Ankora"
-            className="block h-7 text-[var(--pale-oak)]/70 md:h-8"
+            className="block h-5 text-[var(--pale-oak)]/70 md:h-6"
             style={{
               aspectRatio: "940 / 180",
               backgroundColor: "currentColor",
@@ -101,9 +101,7 @@ export function Nav() {
             </li>
           ))}
         </ul>
-        <MagneticButton href="#contacto" className="btn-gold text-sm" strength={0.35}>
-          {t("cta")}
-        </MagneticButton>
+        <LanguageSwitch />
       </nav>
     </motion.header>
   );

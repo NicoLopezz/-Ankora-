@@ -8,7 +8,6 @@ import { NoiseOverlay } from "@/components/effects/NoiseOverlay";
 import { ScrollProgress } from "@/components/effects/ScrollProgress";
 import { ClientChrome } from "@/components/effects/ClientChrome";
 import { Nav } from "@/components/layout/Nav";
-import { LanguageSwitch } from "@/components/layout/LanguageSwitch";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -77,7 +76,6 @@ export default async function RootLayout({
             <ScrollProgress />
             {children}
           </SmoothScroll>
-          <LanguageSwitch />
           <NoiseOverlay />
           <ClientChrome />
         </NextIntlClientProvider>
