@@ -3,17 +3,19 @@
 import { useRef, useState } from "react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 
-const items = [
-  { label: "Proyectos", href: "#proyectos" },
-  { label: "Cómo funciona", href: "#pasos" },
-  { label: "Estructura", href: "#estructura" },
-  { label: "Contacto", href: "#contacto" },
-];
+const itemKeys = [
+  { key: "projects", href: "#proyectos" },
+  { key: "how", href: "#pasos" },
+  { key: "structure", href: "#estructura" },
+  { key: "contact", href: "#contacto" },
+] as const;
 
 export function Nav() {
   const pathname = usePathname();
+  const t = useTranslations("nav");
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(true);
   const [scrolled, setScrolled] = useState(false);
@@ -67,26 +69,40 @@ export function Nav() {
             : "none",
         }}
       >
-        <a href="#top" className="flex items-center gap-2" data-cursor="hover">
-          <span className="font-display text-xl tracking-[0.08em] text-[var(--pale-oak)]">
-            AN<span className="text-[var(--bronze)]">K</span>ORA
-          </span>
+        <a href="#top" className="flex items-center gap-2" data-cursor="hover" aria-label={t("logoAria")}>
+          <span
+            role="img"
+            aria-label="Ankora"
+            className="block h-7 text-[var(--pale-oak)]/70 md:h-8"
+            style={{
+              aspectRatio: "940 / 180",
+              backgroundColor: "currentColor",
+              WebkitMaskImage: "url(/brand/ankora-logo.svg)",
+              maskImage: "url(/brand/ankora-logo.svg)",
+              WebkitMaskRepeat: "no-repeat",
+              maskRepeat: "no-repeat",
+              WebkitMaskSize: "contain",
+              maskSize: "contain",
+              WebkitMaskPosition: "center",
+              maskPosition: "center",
+            }}
+          />
         </a>
         <ul className="hidden items-center gap-7 md:flex">
-          {items.map((it) => (
+          {itemKeys.map((it) => (
             <li key={it.href}>
               <a
                 href={it.href}
                 data-cursor="hover"
                 className="text-sm text-[var(--pale-oak)]/80 transition-colors duration-300 hover:text-[var(--pale-oak)]"
               >
-                {it.label}
+                {t(`items.${it.key}`)}
               </a>
             </li>
           ))}
         </ul>
         <MagneticButton href="#contacto" className="btn-gold text-sm" strength={0.35}>
-          Acceso anticipado
+          {t("cta")}
         </MagneticButton>
       </nav>
     </motion.header>

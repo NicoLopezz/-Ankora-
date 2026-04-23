@@ -1,10 +1,12 @@
 "use client";
 
 import { motion } from "motion/react";
+import { useTranslations } from "next-intl";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { ArrowUpRight } from "lucide-react";
 
 export function CTA() {
+  const t = useTranslations("cta");
   return (
     <section id="contacto" className="relative mx-auto w-full max-w-7xl scroll-mt-28 px-6 py-20 md:py-48">
       <motion.div
@@ -20,24 +22,24 @@ export function CTA() {
       >
         <p className="mb-6 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--pale-oak)]/60">
           <span className="inline-block h-px w-10 bg-[var(--bronze)]" />
-          Acceso anticipado · Fase demo
+          {t("kicker")}
         </p>
         <h2 className="max-w-4xl font-display text-[clamp(2.5rem,8vw,7rem)] font-light leading-[0.95] tracking-[-0.03em] text-[var(--pale-oak)]">
-          Anclá tu inversión <span className="italic text-[var(--bronze)]">a lo real.</span>
+          {t("titlePre")} <span className="italic text-[var(--bronze)]">{t("titleEm")}</span>
         </h2>
         <p className="mt-8 max-w-xl text-[var(--pale-oak)]/75">
-          Ankora está en fase demo: la operatoria transaccional se habilita con la activación regulatoria final del stack. Dejanos tu mail y te avisamos cuando se abra el primer tramo del piloto.
+          {t("description")}
         </p>
         <div className="mt-12 flex flex-wrap gap-4">
           <MagneticButton href="#registro" className="btn-gold group" strength={0.3}>
-            Sumarme a la lista
+            {t("ctaPrimary")}
             <ArrowUpRight className="h-4 w-4 transition-transform duration-500 ease-out group-hover:rotate-45" />
           </MagneticButton>
           <MagneticButton
             href="mailto:hola@ankora.io"
             className="inline-flex items-center gap-2 rounded-full border border-[var(--pale-oak)]/30 px-6 py-[0.95rem] text-sm text-[var(--pale-oak)] transition-colors duration-300 hover:border-[var(--bronze)] hover:text-[var(--bronze)]"
           >
-            Hablar con el equipo
+            {t("ctaSecondary")}
           </MagneticButton>
         </div>
       </motion.div>

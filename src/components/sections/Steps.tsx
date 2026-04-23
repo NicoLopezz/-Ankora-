@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AnimatePresence, motion } from "motion/react";
+import { useTranslations } from "next-intl";
 import { getLenis } from "@/components/effects/SmoothScroll";
 import { UserIcon, type UserIconHandle } from "@/components/ui/user";
 import { CursorClickIcon, type CursorClickIconHandle } from "@/components/ui/cursor-click";
@@ -50,39 +51,16 @@ function AutoIcon({
 }
 
 const steps = [
-  {
-    n: "01",
-    Icon: UserIcon,
-    kicker: "Onboarding",
-    title: "Creá tu cuenta",
-    body: "KYC digital con perfil de inversor y jurisdicción. Verificación en minutos — sin papeles, sin sucursales.",
-  },
-  {
-    n: "02",
-    Icon: CursorClickIcon,
-    kicker: "Descubrimiento",
-    title: "Elegí un proyecto",
-    body: "Marketplace curado: viñedos, tierras, inmobiliario, livestock. Cada ficha publica prospectus, fideicomiso y fees upfront.",
-  },
-  {
-    n: "03",
-    Icon: DollarSignIcon,
-    kicker: "Inversión",
-    title: "Invertí desde USD 500",
-    body: "Pagá en pesos (on-ramp local) o USD/USDC. Recibís tokens en Polygon que representan tu participación en el fideicomiso.",
-  },
-  {
-    n: "04",
-    Icon: TrendingUpIcon,
-    kicker: "Hold & track",
-    title: "Seguí tu activo en vivo",
-    body: "Valuación, distribuciones y reportes trimestrales. Salida por secundario (cuando se habilite) o vencimiento del fideicomiso.",
-  },
-];
+  { n: "01", Icon: UserIcon },
+  { n: "02", Icon: CursorClickIcon },
+  { n: "03", Icon: DollarSignIcon },
+  { n: "04", Icon: TrendingUpIcon },
+] as const;
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 export function Steps() {
+  const t = useTranslations("steps");
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
   const fillRef = useRef<HTMLDivElement | null>(null);
@@ -237,17 +215,17 @@ export function Steps() {
             <div>
               <p className="mb-4 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--pale-oak)]/60">
                 <span className="inline-block h-px w-10 bg-[var(--bronze)]" />
-                Cómo funciona
+                {t("kicker")}
               </p>
               <h2
                 className="font-display text-[clamp(2rem,4.5vw,4rem)] font-light leading-[0.95] tracking-[-0.02em] text-[var(--pale-oak)]"
                 style={{ textShadow: "0 2px 24px rgba(0,0,0,0.45), 0 1px 2px rgba(0,0,0,0.35)" }}
               >
-                Cuatro pasos. <span className="italic text-[var(--bronze)]">Cero fricción.</span>
+                {t("titlePre")} <span className="italic text-[var(--bronze)]">{t("titleEm")}</span>
               </h2>
             </div>
             <p className="max-w-sm text-sm text-[var(--pale-oak)]/60">
-              Scrolleá para recorrer el proceso. Cada paso se activa a medida que avanzás.
+              {t("lead")}
             </p>
           </div>
 
@@ -309,13 +287,13 @@ export function Steps() {
                   className="flex flex-col gap-6"
                 >
                   <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--bronze)]">
-                    {steps[active].kicker}
+                    {t(`items.${steps[active].n}.kicker`)}
                   </p>
                   <h3 className="font-display text-[clamp(1.75rem,6vw,5.5rem)] font-light leading-[1] tracking-[-0.02em] text-[var(--pale-oak)] md:leading-[0.95]">
-                    {steps[active].title}
+                    {t(`items.${steps[active].n}.title`)}
                   </h3>
                   <p className="max-w-lg text-[0.95rem] leading-snug text-[var(--pale-oak)]/75 md:text-lg md:leading-relaxed">
-                    {steps[active].body}
+                    {t(`items.${steps[active].n}.body`)}
                   </p>
                 </motion.div>
               </AnimatePresence>

@@ -359,7 +359,7 @@ export default function P2PPage() {
       <div className="flex items-center gap-2 rounded-2xl border border-[#ddcfc9]/[0.06] bg-[#ddcfc9]/[0.02] px-5 py-3 text-xs text-[#b8a99e]">
         <ShieldCheck className="h-3.5 w-3.5 flex-shrink-0 text-[#D4A45A]" />
         <span>
-          Operaciones liquidadas vía <span className="text-[#ddcfc9]">Allaria SA</span> (fiduciario).
+          Operaciones liquidadas vía <span className="text-[#ddcfc9]">ALyC fiduciario</span> regulado por CNV.
           Solo inversores con KYC vigente pueden operar. Fee marketplace: 1% por operación.
         </span>
       </div>

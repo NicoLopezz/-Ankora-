@@ -210,7 +210,7 @@ export function P2PTakeOrderDialog({ order, onOpenChange }: Props) {
       open={!!order}
       onOpenChange={handleClose}
       title={`${isBuy ? "Comprar" : "Vender"} ${order.assetName}`}
-      description={`Operación P2P · ${order.id} · liquidada por Allaria SA`}
+      description={`Operación P2P · ${order.id} · liquidada por ALyC fiduciario`}
       stepper={<Stepper steps={STEPS} current={stepIdx} />}
       footer={renderFooter()}
     >
@@ -458,7 +458,7 @@ export function P2PTakeOrderDialog({ order, onOpenChange }: Props) {
             <ReceiptRow label="Comprobante" value={result.receiptId} mono />
             <ReceiptRow label="Ref. CNV" value={result.cnvRef} mono />
             <ReceiptRow label="Tx hash" value={result.txHash} mono href="https://polygonscan.com" />
-            <ReceiptRow label="Fiduciario" value="Allaria SA" />
+            <ReceiptRow label="Fiduciario" value="ALyC regulado por CNV" />
             <ReceiptRow label="Fecha" value={new Date().toLocaleDateString("es-AR", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })} />
           </div>
 

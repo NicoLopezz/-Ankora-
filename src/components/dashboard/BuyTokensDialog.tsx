@@ -213,7 +213,7 @@ export function BuyTokensDialog({ asset, open, onOpenChange }: Props) {
 
           <p className="text-[11px] leading-relaxed text-[#b8a99e]">
             Al continuar vas a confirmar la compra de tokens de un fideicomiso financiero con
-            oferta pública registrado bajo CNV RG 1069/2025. Operado por Allaria SA.
+            oferta pública registrado bajo CNV RG 1069/2025. Operado por ALyC fiduciario regulado.
           </p>
         </div>
       )}

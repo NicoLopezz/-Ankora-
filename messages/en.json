@@ -1,0 +1,406 @@
+{
+  "nav": {
+    "items": {
+      "projects": "Projects",
+      "how": "How it works",
+      "structure": "Structure",
+      "contact": "Contact"
+    },
+    "cta": "Early access",
+    "logoAria": "Ankora — home"
+  },
+  "languageSwitch": {
+    "label": "Language",
+    "es": "ES",
+    "en": "EN"
+  },
+  "hero": {
+    "kicker": "ANKORA · Anchored to real assets",
+    "titleLine1Pre": "Own a",
+    "titleLine1Em": "fraction",
+    "titleLine2Pre": "of something",
+    "titleLine2Em": "real.",
+    "description": "Regulated marketplace for tokenized real-world assets. Vineyards, land, real estate and infrastructure from USD 500.",
+    "ctaPrimary": "View projects",
+    "ctaSecondary": "How it works",
+    "scrollHint": "Scroll"
+  },
+  "stats": {
+    "items": {
+      "ticket": "USD · Minimum ticket",
+      "projects": "Pilot projects",
+      "hectares": "Hectares · Cafayate pilot",
+      "raise": "USD M · Raise · Cafayate pilot"
+    }
+  },
+  "steps": {
+    "kicker": "How it works",
+    "titlePre": "Four steps.",
+    "titleEm": "Zero friction.",
+    "lead": "Scroll to walk through the process. Each step activates as you go.",
+    "items": {
+      "01": {
+        "kicker": "Onboarding",
+        "title": "Create your account",
+        "body": "Digital KYC with investor profile and jurisdiction. Verification in minutes — no paperwork, no branches."
+      },
+      "02": {
+        "kicker": "Discovery",
+        "title": "Pick a project",
+        "body": "Curated marketplace: vineyards, land, real estate, livestock. Every listing publishes prospectus, trust deed and fees upfront."
+      },
+      "03": {
+        "kicker": "Investment",
+        "title": "Invest from USD 500",
+        "body": "Pay in Argentine pesos (local on-ramp) or USD/USDC. You receive Polygon tokens representing your stake in the trust."
+      },
+      "04": {
+        "kicker": "Hold & track",
+        "title": "Follow your asset live",
+        "body": "Valuation, distributions and quarterly reports. Exit via secondary market (when enabled) or trust maturity."
+      }
+    }
+  },
+  "projects": {
+    "kicker": "Live opportunities",
+    "titleWords": ["Tangible", "assets,", "measurable", "returns."],
+    "leadDesktop": "Hover a panel to explore it. The card expands in place.",
+    "leadMobile": "Tap a project to see more details.",
+    "labels": {
+      "tir": "Estimated IRR",
+      "ticketMin": "Minimum ticket",
+      "invest": "Invest",
+      "more": "See more",
+      "viewDetails": "View details of {name}",
+      "live": "Live"
+    },
+    "status": {
+      "en_emision": "Issuing",
+      "abierto": "Open",
+      "proximamente": "Coming soon"
+    },
+    "items": {
+      "cafayate": {
+        "tag": "Vineyard land",
+        "name": "Cafayate Vineyards I",
+        "location": "Cafayate, Salta · AR",
+        "tir": "~30% APY",
+        "min": "USD 500",
+        "description": "Financial trust with public offering over 500 hectares of virgin land with a certified aquifer in the Calchaquí Valleys, at 1,660 m above sea level. Value is created through 36 months of asset transformation (irrigation, roads, lot division, young vineyards) and appreciation of premium wine-growing soil. Operating sponsor: Bodega Lavaque.",
+        "bullets": [
+          "500 ha · 450 ha for sale + 50 ha sponsor reserve",
+          "Tranches: Early Adopters USD 5,000/ha → R2 USD 6,500 → R3 USD 8,450 · projected exit USD 11,000/ha",
+          "Minimum ticket USD 500 (equivalent to 0.1 ha) in the Early Adopters tranche",
+          "Certified aquifer · 340 days of sun · terroir globally recognized for high-altitude Torrontés and Malbec",
+          "Stack: Polygon · ERC-7943 · Trustee: CNV-regulated broker-dealer · VASP: AMG Capital Group S.A."
+        ],
+        "timeline": "Early Adopters tranche open · 36-month horizon · Projected exit year 3",
+        "emitter": "Cafayate Vineyards I · Financial trust (CNV-regulated trustee)",
+        "totalRaise": "USD 2.82 M",
+        "mediaAlt": "Cafayate Vineyards I — RWA project in the Calchaquí Valleys, Salta",
+        "gallery": [
+          { "alt": "View of the land in Cafayate, Salta", "caption": "500 ha · 1,660 m elevation" },
+          { "alt": "Vineyard in the Calchaquí Valleys", "caption": "Cafayate terroir" },
+          { "alt": "High-altitude vineyard", "caption": "High-altitude Malbec & Torrontés" },
+          { "alt": "Rendering of the planned development", "caption": "Render · planned development" },
+          { "alt": "Rendering with winery and infrastructure", "caption": "Render · winery & infrastructure" },
+          { "alt": "Location map of the land", "caption": "Cadastral location" }
+        ]
+      },
+      "alto-agrelo": {
+        "tag": "Productive real estate",
+        "name": "Alto Agrelo Estates",
+        "location": "Luján de Cuyo, Mendoza · AR",
+        "tir": "TBD",
+        "min": "TBD",
+        "description": "Productive real estate development in Alto Agrelo, Luján de Cuyo — Argentina's wine heartland. Combines productive parcels with high-value crops (walnuts, pistachios, lavender, vineyards), rural residences with Airbnb potential and professional management. Each parcel operates as a self-contained economic unit.",
+        "bullets": [
+          "Developer's full package: USD 345,000 (land + planting + home) — reference, not the tokenized ticket",
+          "Selected crops: walnuts and pistachios (10-year cycle), lavender (4–5 years), premium vineyards",
+          "Self-sufficient model: primary production covers annual maintenance costs",
+          "Cash flow from year 1 via tourism rentals · operational breakeven in year 11",
+          "Premium location: 25 min from Mendoza, 40 min from the airport, views of the Andes",
+          "Tokenization structure being defined with a top-tier CNV-regulated trustee"
+        ],
+        "timeline": "Under structuring · Ankora listing coming soon",
+        "emitter": "Alto Agrelo Estates · Financial trust to be structured (CNV-regulated trustee)",
+        "totalRaise": "TBD",
+        "mediaAlt": "Alto Agrelo Estates — productive real estate development in Luján de Cuyo, Mendoza",
+        "gallery": [
+          { "alt": "View of the Alto Agrelo valley", "caption": "Luján de Cuyo · Land of Malbec" },
+          { "alt": "Landscape of the development", "caption": "Landscape" },
+          { "alt": "Render of rural residence", "caption": "Rural residence" },
+          { "alt": "High-value crops", "caption": "Productive crops" },
+          { "alt": "Views of the Andes", "caption": "Views of the Andes" },
+          { "alt": "15-year projection timeline", "caption": "15-year projection" }
+        ]
+      },
+      "cantini": {
+        "tag": "Vineyard + Hospitality",
+        "name": "Cantini Estates",
+        "location": "Alto Agrelo, Mendoza · AR",
+        "tir": "TBD",
+        "min": "TBD",
+        "description": "Multi-layer ecosystem integrating vineyard ownership (25 ha · 250,000 m²), annual fine-wine production and real experiences — hospitality, collectible bottles, access to Oria Club in Mendoza, Tuscany and Punta del Este. \"From soil to glass, from vine to villa.\" Proposal being adapted to the CNV RG 1069/2025 regime.",
+        "bullets": [
+          "25 hectares of vineyard tokenized as fractional units (m² with on-chain traceability)",
+          "Tier system — Mosaic · Quadro · Altura · Terroir Landlord — with scalable physical benefits",
+          "Real rewards: boutique hotel stays, tastings, spa, blending sessions, Oria Club access",
+          "Annual yield in bottle equivalents: NFTs redeemable for physical wine from each vintage",
+          "Proposed digital platform: 3D map, dashboard, terroir traceability, optional governance",
+          "Ongoing adaptation to financial trust under CNV with a regulated trustee"
+        ],
+        "timeline": "Proposal under review · Ankora integration TBD",
+        "emitter": "Cantini Estates · Financial trust to be structured",
+        "totalRaise": "TBD",
+        "mediaAlt": "Cantini Estates — fine-wine ecosystem in Alto Agrelo, Mendoza",
+        "gallery": [
+          { "alt": "Cantini Estates vineyard at sunset", "caption": "Vineyard at sunset" },
+          { "alt": "Aerial view of the estate", "caption": "Estate · aerial view" },
+          { "alt": "Architecture blended into the landscape", "caption": "Architecture" },
+          { "alt": "Boutique hotel", "caption": "Boutique hotel" },
+          { "alt": "Hospitality interiors", "caption": "Hospitality" },
+          { "alt": "Wine production details", "caption": "Production" },
+          { "alt": "Wine experience", "caption": "Experience" },
+          { "alt": "Collectible bottle", "caption": "Fine wine" },
+          { "alt": "Alto Agrelo landscape", "caption": "Alto Agrelo" }
+        ]
+      },
+      "caravan-tech": {
+        "tag": "Livestock Tech",
+        "name": "Caravan Tech",
+        "location": "Brazil · Argentina",
+        "tir": "~14% projected",
+        "min": "TBD",
+        "description": "Tokenization of live cattle using proprietary technology: GPS ear tags, rumen bolus sensors, DNA storage and satellite remote sensing. Each token corresponds to a real animal, auditable end-to-end, with pricing automatically adjusted by breed, health, legal traceability and development stage. 8+ years of mature technology, ICAR-certified.",
+        "bullets": [
+          "Proprietary hardware: solar ear tag with GPS every 15 min · rumen bolus · 10+ year DNA storage · remote sensing",
+          "Dynamic pricing smart contract: Legal · Breed · Rearing · Health · Development Stage × CME Live Cattle",
+          "Projected investor return: ~14% annual (technical whitepaper)",
+          "EUDR compliance — cattle verifiable as deforestation-free",
+          "Patents filed in the USA, Brazil and major producing markets",
+          "Adaptation to CNV-regulated financial trust underway — legal wrapper for Ankora"
+        ],
+        "timeline": "Under structuring · Ankora listing coming soon",
+        "emitter": "Caravan Tech · Financial trust to be structured",
+        "totalRaise": "TBD",
+        "mediaAlt": "Caravan Tech — livestock tokenization with proprietary technology infrastructure",
+        "gallery": [
+          { "alt": "Cattle with Caravan Tech system", "caption": "Digitized livestock" },
+          { "alt": "Technical blueprint", "caption": "Blueprint" },
+          { "alt": "Field operations", "caption": "Field operations" },
+          { "alt": "Tokenization infrastructure diagram", "caption": "System architecture" }
+        ]
+      }
+    }
+  },
+  "projectModal": {
+    "about": "About the project",
+    "gallery": "Gallery",
+    "tir": "Estimated IRR",
+    "ticketMin": "Minimum ticket",
+    "emitter": "Issuer",
+    "timeline": "Timeline",
+    "totalRaise": "Target amount",
+    "sold": "Sold",
+    "invest": "Invest now",
+    "close": "Close",
+    "closeZoom": "Close zoomed view",
+    "zoom": "Zoom {alt}",
+    "prevImage": "Previous image",
+    "nextImage": "Next image"
+  },
+  "structure": {
+    "kicker": "How it's structured",
+    "titlePre": "Regulated.",
+    "titleEm": "Custodied.",
+    "titlePost": "Auditable.",
+    "lead": "Every marketplace asset is issued as a financial trust with a public offering supervised by Argentina's CNV. Separate roles — operator, trustee, technology, legal — each with its own responsibility.",
+    "pillars": {
+      "operator": {
+        "role": "Operator · VASP",
+        "name": "AMG Capital Group S.A.",
+        "detail": "Registered with CNV as a Virtual Asset Service Provider — DI-2024-50276668. Operates the marketplace and holds token custody."
+      },
+      "trustee": {
+        "role": "Trustee · Placement agent",
+        "name": "Financial trustee",
+        "detail": "Top-tier CNV-regulated broker-dealer. Administers the financial trusts that are the legal vehicle of each issuance and places the tokens."
+      },
+      "tech": {
+        "role": "Technology stack",
+        "name": "Tokenization platform",
+        "detail": "Blockchain platform with native compliance hooks — KYC, transfer restrictions and on-chain auditability."
+      },
+      "regulatory": {
+        "role": "Regulatory framework",
+        "name": "CNV RG 1069/2025",
+        "detail": "Argentina's real-world asset tokenization regime (with RG 1081 and 1087 amendments). Official sandbox."
+      }
+    },
+    "advisors": {
+      "legal": {
+        "kicker": "Legal counsel",
+        "name": "MB Partners law firm",
+        "detail": "Structuring, compliance, representation before CNV."
+      },
+      "fiat": {
+        "kicker": "Fiat processing",
+        "name": "Mecaenpol S.R.L.",
+        "detail": "PSPCP registered with BCRA. On-ramp in Argentine pesos."
+      },
+      "holding": {
+        "kicker": "Holding",
+        "name": "Grupo Blex",
+        "detail": "AMG Capital Group and Mecaenpol are part of the group."
+      }
+    }
+  },
+  "about": {
+    "kicker": "About Ankora",
+    "titleLine1Pre": "We don't tokenize",
+    "titleLine1Em": "pixels.",
+    "titleLine2Pre": "We tokenize",
+    "titleLine2Em": "hectares.",
+    "narrative": [
+      "Real wealth was reserved for centuries for those who already had it. Buying a farm, an estate, a vineyard required capital most people would never have.",
+      "Meanwhile, money loses value in pesos. And the crypto world, for all its promise, became a casino where the assets don't exist outside a screen.",
+      "There's another path. Bring real wealth into the digital world. Make it divisible, buyable, sellable. Without losing what makes it real."
+    ],
+    "purposeKicker": "Purpose",
+    "purposeBody": "Make real, physical wealth accessible, liquid and transferable for anyone — not just for those who already own it.",
+    "promiseKicker": "Promise",
+    "promiseBody": "Own a fraction of something real. Collect rent. Sell whenever you want.",
+    "principlesKicker": "Five non-negotiable principles",
+    "values": {
+      "real": {
+        "label": "Real",
+        "tagline": "If you can't see, touch or visit it, it doesn't make the cut.",
+        "body": "Zero synthetic assets. Zero derivatives. Every token has a hectare, a square meter, a harvest behind it."
+      },
+      "anclado": {
+        "label": "Anchored",
+        "tagline": "Yield comes from the physical world.",
+        "body": "No staking, no farming. It comes from a producing vineyard, a rented property, an energy asset."
+      },
+      "regulado": {
+        "label": "Regulated",
+        "tagline": "Regulation is part of the product.",
+        "body": "We operate under CNV RG 1069/1081/1087 because regulation is a promise to the investor, not an obstacle."
+      },
+      "accesible": {
+        "label": "Accessible",
+        "tagline": "Tickets from USD 500. Premium quality.",
+        "body": "We don't compete with platforms selling USD 5 tokens. Entry-level accessibility, premium selection."
+      },
+      "global": {
+        "label": "Global",
+        "tagline": "An investor in Miami, as easily as one in Buenos Aires.",
+        "body": "Argentine pesos, dollars, international wires from day one. The historical FX friction ends here."
+      }
+    },
+    "noSomosKicker": "We are not",
+    "noSomos": [
+      "A crypto exchange",
+      "A wallet",
+      "A mutual fund",
+      "Pure DeFi"
+    ],
+    "somosKicker": "We are",
+    "somos": [
+      "A regulated RWA marketplace",
+      "Financial trusts with public offering",
+      "Token custody under CNV-regulated VASP",
+      "Blockchain as infrastructure, not ideology"
+    ]
+  },
+  "faq": {
+    "kicker": "Frequently asked questions",
+    "titlePre": "Everything you",
+    "titleEm": "need",
+    "titlePost": "to know first.",
+    "lead": "No empty promises: we explain how liquidity works, what happens when things go wrong, and the legal framework we operate under.",
+    "categories": {
+      "Liquidez": "Liquidity",
+      "Riesgo": "Risk",
+      "Legal": "Legal",
+      "Tech": "Tech",
+      "Fees": "Fees"
+    },
+    "items": {
+      "salida": {
+        "category": "Liquidez",
+        "question": "How do I exit an investment before maturity?",
+        "answer": "Once the secondary market is live you'll be able to list your tokens for sale inside the platform. Until then, the natural exit is the maturity of each project's trust (schedule published on each listing). Enabling the secondary market depends on regulatory milestones and the final contract with the tokenization stack."
+      },
+      "sponsor-quiebra": {
+        "category": "Riesgo",
+        "question": "What happens if the project sponsor goes bankrupt?",
+        "answer": "The underlying asset (land, real estate, livestock) sits in a financial trust administered by a top-tier CNV-regulated trustee — a patrimony separate from the sponsor. If the sponsor goes bankrupt, the trust doesn't fall with it: the asset stays in the trust's name and is liquidated under contract, returning tokenholders their proportional share. It's the same logic that protects institutional investors in global funds."
+      },
+      "fees": {
+        "category": "Fees",
+        "question": "What are the fees?",
+        "answer": "Every project publishes its fees upfront: issuance fee (one-time), trust administration fee (annual, typically 1-2%), and secondary-market fee once it's enabled. Nothing hidden. Ankora's brand DNA: total fee transparency on every listing."
+      },
+      "jurisdiccion": {
+        "category": "Legal",
+        "question": "What jurisdictions can I invest from?",
+        "answer": "Onboarding includes a jurisdiction and investor profile check. Today we operate with Argentine and LATAM investors; the plan covers cross-border access for the US and Europe. Each project listing indicates the jurisdictions enabled for that specific issuance."
+      },
+      "fideicomiso": {
+        "category": "Legal",
+        "question": "What is a financial trust and why does it matter?",
+        "answer": "It's the legal vehicle (Argentine Law 24,441 + Civil Code 1666-1676) that separates the asset's patrimony from the sponsor's. It has a public offering registered with CNV under the RG 1069/2025 regime. Each token you buy represents a proportional stake in that trust. It's the same legal architecture institutional global funds use."
+      },
+      "polygon": {
+        "category": "Tech",
+        "question": "Why Polygon and what is ERC-7943?",
+        "answer": "We use a regulated tokenization platform that issues tokens on Polygon (Ethereum L2, low fees, fast settlement) with the ERC-7943 standard — specifically designed for RWA with compliance hooks (KYC, transfer restrictions, whitelists) compatible with regulated financial trusts."
+      },
+      "clima": {
+        "category": "Riesgo",
+        "question": "What happens if weather ruins a harvest or there's an operational issue?",
+        "answer": "Every project publishes its specific risks and the matching coverage (weather insurance, forward contracts, construction coverage). Projected returns are estimates, not guarantees. Any investment in real-world assets carries the risk of partial or total loss of capital — we say it without sugarcoating."
+      },
+      "transfer": {
+        "category": "Tech",
+        "question": "Can I transfer my token to another wallet?",
+        "answer": "Yes, but only to wallets verified with the same compliance profile (approved KYC, enabled jurisdiction). It's a restriction of the ERC-7943 standard to meet the CNV regime. It's not an open public crypto wallet; it's a regulated infrastructure."
+      }
+    }
+  },
+  "cta": {
+    "kicker": "Early access · Demo phase",
+    "titlePre": "Anchor your capital",
+    "titleEm": "to the real.",
+    "description": "Ankora is in demo phase: transactional operations will go live once the regulatory stack is fully activated. Leave us your email and we'll let you know when the first pilot tranche opens.",
+    "ctaPrimary": "Join the list",
+    "ctaSecondary": "Talk to the team"
+  },
+  "footer": {
+    "description": "Regulated marketplace for real-asset tokenization. Operated by AMG Capital Group S.A., registered with Argentina's CNV as a Virtual Asset Service Provider under regime RG 1069/2025. Trustee: CNV-regulated broker-dealer.",
+    "platformTitle": "Platform",
+    "platform": {
+      "projects": "Projects",
+      "how": "How it works",
+      "earlyAccess": "Early access"
+    },
+    "companyTitle": "Company",
+    "company": {
+      "amg": "AMG Capital Group",
+      "contact": "Contact",
+      "press": "Press"
+    },
+    "legalTitle": "Legal",
+    "legal": {
+      "terms": "Terms",
+      "privacy": "Privacy",
+      "risk": "Risk disclosure"
+    },
+    "riskHeading": "Risk disclosure",
+    "riskBody": "Any investment in real-world assets carries the risk of partial or total loss of invested capital. Projected returns are estimates based on market comparables and do not constitute a guarantee of future performance. Ankora is in demo phase — transactional operations will go live once the regulatory stack is fully activated. We do not provide personalized financial advice; consult your advisor before investing.",
+    "copyright": "© 2026 AMG Capital Group S.A. · PSAV CNV DI-2024-50276668",
+    "tagline": "Ankora — Anchored to real assets"
+  }
+}

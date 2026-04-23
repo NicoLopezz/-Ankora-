@@ -91,11 +91,11 @@ export default function DashboardPage() {
           Regulado por <span className="text-[#D4A45A] font-medium">CNV</span>
         </span>
         <span className="hidden md:inline">·</span>
-        <span>Fiduciario: <span className="text-[#ddcfc9]">Allaria SA</span></span>
+        <span>Fiduciario: <span className="text-[#ddcfc9]">ALyC regulado</span></span>
         <span className="hidden md:inline">·</span>
         <span>PSAV: <span className="text-[#ddcfc9]">AMG</span></span>
         <span className="hidden md:inline">·</span>
-        <span>Infraestructura: <span className="text-[#ddcfc9]">Brickken · Polygon</span></span>
+        <span>Infraestructura: <span className="text-[#ddcfc9]">Polygon · ERC-7943</span></span>
       </div>
     </div>
   );

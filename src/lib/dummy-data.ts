@@ -47,7 +47,7 @@ export const dummyAssets: Asset[] = [
       { src: "/projects/cafayate/map.png", caption: "Mapa catastral · 500 ha" },
     ],
     operator: "Bodega Lavaque",
-    fiduciario: "Allaria SA",
+    fiduciario: "ALyC regulado por CNV",
     vintage: "2025",
     dividendHistory: [
       { date: "2026-04-15", amountUsd: 312.5, periodLabel: "Q1 2026" },
@@ -57,7 +57,7 @@ export const dummyAssets: Asset[] = [
     ],
     milestones: [
       { date: "2025-08-20", title: "Fondeo completado", description: "Tramo Early Adopters cerrado", completed: true },
-      { date: "2025-09-10", title: "Escrituración fiduciaria", description: "Allaria SA titulariza las 500 hectáreas", completed: true },
+      { date: "2025-09-10", title: "Escrituración fiduciaria", description: "El fiduciario titulariza las 500 hectáreas", completed: true },
       { date: "2026-03-01", title: "Cosecha vendimia 2026", description: "Inicio de vendimia — Malbec y Torrontés", completed: true },
       { date: "2026-05-15", title: "Dividendo Q1 2026", description: "Distribución trimestral programada", completed: false },
       { date: "2028-08-01", title: "Fin horizonte 36 meses", description: "Transformación tierra virgen → semi-productiva", completed: false },
@@ -97,7 +97,7 @@ export const dummyAssets: Asset[] = [
       { src: "/projects/alto-agrelo/timeline.png", caption: "Cronograma del desarrollo" },
     ],
     operator: "Alto Agrelo Estates",
-    fiduciario: "Allaria SA",
+    fiduciario: "ALyC regulado por CNV",
     dividendHistory: [
       { date: "2026-04-02", amountUsd: 108.33, periodLabel: "Abril 2026" },
       { date: "2026-03-02", amountUsd: 105.2, periodLabel: "Marzo 2026" },
@@ -144,7 +144,7 @@ export const dummyAssets: Asset[] = [
       { src: "/projects/cantini/gallery-08.jpg", caption: "Atardecer Malbec" },
     ],
     operator: "Cantini Estates",
-    fiduciario: "Allaria SA",
+    fiduciario: "ALyC regulado por CNV",
     dividendHistory: [{ date: "2026-01-10", amountUsd: 92.5, periodLabel: "Campaña 2025" }],
     milestones: [
       { date: "2025-11-01", title: "Fondeo completado", description: "Ronda cerrada", completed: true },
@@ -178,7 +178,7 @@ export const dummyAssets: Asset[] = [
       { src: "/projects/caravan-tech/infrastructure.png", caption: "Infraestructura técnica" },
     ],
     operator: "Caravan Tech SA",
-    fiduciario: "Allaria SA",
+    fiduciario: "ALyC regulado por CNV",
     dividendHistory: [{ date: "2026-03-28", amountUsd: 28.5, periodLabel: "Marzo 2026" }],
     milestones: [
       { date: "2025-06-01", title: "Piloto Brasil", description: "Primeros 500 animales trazados on-chain", completed: true },

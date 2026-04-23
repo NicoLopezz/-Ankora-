@@ -1,0 +1,406 @@
+{
+  "nav": {
+    "items": {
+      "projects": "Proyectos",
+      "how": "Cómo funciona",
+      "structure": "Estructura",
+      "contact": "Contacto"
+    },
+    "cta": "Acceso anticipado",
+    "logoAria": "Ankora — inicio"
+  },
+  "languageSwitch": {
+    "label": "Idioma",
+    "es": "ES",
+    "en": "EN"
+  },
+  "hero": {
+    "kicker": "ANKORA · Anchored to real assets",
+    "titleLine1Pre": "Comprá una",
+    "titleLine1Em": "fracción",
+    "titleLine2Pre": "de algo",
+    "titleLine2Em": "real.",
+    "description": "Marketplace regulado de activos reales tokenizados. Viñedos, tierras, inmobiliario e infraestructura desde USD 500.",
+    "ctaPrimary": "Ver proyectos",
+    "ctaSecondary": "Cómo funciona",
+    "scrollHint": "Scroll"
+  },
+  "stats": {
+    "items": {
+      "ticket": "USD · Ticket mínimo",
+      "projects": "Proyectos del piloto",
+      "hectares": "Hectáreas · Piloto Cafayate",
+      "raise": "USD M · Raise · Piloto Cafayate"
+    }
+  },
+  "steps": {
+    "kicker": "Cómo funciona",
+    "titlePre": "Cuatro pasos.",
+    "titleEm": "Cero fricción.",
+    "lead": "Scrolleá para recorrer el proceso. Cada paso se activa a medida que avanzás.",
+    "items": {
+      "01": {
+        "kicker": "Onboarding",
+        "title": "Creá tu cuenta",
+        "body": "KYC digital con perfil de inversor y jurisdicción. Verificación en minutos — sin papeles, sin sucursales."
+      },
+      "02": {
+        "kicker": "Descubrimiento",
+        "title": "Elegí un proyecto",
+        "body": "Marketplace curado: viñedos, tierras, inmobiliario, livestock. Cada ficha publica prospectus, fideicomiso y fees upfront."
+      },
+      "03": {
+        "kicker": "Inversión",
+        "title": "Invertí desde USD 500",
+        "body": "Pagá en pesos (on-ramp local) o USD/USDC. Recibís tokens en Polygon que representan tu participación en el fideicomiso."
+      },
+      "04": {
+        "kicker": "Hold & track",
+        "title": "Seguí tu activo en vivo",
+        "body": "Valuación, distribuciones y reportes trimestrales. Salida por secundario (cuando se habilite) o vencimiento del fideicomiso."
+      }
+    }
+  },
+  "projects": {
+    "kicker": "Oportunidades activas",
+    "titleWords": ["Activos", "tangibles,", "rendimientos", "medibles."],
+    "leadDesktop": "Hoverá un panel para explorarlo. La ficha se expande en el lugar.",
+    "leadMobile": "Tocá un proyecto para ver más detalles.",
+    "labels": {
+      "tir": "TIR estimada",
+      "ticketMin": "Ticket mínimo",
+      "invest": "Invertir",
+      "more": "Ver más",
+      "viewDetails": "Ver detalles de {name}",
+      "live": "Live"
+    },
+    "status": {
+      "en_emision": "En emisión",
+      "abierto": "Abierto",
+      "proximamente": "Próximamente"
+    },
+    "items": {
+      "cafayate": {
+        "tag": "Tierra vitivinícola",
+        "name": "Cafayate Vineyards I",
+        "location": "Cafayate, Salta · AR",
+        "tir": "~30% APY",
+        "min": "USD 500",
+        "description": "Fideicomiso financiero con oferta pública sobre 500 hectáreas de tierra virgen con acuífero certificado en los Valles Calchaquíes, a 1.660 msnm. El valor se genera por transformación del activo durante 36 meses (riego, caminos, parcelamiento, viñedos jóvenes) y apreciación del suelo vitivinícola premium. Sponsor operativo: Bodega Lavaque.",
+        "bullets": [
+          "500 ha · 450 ha colocables + 50 ha reserva sponsor",
+          "Tramos: Early Adopters USD 5.000/ha → R2 USD 6.500 → R3 USD 8.450 · salida proyectada USD 11.000/ha",
+          "Ticket mínimo USD 500 (equivale a 0,1 ha) en el tramo Early Adopters",
+          "Acuífero certificado · 340 días de sol · terroir reconocido mundialmente por Torrontés y Malbec de altura",
+          "Stack: Polygon · ERC-7943 · Fiduciario: ALyC regulado por CNV · PSAV: AMG Capital Group S.A."
+        ],
+        "timeline": "Tramo Early Adopters abierto · Horizonte 36 meses · Salida proyectada año 3",
+        "emitter": "Cafayate Vineyards I · Fideicomiso financiero (ALyC fiduciario)",
+        "totalRaise": "USD 2.82 M",
+        "mediaAlt": "Cafayate Vineyards I — proyecto RWA en los Valles Calchaquíes, Salta",
+        "gallery": [
+          { "alt": "Vista del terreno en Cafayate, Salta", "caption": "500 ha · 1.660 msnm" },
+          { "alt": "Viñedo en los Valles Calchaquíes", "caption": "Terroir Cafayate" },
+          { "alt": "Viñedo en altura", "caption": "Malbec & Torrontés de altura" },
+          { "alt": "Render del desarrollo proyectado", "caption": "Render · desarrollo proyectado" },
+          { "alt": "Render con bodega e infraestructura", "caption": "Render · bodega e infraestructura" },
+          { "alt": "Mapa de ubicación del terreno", "caption": "Ubicación catastral" }
+        ]
+      },
+      "alto-agrelo": {
+        "tag": "Inmobiliario productivo",
+        "name": "Alto Agrelo Estates",
+        "location": "Luján de Cuyo, Mendoza · AR",
+        "tir": "TBD",
+        "min": "TBD",
+        "description": "Desarrollo inmobiliario productivo en Alto Agrelo, Luján de Cuyo — el corazón vitivinícola argentino. Integra parcela productiva con cultivos de alto valor (nogales, pistachos, lavanda, viñedos), residencia rural con potencial Airbnb y management profesional. Cada parcela funciona como unidad económica autónoma.",
+        "bullets": [
+          "Paquete integral del desarrollador: USD 345.000 (land + planting + vivienda) — referencia, no ticket tokenizado",
+          "Cultivos seleccionados: nogales y pistachos (ciclo 10 años), lavanda (4–5 años), viñedos premium",
+          "Modelo self-sufficient: la producción primaria cubre los costos de mantenimiento anual",
+          "Cash flow desde año 1 vía alquiler turístico · breakeven operativo en año 11",
+          "Ubicación premium: 25 min de Mendoza, 40 min del aeropuerto, vistas a los Andes",
+          "Estructura de tokenización en definición con ALyC fiduciario top-tier"
+        ],
+        "timeline": "En estructuración · Listing Ankora próximamente",
+        "emitter": "Alto Agrelo Estates · Fideicomiso financiero a estructurar (ALyC fiduciario)",
+        "totalRaise": "TBD",
+        "mediaAlt": "Alto Agrelo Estates — desarrollo inmobiliario productivo en Luján de Cuyo, Mendoza",
+        "gallery": [
+          { "alt": "Vista del valle en Alto Agrelo", "caption": "Luján de Cuyo · Land of Malbec" },
+          { "alt": "Paisaje del desarrollo", "caption": "Paisaje" },
+          { "alt": "Render de residencia rural", "caption": "Residencia rural" },
+          { "alt": "Cultivos de alto valor", "caption": "Cultivos productivos" },
+          { "alt": "Vistas a los Andes", "caption": "Vistas a los Andes" },
+          { "alt": "Timeline de proyección a 15 años", "caption": "Proyección 15 años" }
+        ]
+      },
+      "cantini": {
+        "tag": "Viñedo + Hospitality",
+        "name": "Cantini Estates",
+        "location": "Alto Agrelo, Mendoza · AR",
+        "tir": "TBD",
+        "min": "TBD",
+        "description": "Ecosistema multi-capa que integra propiedad de viñedo (25 ha · 250.000 m²), producción anual de fine wine y experiencias reales — hospitalidad, botellas coleccionables, acceso a Oria Club en Mendoza, Toscana y Punta del Este. \"From soil to glass, from vine to villa.\" Propuesta en adaptación al régimen CNV RG 1069/2025.",
+        "bullets": [
+          "25 hectáreas de viñedo tokenizadas como unidades fraccionales (m² con trazabilidad on-chain)",
+          "Sistema de tiers — Mosaic · Quadro · Altura · Terroir Landlord — con beneficios físicos escalables",
+          "Rewards reales: estadías en hotel boutique, catas, spa, blending sessions, acceso Oria Club",
+          "Yield anual en equivalente botella: NFTs canjeables por vino físico de la añada",
+          "Plataforma digital propuesta: mapa 3D, dashboard, trazabilidad de terroir, governance opcional",
+          "Adaptación en curso a fideicomiso financiero bajo CNV con ALyC fiduciario"
+        ],
+        "timeline": "Propuesta en revisión · Integración Ankora TBD",
+        "emitter": "Cantini Estates · Fideicomiso financiero a estructurar",
+        "totalRaise": "TBD",
+        "mediaAlt": "Cantini Estates — ecosistema de fine wine en Alto Agrelo, Mendoza",
+        "gallery": [
+          { "alt": "Viñedo de Cantini Estates al atardecer", "caption": "Viñedo al atardecer" },
+          { "alt": "Vista aérea del estate", "caption": "Estate · vista aérea" },
+          { "alt": "Arquitectura integrada al paisaje", "caption": "Arquitectura" },
+          { "alt": "Hotel boutique", "caption": "Hotel boutique" },
+          { "alt": "Interiores de hospitalidad", "caption": "Hospitality" },
+          { "alt": "Detalles de producción vinícola", "caption": "Producción" },
+          { "alt": "Experiencia enológica", "caption": "Experiencia" },
+          { "alt": "Botella coleccionable", "caption": "Fine wine" },
+          { "alt": "Paisaje de Alto Agrelo", "caption": "Alto Agrelo" }
+        ]
+      },
+      "caravan-tech": {
+        "tag": "Livestock Tech",
+        "name": "Caravan Tech",
+        "location": "Brasil · Argentina",
+        "tir": "~14% proyectado",
+        "min": "TBD",
+        "description": "Tokenización de ganado en producción usando tecnología propietaria: ear tags con GPS, bolus ruminales, DNA storage y remote sensing satelital. Cada token corresponde a un animal real, auditable end-to-end, con pricing ajustado automáticamente por raza, salud, trazabilidad legal y etapa de desarrollo. 8+ años de tecnología madura, certificación ICAR.",
+        "bullets": [
+          "Hardware propietario: ear tag solar con GPS cada 15 min · bolus ruminal · DNA storage 10+ años · remote sensing",
+          "Smart contract de pricing dinámico: Legal · Breed · Rearing · Health · Development Stage × CME Live Cattle",
+          "Retorno proyectado al inversor: ~14% anual (whitepaper técnico)",
+          "Compliance EUDR — ganado verificable como libre de deforestación",
+          "Patentes registradas en USA, Brasil y principales mercados productores",
+          "Adaptación a fideicomiso financiero CNV en curso — envoltorio legal para Ankora"
+        ],
+        "timeline": "En estructuración · Listing Ankora próximamente",
+        "emitter": "Caravan Tech · Fideicomiso financiero a estructurar",
+        "totalRaise": "TBD",
+        "mediaAlt": "Caravan Tech — tokenización de ganado con infraestructura tecnológica propia",
+        "gallery": [
+          { "alt": "Ganado con sistema Caravan Tech", "caption": "Ganado digitalizado" },
+          { "alt": "Blueprint técnico", "caption": "Blueprint" },
+          { "alt": "Operación en campo", "caption": "Operación en campo" },
+          { "alt": "Diagrama de infraestructura de tokenización", "caption": "Arquitectura del sistema" }
+        ]
+      }
+    }
+  },
+  "projectModal": {
+    "about": "Sobre el proyecto",
+    "gallery": "Galería",
+    "tir": "TIR estimada",
+    "ticketMin": "Ticket mínimo",
+    "emitter": "Emisor",
+    "timeline": "Cronograma",
+    "totalRaise": "Monto objetivo",
+    "sold": "Colocado",
+    "invest": "Invertir ahora",
+    "close": "Cerrar",
+    "closeZoom": "Cerrar vista ampliada",
+    "zoom": "Ampliar {alt}",
+    "prevImage": "Imagen anterior",
+    "nextImage": "Imagen siguiente"
+  },
+  "structure": {
+    "kicker": "Cómo está estructurado",
+    "titlePre": "Regulado.",
+    "titleEm": "Custodiado.",
+    "titlePost": "Auditable.",
+    "lead": "Cada activo del marketplace se emite como fideicomiso financiero con oferta pública bajo supervisión de la CNV. Roles separados — operador, fiduciario, tecnología, legal — cada uno con responsabilidad propia.",
+    "pillars": {
+      "operator": {
+        "role": "Operador · PSAV",
+        "name": "AMG Capital Group S.A.",
+        "detail": "Inscripto en CNV como Proveedor de Servicios de Activos Virtuales — DI-2024-50276668. Opera el marketplace y custodia los tokens."
+      },
+      "trustee": {
+        "role": "Fiduciario · Colocador",
+        "name": "Fiduciario financiero",
+        "detail": "ALyC top-tier. Administra los fideicomisos financieros que son el vehículo legal de cada emisión y coloca los tokens."
+      },
+      "tech": {
+        "role": "Stack tecnológico",
+        "name": "Plataforma de tokenización",
+        "detail": "Plataforma blockchain con hooks de compliance nativos — KYC, restricciones de transferencia y auditabilidad on-chain."
+      },
+      "regulatory": {
+        "role": "Marco regulatorio",
+        "name": "CNV RG 1069/2025",
+        "detail": "Régimen de tokenización de activos reales en Argentina (con RG 1081 y 1087 modificatorias). Sandbox sancionado."
+      }
+    },
+    "advisors": {
+      "legal": {
+        "kicker": "Asesoría legal",
+        "name": "Estudio MB Partners",
+        "detail": "Estructuración, compliance, representación ante CNV."
+      },
+      "fiat": {
+        "kicker": "Procesamiento fiat",
+        "name": "Mecaenpol S.R.L.",
+        "detail": "PSPCP inscripto en BCRA. On-ramp en pesos argentinos."
+      },
+      "holding": {
+        "kicker": "Holding",
+        "name": "Grupo Blex",
+        "detail": "AMG Capital Group y Mecaenpol son parte del grupo."
+      }
+    }
+  },
+  "about": {
+    "kicker": "Sobre Ankora",
+    "titleLine1Pre": "No tokenizamos",
+    "titleLine1Em": "pixels.",
+    "titleLine2Pre": "Tokenizamos",
+    "titleLine2Em": "hectáreas.",
+    "narrative": [
+      "El patrimonio real estuvo reservado durante siglos para los que ya lo tenían. Comprar un campo, una finca, un viñedo: requería capital que la mayoría de las personas nunca iba a tener.",
+      "Mientras, el dinero pierde valor en pesos. Y el mundo cripto, con toda su promesa, terminó siendo un casino donde los activos no existen fuera de una pantalla.",
+      "Hay un camino distinto. Traer el patrimonio real al mundo digital. Hacerlo divisible, comprable, vendible. Sin perder lo que lo hace real."
+    ],
+    "purposeKicker": "Propósito",
+    "purposeBody": "Hacer del patrimonio físico real algo accesible, líquido y transferible para cualquier persona — no solo para los que ya lo tienen.",
+    "promiseKicker": "Promesa",
+    "promiseBody": "Comprá una fracción de algo real. Cobrá renta. Vendé cuando quieras.",
+    "principlesKicker": "Cinco principios no negociables",
+    "values": {
+      "real": {
+        "label": "Real",
+        "tagline": "Si no se puede ver, tocar o visitar, no entra.",
+        "body": "Cero activos sintéticos. Cero derivados. Cada token tiene atrás una hectárea, un metro cuadrado, una cosecha."
+      },
+      "anclado": {
+        "label": "Anclado",
+        "tagline": "El yield viene del mundo físico.",
+        "body": "No staking, no farming. Viene de un viñedo en producción, una propiedad rentada, una infraestructura energética."
+      },
+      "regulado": {
+        "label": "Regulado",
+        "tagline": "La regulación es parte del producto.",
+        "body": "Operamos bajo CNV RG 1069/1081/1087 porque la regulación es una promesa al inversor, no un obstáculo."
+      },
+      "accesible": {
+        "label": "Accesible",
+        "tagline": "Tickets desde USD 500. Calidad premium.",
+        "body": "No competimos con plataformas que venden tokens de USD 5. Accesibilidad de entry, calidad de selección."
+      },
+      "global": {
+        "label": "Global",
+        "tagline": "Un inversor en Miami, con la misma facilidad que uno en Buenos Aires.",
+        "body": "Pesos argentinos, dólares, transferencias internacionales desde el día uno. La fricción cambiaria histórica termina acá."
+      }
+    },
+    "noSomosKicker": "No somos",
+    "noSomos": [
+      "Un exchange de cripto",
+      "Una billetera",
+      "Un fondo común de inversión",
+      "DeFi puro"
+    ],
+    "somosKicker": "Somos",
+    "somos": [
+      "Un marketplace regulado de RWA",
+      "Fideicomisos financieros con oferta pública",
+      "Custodia de tokens bajo PSAV CNV",
+      "Blockchain como infraestructura, no como ideología"
+    ]
+  },
+  "faq": {
+    "kicker": "Preguntas frecuentes",
+    "titlePre": "Todo lo que",
+    "titleEm": "tenés",
+    "titlePost": "que saber antes.",
+    "lead": "No promesas vacías: explicamos cómo funciona la liquidez, qué pasa si algo sale mal, y bajo qué marco legal operamos.",
+    "categories": {
+      "Liquidez": "Liquidez",
+      "Riesgo": "Riesgo",
+      "Legal": "Legal",
+      "Tech": "Tech",
+      "Fees": "Fees"
+    },
+    "items": {
+      "salida": {
+        "category": "Liquidez",
+        "question": "¿Cómo salgo de una inversión antes del vencimiento?",
+        "answer": "Cuando el mercado secundario esté habilitado, vas a poder listar tus tokens para la venta dentro de la plataforma. Hasta ese momento, la salida natural es el vencimiento del fideicomiso de cada proyecto (cronograma publicado en la ficha). La activación del secundario depende de hitos regulatorios y del contrato final con el stack tecnológico."
+      },
+      "sponsor-quiebra": {
+        "category": "Riesgo",
+        "question": "¿Qué pasa si quiebra el sponsor del proyecto?",
+        "answer": "El activo subyacente (tierra, inmueble, ganado) está en un fideicomiso financiero administrado por un ALyC fiduciario top-tier — un patrimonio separado del sponsor. Si el sponsor quiebra, el fideicomiso no cae con él: el activo sigue a nombre del fideicomiso y se liquida según el contrato, devolviendo a los tokenholders su participación proporcional. Es la misma lógica que protege a los inversores institucionales de los fondos globales."
+      },
+      "fees": {
+        "category": "Fees",
+        "question": "¿Cuáles son los fees?",
+        "answer": "Cada proyecto publica sus fees upfront en la ficha: fee de emisión (one-time), fee de administración del fideicomiso (anual, típicamente 1-2%), y fee de mercado secundario cuando se habilite. Nada oculto. Brand-dna de Ankora: transparencia total de fees en cada listing."
+      },
+      "jurisdiccion": {
+        "category": "Legal",
+        "question": "¿Desde qué jurisdicción puedo invertir?",
+        "answer": "El onboarding incluye chequeo de jurisdicción y perfil de inversor. Hoy operamos con inversores argentinos y LATAM; el plan incluye cross-border para USA y Europa. La ficha de cada proyecto indica las jurisdicciones habilitadas para esa emisión puntual."
+      },
+      "fideicomiso": {
+        "category": "Legal",
+        "question": "¿Qué es un fideicomiso financiero y por qué importa?",
+        "answer": "Es el vehículo legal (Ley 24.441 + CCCN 1666-1676) que separa el patrimonio del activo del patrimonio del sponsor. Tiene oferta pública registrada en CNV bajo el régimen RG 1069/2025. Cada token que comprás representa una participación proporcional en ese fideicomiso. Es la misma arquitectura legal que usan los fondos institucionales globales."
+      },
+      "polygon": {
+        "category": "Tech",
+        "question": "¿Por qué Polygon y qué es ERC-7943?",
+        "answer": "Usamos una plataforma de tokenización regulada que emite los tokens en Polygon (L2 de Ethereum, fees bajos, settlement rápido) con el estándar ERC-7943 — diseñado específicamente para RWA con hooks de compliance (KYC, restricciones de transferencia, whitelists) compatibles con fideicomisos financieros regulados."
+      },
+      "clima": {
+        "category": "Riesgo",
+        "question": "¿Qué pasa si el clima arruina una cosecha o hay un problema operativo?",
+        "answer": "Cada proyecto publica sus riesgos específicos y las coberturas correspondientes (seguros climáticos, contratos forward, coberturas de construcción). Los rendimientos proyectados son estimaciones, no garantías. Toda inversión en activos reales implica riesgo de pérdida parcial o total del capital — lo decimos sin minimizarlo."
+      },
+      "transfer": {
+        "category": "Tech",
+        "question": "¿Mi token se puede transferir a otra wallet?",
+        "answer": "Sí, pero solo a wallets verificadas con el mismo perfil de compliance (KYC aprobado, jurisdicción habilitada). Es una restricción del estándar ERC-7943 para cumplir con el régimen CNV. No es una wallet cripto pública abierta; es una infraestructura regulada."
+      }
+    }
+  },
+  "cta": {
+    "kicker": "Acceso anticipado · Fase demo",
+    "titlePre": "Anclá tu inversión",
+    "titleEm": "a lo real.",
+    "description": "Ankora está en fase demo: la operatoria transaccional se habilita con la activación regulatoria final del stack. Dejanos tu mail y te avisamos cuando se abra el primer tramo del piloto.",
+    "ctaPrimary": "Sumarme a la lista",
+    "ctaSecondary": "Hablar con el equipo"
+  },
+  "footer": {
+    "description": "Marketplace regulado de tokenización de activos reales. Operado por AMG Capital Group S.A., inscripto en CNV como Proveedor de Servicios de Activos Virtuales bajo régimen RG 1069/2025. Fiduciario: ALyC regulado por CNV.",
+    "platformTitle": "Plataforma",
+    "platform": {
+      "projects": "Proyectos",
+      "how": "Cómo funciona",
+      "earlyAccess": "Acceso anticipado"
+    },
+    "companyTitle": "Compañía",
+    "company": {
+      "amg": "AMG Capital Group",
+      "contact": "Contacto",
+      "press": "Prensa"
+    },
+    "legalTitle": "Legal",
+    "legal": {
+      "terms": "Términos",
+      "privacy": "Privacidad",
+      "risk": "Advertencia de riesgos"
+    },
+    "riskHeading": "Advertencia de riesgos",
+    "riskBody": "Toda inversión en activos reales implica riesgo de pérdida parcial o total del capital invertido. Los rendimientos proyectados son estimaciones basadas en comparables del mercado y no constituyen garantía de rendimiento futuro. Ankora está en fase demo — la operatoria transaccional se habilita con la activación regulatoria final del stack. No ofrecemos asesoramiento financiero personalizado; consultá a tu asesor antes de invertir.",
+    "copyright": "© 2026 AMG Capital Group S.A. · PSAV CNV DI-2024-50276668",
+    "tagline": "Ankora — Anchored to real assets"
+  }
+}
